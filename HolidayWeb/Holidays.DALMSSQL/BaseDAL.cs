@@ -204,10 +204,24 @@ namespace Holidays.DALMSSQL
             //new MODEL.OuOAEntities().Ou_UserInfo.Where(u => listIds.Contains(u.uId));
             if (IsAsc)
             {
+                Type t = typeof(T);
+                if (t.Name.Equals("HouseInfoView"))
+                {
+                    List<HouseInfoView> houseInfoView = db.Set<T>().Where(whereLambda).OrderBy(orderLambda).ToList() as List<HouseInfoView>;
+                    return GetToDayPrice(houseInfoView);
+
+                }
                 return db.Set<T>().Where(whereLambda).OrderBy(orderLambda).ToList();
             }
             else
             {
+                Type t = typeof(T);
+                if (t.Name.Equals("HouseInfoView"))
+                {
+                    List<HouseInfoView> houseInfoView = db.Set<T>().Where(whereLambda).OrderBy(orderLambda).ToList() as List<HouseInfoView>;
+                    return GetToDayPrice(houseInfoView);
+
+                }
                 return db.Set<T>().Where(whereLambda).OrderByDescending(orderLambda).ToList();
             }
         }

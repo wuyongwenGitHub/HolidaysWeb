@@ -340,10 +340,17 @@
             // 生成模拟数据(请求数据)
             $scope.getPriceAutoByShopID($scope); //createMockData()
         }
+        //日历对象
+        var zxCalendar = {};
         function Calebuild($scope, MOCK_DATA) {
+            debugger;
+            if (zxCalendar && zxCalendar.calendar) {
+                zxCalendar.update(MOCK_DATA);
+                return zxCalendar.calendar.show();
+            }
             $("#ShopName").text($scope.Shop.ShopName);
             $("#HouseTitle").text($scope.Shop.HouseTitle);
-            var zxCalendar = $.CalendarPrice({
+            zxCalendar = $.CalendarPrice({
                 el: '.containers',
                 // startDate: '2017-08-02',
                 endDate: '2018-12-20',
@@ -429,6 +436,9 @@
                 reset: function () {
                     log('数据重置成功！');
                 },
+                cancel: function (e) {
+
+                },
                 everyday: function (data) {
                     $scope.openeveryPriceModal();
                     //var settingWindow = $(".capricorncd-date-detailed-settings");
@@ -507,7 +517,7 @@
                 //        hideFooterButton: true
             });
         }
-        log(zxCalendar)
+        //log(zxCalendar)
         function log(s) {
             console.log(s)
         }

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/30/2018 19:29:19
--- Generated from EDMX file: F:\Myproject\hday\WebSite\HolidayWeb\Holidays.Model\Entites\HolidaysEntites.edmx
+-- Date Created: 06/05/2018 18:46:05
+-- Generated from EDMX file: F:\Myproject\helloHY\HolidaysWeb\HolidayWeb\Holidays.Model\Entites\HolidaysEntites.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,18 +17,6 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_UserRole_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserRole] DROP CONSTRAINT [FK_UserRole_User];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserRole_Role]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserRole] DROP CONSTRAINT [FK_UserRole_Role];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PermissionRole_Permission]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PermissionRole] DROP CONSTRAINT [FK_PermissionRole_Permission];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PermissionRole_Role]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PermissionRole] DROP CONSTRAINT [FK_PermissionRole_Role];
-GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -145,14 +133,17 @@ GO
 IF OBJECT_ID(N'[dbo].[T_Permission]', 'U') IS NOT NULL
     DROP TABLE [dbo].[T_Permission];
 GO
+IF OBJECT_ID(N'[dbo].[T_Function]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[T_Function];
+GO
+IF OBJECT_ID(N'[dbo].[T_FuncPermission]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[T_FuncPermission];
+GO
+IF OBJECT_ID(N'[dbo].[T_UserRole]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[T_UserRole];
+GO
 IF OBJECT_ID(N'[dbo].[ShopToDayPriceSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ShopToDayPriceSet];
-GO
-IF OBJECT_ID(N'[dbo].[UserRole]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserRole];
-GO
-IF OBJECT_ID(N'[dbo].[PermissionRole]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[PermissionRole];
 GO
 
 -- --------------------------------------------------
@@ -822,7 +813,8 @@ CREATE TABLE [dbo].[T_User] (
     [Description] nvarchar(max)  NULL,
     [CreateTime] datetime  NULL,
     [IsDeleted] bit  NOT NULL,
-    [Email] nvarchar(max)  NULL
+    [Email] nvarchar(max)  NULL,
+    [GUIID] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -832,7 +824,8 @@ CREATE TABLE [dbo].[T_Role] (
     [Name] nvarchar(max)  NOT NULL,
     [Description] nvarchar(max)  NULL,
     [CreateTime] datetime  NULL,
-    [IsDeleted] bit  NOT NULL
+    [IsDeleted] bit  NOT NULL,
+    [GUID] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -845,7 +838,39 @@ CREATE TABLE [dbo].[T_Permission] (
     [CreateTime] datetime  NOT NULL,
     [ParentId] bigint  NOT NULL,
     [IsDeleted] bit  NOT NULL,
-    [Url] nvarchar(max)  NULL
+    [Url] nvarchar(max)  NULL,
+    [PermValue] int  NOT NULL,
+    [GUID] uniqueidentifier  NOT NULL
+);
+GO
+
+-- Creating table 'T_Function'
+CREATE TABLE [dbo].[T_Function] (
+    [Id] bigint IDENTITY(1,1) NOT NULL,
+    [MenuName] nvarchar(max)  NOT NULL,
+    [Url] nvarchar(max)  NOT NULL,
+    [MenuLevel] nvarchar(max)  NOT NULL,
+    [ParentId] bigint  NOT NULL,
+    [IsDeleted] bit  NOT NULL
+);
+GO
+
+-- Creating table 'T_FuncPermission'
+CREATE TABLE [dbo].[T_FuncPermission] (
+    [Id] bigint IDENTITY(1,1) NOT NULL,
+    [MemberId] uniqueidentifier  NOT NULL,
+    [FuncId] uniqueidentifier  NOT NULL,
+    [MemberType] int  NOT NULL,
+    [PermValue] int  NOT NULL
+);
+GO
+
+-- Creating table 'T_UserRole'
+CREATE TABLE [dbo].[T_UserRole] (
+    [Id] bigint IDENTITY(1,1) NOT NULL,
+    [UserId] uniqueidentifier  NOT NULL,
+    [RoleId] uniqueidentifier  NOT NULL,
+    [MemberType] int  NOT NULL
 );
 GO
 
@@ -854,23 +879,9 @@ CREATE TABLE [dbo].[ShopToDayPriceSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ShopId] int  NOT NULL,
     [other] nvarchar(max)  NULL,
-    [price] decimal(18,0)  NOT NULL,
+    [price] decimal(18,2)  NOT NULL,
     [statu] int  NOT NULL,
     [date] nvarchar(max)  NOT NULL
-);
-GO
-
--- Creating table 'UserRole'
-CREATE TABLE [dbo].[UserRole] (
-    [User_Id] bigint  NOT NULL,
-    [Role_Id] bigint  NOT NULL
-);
-GO
-
--- Creating table 'PermissionRole'
-CREATE TABLE [dbo].[PermissionRole] (
-    [Permission_Id] bigint  NOT NULL,
-    [Role_Id] bigint  NOT NULL
 );
 GO
 
@@ -1100,75 +1111,33 @@ ADD CONSTRAINT [PK_T_Permission]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'T_Function'
+ALTER TABLE [dbo].[T_Function]
+ADD CONSTRAINT [PK_T_Function]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'T_FuncPermission'
+ALTER TABLE [dbo].[T_FuncPermission]
+ADD CONSTRAINT [PK_T_FuncPermission]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'T_UserRole'
+ALTER TABLE [dbo].[T_UserRole]
+ADD CONSTRAINT [PK_T_UserRole]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- Creating primary key on [Id] in table 'ShopToDayPriceSet'
 ALTER TABLE [dbo].[ShopToDayPriceSet]
 ADD CONSTRAINT [PK_ShopToDayPriceSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [User_Id], [Role_Id] in table 'UserRole'
-ALTER TABLE [dbo].[UserRole]
-ADD CONSTRAINT [PK_UserRole]
-    PRIMARY KEY CLUSTERED ([User_Id], [Role_Id] ASC);
-GO
-
--- Creating primary key on [Permission_Id], [Role_Id] in table 'PermissionRole'
-ALTER TABLE [dbo].[PermissionRole]
-ADD CONSTRAINT [PK_PermissionRole]
-    PRIMARY KEY CLUSTERED ([Permission_Id], [Role_Id] ASC);
-GO
-
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
-
--- Creating foreign key on [User_Id] in table 'UserRole'
-ALTER TABLE [dbo].[UserRole]
-ADD CONSTRAINT [FK_UserRole_User]
-    FOREIGN KEY ([User_Id])
-    REFERENCES [dbo].[T_User]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Role_Id] in table 'UserRole'
-ALTER TABLE [dbo].[UserRole]
-ADD CONSTRAINT [FK_UserRole_Role]
-    FOREIGN KEY ([Role_Id])
-    REFERENCES [dbo].[T_Role]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_UserRole_Role'
-CREATE INDEX [IX_FK_UserRole_Role]
-ON [dbo].[UserRole]
-    ([Role_Id]);
-GO
-
--- Creating foreign key on [Permission_Id] in table 'PermissionRole'
-ALTER TABLE [dbo].[PermissionRole]
-ADD CONSTRAINT [FK_PermissionRole_Permission]
-    FOREIGN KEY ([Permission_Id])
-    REFERENCES [dbo].[T_Permission]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Role_Id] in table 'PermissionRole'
-ALTER TABLE [dbo].[PermissionRole]
-ADD CONSTRAINT [FK_PermissionRole_Role]
-    FOREIGN KEY ([Role_Id])
-    REFERENCES [dbo].[T_Role]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_PermissionRole_Role'
-CREATE INDEX [IX_FK_PermissionRole_Role]
-ON [dbo].[PermissionRole]
-    ([Role_Id]);
-GO
 
 -- --------------------------------------------------
 -- Script has ended
