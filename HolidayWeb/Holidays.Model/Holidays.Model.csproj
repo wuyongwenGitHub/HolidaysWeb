@@ -64,6 +64,8 @@
     <Compile Include="Entites\ExtensionEntites\HouseInfoView.cs" />
     <Compile Include="Entites\ExtensionEntites\OrderInfo.cs" />
     <Compile Include="Entites\ExtensionEntites\ShopInfo.cs" />
+    <Compile Include="Entites\FuncPermission.cs" />
+    <Compile Include="Entites\Function.cs" />
     <Compile Include="Entites\HolidaysEntites.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,6 +81,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HolidaysEntites.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entites\HolidaysEntites1.cs" />
     <Compile Include="Entites\HomeData.cs">
       <DependentUpon>HolidaysEntites.tt</DependentUpon>
     </Compile>
@@ -187,6 +190,7 @@
     <Compile Include="Entites\UserOrderRecord.cs">
       <DependentUpon>HolidaysEntites.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entites\UserRole.cs" />
     <Compile Include="FormatModel\AccessToken.cs" />
     <Compile Include="FormatModel\AjaxMsgModel.cs" />
     <Compile Include="FormatModel\JsApiTicket.cs" />
