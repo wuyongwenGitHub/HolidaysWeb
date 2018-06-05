@@ -7,18 +7,91 @@
 
 @section styles{
     <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+    <style>
+        .houseMiaoShu {
+            height: 230px;
+            border: 1px solid #eee;
+            background-color: white;
+            margin-bottom: 2px;
+        }
+
+            .houseMiaoShu div:first-child {
+                width: 100%;
+                height: 77%;
+            }
+
+            .houseMiaoShu span {
+                font-size: 15px;
+                display: block;
+            }
+
+                .houseMiaoShu span:last-child {
+                    float: right;
+                    margin-top: -30px;
+                }
+
+        .lic {
+            font-size: 13px !important;
+            color: #999;
+        }
+
+        .map {
+            border: 1px solid #eeeeee;
+            padding: 5px 10px;
+            margin-top: 5px;
+        }
+
+        .houseMiaoShu img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 }
 
 <div class="page-wrap pb102">
-    <div class="page-search chareas-header">
-        <a class="search-icon"></a>
-        <input type="text" id="txtKeywords" value="@ViewBag.Keywords" class="input-enter" placeholder="请输入关键词">
-    </div>
+
+    @if (ViewBag.ShopInfo != null)
+    {
+        <div class="houseMiaoShu">
+            <div>
+                <img src='http://www.wyqdj.com/@ViewBag.ShopInfo.ShopImgs' />
+            </div>
+            <div class="map">
+                <span>@ViewBag.ShopInfo.Locations</span>
+                <span class="lic">景区：@ViewBag.ShopInfo.SpotName</span>
+                @if (string.IsNullOrEmpty(ViewBag.ShopInfo.COORDINATE))
+    {
+            <span style="color:aquamarine" onclick="MapCoordinates('@ViewBag.ShopInfo.Locations',1,'')">地图/导航 ></span>
+}
+else
+{
+            <span style="color:aquamarine" onclick="MapCoordinates('@ViewBag.ShopInfo.Locations',2,'@ViewBag.ShopInfo.COORDINATE')">地图/导航 ></span>
+}
+
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="page-search chareas-header">
+            <a class="search-icon"></a>
+            <input type="text" id="txtKeywords" value="@ViewBag.Keywords" class="input-enter" placeholder="请输入关键词">
+        </div>
+    }
+
+
+
     <div class="specity-header torent-header">
         <ul>
-            <li class="specder-item @if(ViewBag.BySort == 1){@Html.Raw("sortup") }"><a href="javascript:fnSearch(1);">价格<img src="/Images/wechart/mgh_22.png" alt=""></a></li>
-            <li class="specder-item @if(ViewBag.BySort == 2){@Html.Raw("sortup") }"><a href="javascript:fnSearch(2);">评论数<img src="/Images/wechart/mgh_22.png" alt=""></a></li>
-            <li class="specder-item @if(ViewBag.BySort == 3){@Html.Raw("sortup") }"><a href="javascript:fnSearch(3);">预定数<img src="/Images/wechart/mgh_22.png" alt=""></a></li>
+            <li class="specder-item @if (ViewBag.BySort == 1)
+                                    {@Html.Raw("sortup")
+                                    }"><a href="javascript:fnSearch(1);">价格<img src="/Images/wechart/mgh_22.png" alt=""></a></li>
+            <li class="specder-item @if (ViewBag.BySort == 2)
+                                    {@Html.Raw("sortup")
+                                    }"><a href="javascript:fnSearch(2);">评论数<img src="/Images/wechart/mgh_22.png" alt=""></a></li>
+            <li class="specder-item @if (ViewBag.BySort == 3)
+                                    {@Html.Raw("sortup")
+                                    }"><a href="javascript:fnSearch(3);">预定数<img src="/Images/wechart/mgh_22.png" alt=""></a></li>
         </ul>
     </div>
     <div class="torent-main room-main">
@@ -32,56 +105,56 @@
                         <a href="/weixin/wehouse/housedetailsview/@house.ID">
                             <div class="room-left"><img src="@house.FirstImg" class="room-icon"></div>
                             <div class="room-right">
-                                <div style="min-height:100px">
-                                <div class="room-name">
-                                    <span style="display:inline-block;float:left;min-width:100px;max-width:130px">@(house.HouseTitle.Length < 7 ?  house.HouseTitle : house.HouseTitle.Substring(0, 7) + "...")</span>
-                                    @if (house.IsEmpty == 0)
-                                    {
-                                        <span style="margin-left:10px;color:#38a24b;float:right;">可订</span>
-                                    }
-                                    else
-                                    {
+                                <div style="min-height: 100px">
+                                    <div class="room-name">
+                                        <span style="display: inline-block; float: left; min-width: 100px; max-width: 130px">@(house.HouseTitle.Length < 7 ? house.HouseTitle : house.HouseTitle.Substring(0, 7) + "...")</span>
+                                        @if (house.IsEmpty == 0)
+                                        {
+                                            <span style="margin-left: 10px; color: #38a24b; float: right;">可订</span>
+                                        }
+                                        else
+                                        {
 
-                                        <span style="margin-left:10px;color:#ff0000;float:right;">已满</span>
-                                    }
-                                </div>
-                                    <div style="color:#ff0000; font-size:12px;height:20px;">
+                                            <span style="margin-left: 10px; color: #ff0000; float: right;">已满</span>
+                                        }
+                                    </div>
+                                    <div style="color: #ff0000; font-size: 12px; height: 20px;">
                                         @if (house.IsBack == 1)
                                         {
                                             <p>不可退</p>
                                         }
                                         @if (house.IsBack == 0)
                                         {
-                                            <p  style="float:left">入住当天18点前</p>
-                                            <p style="float:right">&nbsp; &nbsp; 24小时内不可退</p>
+                                            <p style="float: left">入住当天18点前</p>
+                                            <p style="float: right">&nbsp; &nbsp; 24小时内不可退</p>
                                         }
                                     </div>
-                                <div class="room-star">
-                                    @for (int i = 0; i < house.EvaluateAvgScore; i++)
-                                    {
-                                        <img src="/Images/wechart/mgh_08.png">
-                                    }
+                                    <div class="room-star">
+                                        @for (int i = 0; i < house.EvaluateAvgScore; i++)
+                                        {
+                                            <img src="/Images/wechart/mgh_08.png">
+                                        }
 
-                                    <span>@house.EvaluateNum 条评论</span>
+                                        <span>@house.EvaluateNum 条评论</span>
+                                    </div>
+                                    <div class="room-status">
+                                        @if (house.BedroomNum > 0)
+                                        {
+                                            <span>@house.BedroomNum 室</span>
+                                        }
+                                        @if (house.LivingRoomNum > 0)
+                                        {
+                                            <span>@house.LivingRoomNum 厅</span>
+                                        }
+                                        @if (house.ToiletNum > 0)
+                                        {
+                                            <span>@house.ToiletNum 卫</span>
+                                        }
+                                        可住 @house.StayPersonNum 人
+                                    </div>
                                 </div>
-                                <div class="room-status">
-                                    @if (house.BedroomNum > 0)
-                                    {
-                                        <span>@house.BedroomNum 室</span>
-                                    }
-                                    @if (house.LivingRoomNum > 0)
-                                    {
-                                        <span>@house.LivingRoomNum 厅</span>
-                                    }
-                                    @if (house.ToiletNum > 0)
-                                    {
-                                        <span>@house.ToiletNum 卫</span>
-                                    }
-                                    可住 @house.StayPersonNum 人
-                                </div>
-                                </div>
-                                <div class="room-price" style="float:right;">￥@house.Price</div>
-                                <div class="room-mark" style="float:left;line-height:35px;">
+                                <div class="room-price" style="float: right;">￥@house.Price</div>
+                                <div class="room-mark" style="float: left; line-height: 35px;">
                                     @if (house.IsReals)
                                     {
                                         <span class="mark-info">实拍</span>
@@ -114,8 +187,18 @@
     </div>
     <div class="ghday-footer">
         <ul>
-            <li class="checked"><a href="/weixin/wemain"><img src="/Images/wechart/mgh_10hover.png" class="index-icon"><p>首页</p></a></li>
-            <li><a href="/weixin/weuser"><img src="/Images/wechart/mgh_11.png" class="person-icon"><p>个人中心</p></a></li>
+            <li class="checked">
+                <a href="/weixin/wemain">
+                    <img src="/Images/wechart/mgh_10hover.png" class="index-icon">
+                    <p>首页</p>
+                </a>
+            </li>
+            <li>
+                <a href="/weixin/weuser">
+                    <img src="/Images/wechart/mgh_11.png" class="person-icon">
+                    <p>个人中心</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>
@@ -131,4 +214,42 @@
             fnSearch(0);
         });
     </script>
+
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.2&key=3a6163ef3771946010124aeb08458ee4"></script>
+    <script type="text/javascript">
+        function MapCoordinates(address, type, jw) {
+            if (type == 1) {
+                AMap.plugin('AMap.Geocoder',
+                    function () {
+                        var geocoder = new AMap.Geocoder({
+                        });
+                        geocoder.getLocation(address,
+                            function (status, result) {
+                                if (status == 'complete' && result.geocodes.length) {
+                                    console.log(result.geocodes[0].location);
+                                    var l = result.geocodes[0].location.L;
+                                    var n = result.geocodes[0].location.N;
+                                    window.location.href = "https://uri.amap.com/marker?position=" +
+                                        l +
+                                        "," +
+                                        n +
+                                        "&name=" +
+                                        address +
+                                        "&src=mypage&coordinate=gaode&callnative=0";
+                                } else {
+                                    alert("获取失败");
+                                }
+                            });
+                    });
+            } else {
+                window.location.href = "https://uri.amap.com/marker?position=" + jw +
+                    "&name=" +
+                    address +
+                    "&src=mypage&coordinate=gaode&callnative=0";
+
+            }
+        }
+
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
 }

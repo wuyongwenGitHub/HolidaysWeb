@@ -648,6 +648,7 @@
     <Property Name="About" Type="varchar(max)" Nullable="true" />
     <Property Name="Rules" Type="varchar(max)" Nullable="true" />
     <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
+    <Property Name="COORDINATE" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ShopInfoCertificate">
     <Key>
@@ -821,27 +822,16 @@
     <Property Name="PermValue" Type="int" Nullable="false" />
     <Property Name="GUID" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
-      <EntityType Name="T_Function">
-        <Key>
-          <PropertyRef Name="Id" />
-        </Key>
-        <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-        <Property Name="MenuName" Type="nvarchar(max)" Nullable="false" />
-        <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
-        <Property Name="MenuLevel" Type="nvarchar(max)" Nullable="false" />
-        <Property Name="ParentId" Type="bigint" Nullable="false" />
-        <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
-      </EntityType>
-  <EntityType Name="ShopToDayPriceSet">
+  <EntityType Name="T_Function">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ShopId" Type="int" Nullable="false" />
-    <Property Name="other" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="price" Type="decimal" Nullable="false" />
-    <Property Name="statu" Type="int" Nullable="false" DefaultValue="0" />
-    <Property Name="date" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MenuName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MenuLevel" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ParentId" Type="bigint" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
   </EntityType>
   <EntityType Name="T_FuncPermission">
     <Key>
@@ -861,6 +851,17 @@
     <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="MemberType" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ShopToDayPriceSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShopId" Type="int" Nullable="false" />
+    <Property Name="other" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="price" Type="decimal" Nullable="false" />
+    <Property Name="statu" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="date" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1510,6 +1511,7 @@
           <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="COORDINATE" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="ShopInfoCertificate">
           <Key>
@@ -2295,6 +2297,7 @@
           <ScalarProperty Name="About" ColumnName="About" />
           <ScalarProperty Name="Rules" ColumnName="Rules" />
           <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
+          <ScalarProperty Name="COORDINATE" ColumnName="COORDINATE" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -2495,7 +2498,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-
     <EntitySetMapping Name="ShopToDayPriceSet">
       <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ShopToDayPrice)">
         <MappingFragment StoreEntitySet="ShopToDayPriceSet">
@@ -2508,7 +2510,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-   
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

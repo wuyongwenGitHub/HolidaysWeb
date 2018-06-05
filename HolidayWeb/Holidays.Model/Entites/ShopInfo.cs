@@ -39,5 +39,6 @@ namespace Holidays.Model.Entites
         public string About { get; set; }
         public string Rules { get; set; }
         public string ChargesNotes { get; set; }
+        public string COORDINATE { get; set; }
     }
 }

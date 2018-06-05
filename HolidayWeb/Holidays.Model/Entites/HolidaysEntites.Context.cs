@@ -62,12 +62,9 @@ namespace Holidays.Model.Entites
         public virtual DbSet<User> T_User { get; set; }
         public virtual DbSet<Role> T_Role { get; set; }
         public virtual DbSet<Permission> T_Permission { get; set; }
-
         public virtual DbSet<Function> T_Function { get; set; }
         public virtual DbSet<FuncPermission> T_FuncPermission { get; set; }
         public virtual DbSet<UserRole> T_UserRole { get; set; }
-
         public virtual DbSet<ShopToDayPrice> ShopToDayPriceSet { get; set; }
-
     }
 }

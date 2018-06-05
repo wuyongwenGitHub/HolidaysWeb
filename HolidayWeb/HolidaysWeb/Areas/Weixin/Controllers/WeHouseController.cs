@@ -70,8 +70,26 @@ namespace Holidays.Web.Areas.Weixin.Controllers
         /// 2017-2-14 20:35:09
         /// </summary>
         /// <returns>View</returns>
-        public ActionResult RentHouseListView(string keywords, int? bySort)
+        public ActionResult RentHouseListView(string keywords, int? bySort,int? id)
         {
+            if (id != null)
+            {
+                var tempModel = OperateContext.Current.BLLSession.IShopInfoBLL.GetListBy(o => o.ID == id).FirstOrDefault();
+                if (tempModel != null)
+                {
+                    ViewBag.ShopInfo = tempModel;
+                }
+            }
+            else
+            {
+                var tempModel = OperateContext.Current.BLLSession.IShopInfoBLL.GetListBy(o => o.ShopName == keywords).FirstOrDefault();
+                if (tempModel != null)
+                {
+                    ViewBag.ShopInfo = tempModel;
+                }
+            }
+                
+
             int currentCityId = OperateContext.Current.CurrentCity.Id;
             IList<HouseInfoView> houseList = null;
 
@@ -177,6 +195,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
                         houseInfo.ChargesNotes = shop.ChargesNotes;
                         houseInfo.Rules = shop.Rules;
                         houseInfo.Address = shop.Locations;
+                        ViewBag.COORDINATE = shop.COORDINATE;
                     }
                 }
             }
