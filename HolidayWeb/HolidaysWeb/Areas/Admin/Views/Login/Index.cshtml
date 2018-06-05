@@ -1,0 +1,82 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>我要去度假 | 后台管理登录</title>
+
+    <!-- Bootstrap -->
+    <link href="~/Framework/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/Framework/gentelella-master/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="~/Framework/gentelella-master/build/css/custom.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="~/Framework/gentelella-master/vendors/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/Framework/layer/layer.js"></script>
+</head>
+<body class="login">
+    <div>
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form id="frmLogin">
+                        <h1>后台管理登录</h1>
+                        @*<div>
+                                <input type="text" value="admin" name="loginAccount" class="form-control" placeholder="请输入登录账号" maxlength="20" />
+                            </div>
+                            <div>
+                                <input type="password" value="123456" name="loginPassword" class="form-control" placeholder="请输入登录密码" maxlength="16" />
+                            </div>*@
+                        <div>
+                            <input type="text" value="" name="loginAccount" class="form-control" placeholder="请输入登录账号" maxlength="20" />
+                        </div>
+                        <div>
+                            <input type="password" value="" name="loginPassword" class="form-control" placeholder="请输入登录密码" maxlength="16" />
+                        </div>
+                        <div>
+                            <a id="btnLogin" class="btn btn-default submit" href="javascript:;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="separator">
+                            <div class="clearfix"></div>
+                            <div>
+                                <h1><img width="50" height="50" src="~/Images/Admin/logo.png" /> 我要去度假</h1>
+                                <p>©2016 All Rights Reserved. 我要去度假 </p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $("#btnLogin").on("click", function () {
+            var loadIndex = layer.load();
+            var data = $("#frmLogin").serialize();
+            $.post("/Admin/Login/AdminLogin", data, function (result) {
+                if (result.Status == "ok") {
+                    var backUrl = "@ViewBag.BackUrl";
+                    window.location.href = backUrl != null && backUrl.length != 0 ? backUrl : result.Msg;
+
+                } else {
+                    layer.close(loadIndex);
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

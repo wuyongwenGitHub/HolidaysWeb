@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "选择城市";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+}
+@*顶部导航 切换城市*@
+<div class="page-wrap">
+    <div class="chareas-header">
+        <a class="search-icon"></a>
+        <input id="txtSearch" type="text" class="input-enter" placeholder="请输入城市名">
+    </div>
+    <div class="chareas-main">
+        <div class="chareas-title">当前城市</div>
+        <a href="/weixin/wemain/index"><div class="chareas-current">@ViewBag.CurrentCity.ShortName</div></a>
+        <div style="display: none" id="resultHinDiv" class="chareas-title">搜索结果</div>
+        <div style="display: none;" id="resultDiv" class="chareas-list">
+            <ul id="searchResult"></ul>
+        </div>
+    </div>
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        // 切换城市
+        function fnSwithCity(cityId) {
+            var loadIndex = layerload();
+            $.post("/Home/SwithCityById", { id: cityId }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    window.location.href = "/weixin/wemain/index"
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        }
+
+        $("#txtSearch").on("blur", function () {
+            var cityName = $(this).val();
+
+            if (cityName != "" && cityName.length > 0) {
+                var loadIndex = layerload();
+                $.post("/Home/GetCityByName", { name: cityName }, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "ok") {
+                        var cityList = result.Data;
+
+                        if (cityList && cityList.length > 0) {
+                            var cityHtml = "";
+                            for (var i = 0; i < cityList.length; i++) {
+                                cityHtml += "<a href='javascript:fnSwithCity(" + cityList[i].Id + ");'><li>" + cityList[i].ShortName + "</li></a>";
+                            }
+
+                            $("#searchResult").html(cityHtml);
+                            $("#resultHinDiv,#resultDiv").css("display", "block");
+                        } else {
+                            $("#resultHinDiv,#resultDiv").css("display", "none");
+                            layermsg("未搜索到信息，请重新输入！");
+                        }
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            }
+        });
+    </script>
+}

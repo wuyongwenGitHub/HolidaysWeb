@@ -1,0 +1,57 @@
+﻿@model IList<Holidays.Model.Entites.CarInfo>
+@{
+    ViewBag.Title = "租赁车辆";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+}
+
+
+<div class="page-wrap pb102">
+    <div class="carental-wrap">
+        @if (Model != null && Model.Count > 0)
+        {
+            <ul>
+                @foreach (var car in Model)
+                {
+                    <li class="caren-item">
+                        <div class="caren-left"><img src="@car.CarImg" alt=""></div>
+                        <div class="caren-right">
+                            <p class="caren-title">@car.CarName</p>
+                            <p class="caren-other"><span>联系人：</span>@car.Linkman </p>
+                            <p class="caren-other"><span>电　话：</span><a href="tel:">@car.Phone1</a></p>
+                            @if (!String.IsNullOrEmpty(car.Phone2))
+                            {
+                                <p class="caren-other"><span>&nbsp;</span><a href="tel:">@car.Phone2</a> </p>
+                            }
+
+                            <p class="caren-other"><span>地　址: </span>@car.Address</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p style="text-align: center; padding: 20px; font-size: 14px;">暂无数据！</p>
+        }
+    </div>
+    <div class="ghday-footer">
+        <ul>
+            <li class="checked">
+                <a href="/weixin/wemain">
+                    <img src="/Images/wechart/mgh_10hover.png" class="index-icon">
+                    <p>首页</p>
+                </a>
+            </li>
+            <li>
+                <a href="/weixin/weuser">
+                    <img src="/Images/wechart/mgh_11.png" class="person-icon">
+                    <p>个人中心</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+﻿@model Holidays.Model.Entites.ShopInfo
+
+@{
+    ViewBag.Title = "店铺信息";
+    Layout = null;
+}
+
+<link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Framework/layui2/layui.all.js"></script>
+
+
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <form id="form1" lay-filter="form1" class="layui-form" style="margin:10px;">
+                <input type="hidden" name="ID" value="@Model.ID" />
+                <div class="layui-form-item">
+                    <label class="layui-form-label">店铺名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ShopName" value="@Model.ShopName" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房东</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="UserName" value="@Model.UserName" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在景区</label>
+                    <div class="layui-input-block">
+                        <input type="text" value="@Model.SpotName" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">风格</label>
+                    <div class="layui-input-block">
+                        <input type="text" value="@Model.ShopTypeName" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">起订价格</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="StartPrice" value="@Model.StartPrice" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="Locations">@Model.Locations</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">店铺图片</label>
+                    <div class="layui-input-block">
+                        <input id="ShopImgs" type="hidden" name="ShopImgs" value="@Model.ShopImgs" />
+                        <a target="_blank" href="@Model.ShopImgs">
+                            <img class="layui-upload-img" src="@Model.ShopImgs" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        </a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房源介绍</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="About">@Model.About</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">访客守则</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="Rules">@Model.Rules</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收费说明</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="ChargesNotes">@Model.ChargesNotes</textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    });
+</script>

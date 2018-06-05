@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "店铺搜索";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/Styles/hotel_list.css" rel="stylesheet" />
+    <link href="~/Framework/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Framework/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+}
+@section scripts{
+    <!-- Bootstrap -->
+    <script src="~/Framework/gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Framework/angular-1.6.0-rc.2/angular.min.js"></script>
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+<div ng-app="shopApp" ng-controller="ShopListController" ng-init="initShopList(1)">
+    <div class="navigation"><div class="w1080" style="width:1000px;">首页 <span>&gt;</span>店铺搜索</div></div>
+    <div class="ghsearch-contain w1080" style="width:1000px;">
+        <div class="ghsearch-wrap">
+            <input id="txtKeywords" type="text" value="@ViewBag.Keywords"  class="text-input" placeholder="关键词" />
+            <a style="text-decoration:none;" ng-click="initShopList(1)" class="ghsearch-btn">搜索</a>
+        </div>
+    </div>
+    <div class="ghsearch-condition">
+
+    </div>
+    <div id="content" class="content  clearfix">
+        <div id="main" class="main">
+            <div class="hotel-sort clearfix  none" style="display:block">
+                <div class="first-sort sort clearfix fl">
+                    <div class="fl sort-tab on asc-desc">
+                        <span class="text" ng-click="fnSort(0)">推荐</span>
+                    </div>
+                    <div class="fl sort-tab asc-desc sort-price">
+                        <span class="text " ng-click="fnSort(1)">价格</span>
+                        <i class="fa fa-caret-down"></i>
+                    </div>
+                    <div class="fl sort-tab">
+                        <div class="sorting_txt sorting_title" ng-click="showFilter()">风格</div>
+                        <div class="sorting_select">
+                            <div class="sorting_txt sorting_item" style="border-top-width:0;" ng-click="fnSort(1)">民宿</div>
+                            <div class="sorting_txt sorting_item" ng-click="fnFilter(2)">农家乐</div>
+                            <div class="sorting_txt sorting_item" ng-click="fnFilter(3)">宾馆</div>
+                            <div class="sorting_txt sorting_item" ng-click="fnFilter(0)">不限</div>
+                        </div>
+                    </div>
+                    <div class="fl sort-tab asc-desc sort-score">
+                        <span class="text" ng-click="fnSort(2)">口碑</span>
+                        <i class="fa fa-caret-down"></i>
+                    </div>
+                    <div class="fl sort-tab asc-desc sort-distance">
+                        <span class="text" ng-click="fnSort(3)">距离</span>
+                        <i class="fa fa-caret-down"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="hotel-list">
+                <div class="hotel" ng-repeat="shop in shopList">
+                    <div class="hotel-hd clearfix">
+                        <div class="hotel-logo fl has-more-snapshots">
+                            <img src="{{ shop.ShopImgs }}" width="130" height="130" />
+                            @*<div class="bar"><div class="mark"></div><div class="text">查看更多图片</div></div>*@
+                        </div>
+                        <div class="hotel-type fl">@*<i class="icon icon-gold-medal"></i>*@</div>
+                        <div class="hotel-info fl">
+                            <div class="nameAndIcon">
+                                @*<span class="tile icon-index">&nbsp;<i class="text">&nbsp;1</i></span>*@
+                                <a target="_blank" href="/House/RentHouseList?keywords={{ shop.ShopName }}" class="name">{{ shop.ShopName }}</a>
+                                @*<div class="level star-3">舒适型</div>
+                        <span class="decorate_year">2016年装修</span>*@
+                            </div>
+                            @*<div class="remarkTag"></div>*@
+                            <div class="addressInfo"> {{ shop.Scores  }} 分 &nbsp;&nbsp; &nbsp;&nbsp;{{ shop.ShopTypeName }}</div>
+                            <div class="route">{{ shop.Locations }}</div>
+                            <div class="remarkTag">
+                                {{ shop.Tags }}
+                            </div>
+                        </div>
+                        <div class="hotel-seperator fl"></div>
+                        <div class="hotel-brief fl">
+                            <div class="startPrice">
+                                <span class="yen">￥</span><span class="digit">{{ shop.StartPrice }}</span><span class="text">起</span>
+                            </div>
+                            @*<div class="satisfaction">
+                        <span class="highlight">4</span>
+                        <span class="slash">/</span>5分
+                        <i class="icon icon-tip">
+                            <div class="tip">
+                                <div class="big-up-arrow"></div>
+                                <div class="small-up-arrow"></div>
+                                <ul>
+                                    <li style="display:inline-block;">环境卫生：<span class="score">4.1</span></li>
+                                    <li style="display:inline-block;">服务质量：<span class="score">3.9</span></li>
+                                    <li style="display:inline-block;">设备设施：<span class="score">3.8</span></li>
+                                    <li style="display:inline-block;">位置交通：<span class="score">4.2</span></li>
+                                </ul>
+                            </div>
+                        </i>
+                    </div>
+                    <div class="comment">
+                        <a href="" target="_blank">
+                            来自<span class="digit">20</span>条评价
+                        </a>
+                    </div>*@
+                            <div class="hotelDetail"><a target="_blank" href="/House/RentHouseList?keywords={{ shop.ShopName }}">查看详情</a></div>
+                            @*<div class="lastOrderTime">14小时前有人预定</div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-item" ng-if="shopList.length == 0"><div>未查询到房源信息！</div></div>
+            </div>
+            <!--page-wrap-->
+            <div id="page-wrap" ng-hide="PageModel.TotalPage == 0" class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div>
+                        <ul class="pagination">
+                            <li class="paginate_button previous"><a ng-click="initShopList(1)" href="javascript:;">首页</a></li>
+                            <li class="paginate_button"><a ng-click="initShopList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                            <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                                <a ng-click="initShopList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                            </li>
+
+                            <li class="paginate_button"><a href="javascript:;" ng-click="initShopList(PageModel.NextPage)">下一页</a></li>
+                            <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initShopList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--page-wrap-->
+        </div>
+    </div>
+</div>
+@section footerjs{
+    <script type="text/javascript">
+
+        var shopApp = angular.module('shopApp', []);
+        shopApp.controller('ShopListController', function ShopListController($scope, $http) {
+            $scope.bySort = 0;
+            $scope.byFilter = 0;
+            $scope.desc = '';
+            //
+            $scope.initShopList = function (page) {
+                var keywords = $("#txtKeywords").val();
+                var data = {
+                    page: page,
+                    keywords: keywords,
+                    minPrice: $scope.minPrice,
+                    maxPrice: $scope.maxPrice,
+                    bySort: $scope.bySort,
+                    byFilter: $scope.byFilter,
+                    desc: $scope.desc
+                };
+                $http({
+                    method: 'POST',
+                    url: '/House/GetShopList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+                    $scope.shopList = data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+            $scope.fnPriceQuery = function (minPrice, maxPrice) {
+                $scope.minPrice = minPrice;
+                $scope.maxPrice = maxPrice
+
+                $scope.initShopList(1);
+            };
+
+            $scope.fnSort = function (bySort) {
+                $scope.bySort = bySort;
+                var content = '';
+                var $i = '';
+                switch (bySort) {
+                    case 1:
+                        content = $('.sort-price').html();
+                        $i = $('.sort-price').children('i');
+                        break;
+                    case 2:
+                        content = $('.sort-score').html();
+                        $i = $('.sort-score').children('i');
+                        break;
+                    case 3:
+                        content = $(".sort-distance").html();
+                        $i = $('.sort-distance').children('i');
+                        break;
+                }
+                if (content.indexOf('fa-caret-up') != -1) {
+                    $scope.desc = 1;
+                    $i.removeClass('fa-caret-up').addClass('fa-caret-down');
+                }
+                if (content.indexOf('fa-caret-down') != -1) {
+                    $scope.desc = '';
+                    $i.removeClass('fa-caret-down').addClass('fa-caret-up');
+                }
+                $scope.initShopList(1);
+            }
+            $scope.fnFilter = function (byFilter) {
+                $scope.byFilter = byFilter;
+                //if (byFilter == 0) {
+                //    $('.sorting_title').text('不限');
+                //}
+                //if (byFilter == 1) {
+                //    $('.sorting_title').text('民宿');
+                //}
+                //if (byFilter == 2) {
+                //    $('.sorting_title').text('农家乐');
+                //}
+                //if (byFilter == 3) {
+                //    $('.sorting_title').text('宾馆');
+                //}
+                $('.sorting_select').hide();
+                $scope.initShopList(1);
+            }
+            $scope.showFilter = function () {
+                $('.sorting_select').show();
+            }
+        });
+    </script>
+}

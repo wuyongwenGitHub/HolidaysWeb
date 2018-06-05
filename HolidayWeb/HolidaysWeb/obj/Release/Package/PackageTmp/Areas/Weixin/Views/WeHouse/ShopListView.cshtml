@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "店铺";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+    <link href="~/Styles/hotel_list.css" rel="stylesheet" />
+    <link href="~/Framework/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+}
+<div class="page-wrap pb102">
+    <div class="page-search chareas-header">
+        <a class="search-icon"></a>
+        <input type="text" id="txtKeywords" value="@ViewBag.Keywords" class="input-enter" placeholder="请输入关键词">
+    </div>
+    <div class="torent-main room-main">
+        <div class="content clearfix" style="width:100%;">
+            <div class="main" style="width:100%;">
+                <div class="hotel-sort clearfix  none" style="display:block;width:100%;">
+                    <div class="first-sort sort clearfix fl">
+                        <div class="fl sort-tab on">
+                            <a onclick="fnSearch(0)">
+                                <span class="text">推荐</span>
+                            </a>
+                        </div>
+                        <div class="fl sort-tab asc-desc sort-price">
+                            <a onclick="fnSearch(1)">
+                                <span class="text">价格</span>
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                        </div>
+                        <div class="fl sort-tab">
+                            <div class="sorting_txt sorting_title" onclick="shopList.showFilter()">风格</div>
+                            <div class="sorting_select">
+                                <div class="sorting_txt sorting_item" style="border-top-width:0;" onclick="shopList.fnFilter(1)">民宿</div>
+                                <div class="sorting_txt sorting_item" onclick="shopList.fnFilter(2)">农家乐</div>
+                                <div class="sorting_txt sorting_item" onclick="shopList.fnFilter(3)">宾馆</div>
+                                <div class="sorting_txt sorting_item" onclick="shopList.fnFilter(0)">不限</div>
+                            </div>
+                        </div>
+                        <div class="fl sort-tab asc-desc sort-score">
+                            <a onclick="fnSearch(2)">
+                                <span class="text">口碑</span>
+                                <i class="fa fa-caret-up"></i>
+                            </a>
+                        </div>
+                        <div class="fl sort-tab asc-desc sort-distance">
+                            <a onclick="fnSearch(3)">
+                                <span class="text">距离</span>
+                                <i class="fa fa-caret-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hotel-list">
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        foreach (var shop in Model)
+                        {
+                            <div class="hotel" onclick="gotoShop('@shop.ShopName')">
+
+                                <div class="hotel-hd clearfix" style="height:auto;">
+                                    <div class="hotel-logo fl has-more-snapshots" style="height:135px;width:135px;">
+                                        <a href="/weixin/wehouse/RentHouseListView?keywords=@shop.ShopName">
+                                            <img src="@shop.ShopImgs" width="75" height="75" />
+                                        </a>
+                                    </div>
+                                    @*<div class="hotel-type fl"><i class="icon icon-gold-medal"></i></div>*@
+                                    <div class="hotel-info fl" style="width:60%;min-height:110px">
+                                        <div class="nameAndIcon">
+                                            <a href="javascript:;" class="name">@shop.ShopName</a>
+                                            <div class="addressInfo">@shop.Scores 分 &nbsp;&nbsp; &nbsp;&nbsp;@shop.ShopTypeName</div>
+                                        </div>
+                                      
+                                        <div class="route">@shop.Locations</div>
+                                        <div class="remarkTag">@shop.Tags</div>
+                                    </div>
+
+                                    <div class="hotel-brief fl">
+                                        <div class="startPrice">
+                                            <span class="yen">￥</span><span class="digit"><a href="/weixin/wehouse/RentHouseListView?keywords=@shop.ShopName" style="color:#f80;">@shop.StartPrice</a> </span><span class="text">起</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        }
+
+                    }
+                    else
+                    {
+                        <p style="text-align: center; padding: 20px; font-size: 14px;">暂无数据！</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ghday-footer">
+        <ul>
+            <li class="checked"><a href="/weixin/wemain"><img src="/Images/wechart/mgh_10hover.png" class="index-icon"><p>首页</p></a></li>
+            <li><a href="/weixin/weuser"><img src="/Images/wechart/mgh_11.png" class="person-icon"><p>个人中心</p></a></li>
+        </ul>
+    </div>
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        var bySort = 0;
+        var byFilter = 0;
+        function fnSearch(bySort) {
+            var keywords = $("#txtKeywords").val();
+            bySort = bySort;
+            window.location.href = "/weixin/wehouse/shoplistview?keywords=" + keywords + "&bySort=" + bySort + "&byFilter=" + byFilter;
+        }
+
+        $("#txtKeywords").on("blur", function () {
+            fnSearch(0);
+        });
+        var shopList = function () {
+            var fnFilterHandle = function (byFilter) {
+                byFilter = byFilter;
+                //if (byFilter == 0) {
+                //    $('.sorting_title').text('不限');
+                //}
+                //if (byFilter == 1) {
+                //    $('.sorting_title').text('民宿');
+                //}
+                //if (byFilter == 2) {
+                //    $('.sorting_title').text('农家乐');
+                //}
+                //if (byFilter == 3) {
+                //    $('.sorting_title').text('宾馆');
+                //}
+                //$('.sorting_select').hide();
+                var content = '';
+                var $i = '';
+                var desc = '';
+                switch (bySort) {
+                    case 1:
+                        content = $('.sort-price').html();
+                        $i = $('.sort-price').children('i');
+                        break;
+                    case 2:
+                        content = $('.sort-score').html();
+                        $i = $('.sort-score').children('i');
+                        break;
+                    case 3:
+                        content = $(".sort-distance").html();
+                        $i = $('.sort-distance').children('i');
+                        break;
+                }
+                if (content.indexOf('fa-caret-up') != -1) {
+                    desc = 1;
+                    $i.removeClass('fa-caret-up').addClass('fa-caret-down');
+                }
+                if (content.indexOf('fa-caret-down') != -1) {
+                    desc = '';
+                    $i.removeClass('fa-caret-down').addClass('fa-caret-up');
+                }
+                var keywords = $("#txtKeywords").val();
+                window.location.href = "/weixin/wehouse/shoplistview?keywords=" + keywords + "&bySort=" + bySort + "&byFilter=" + byFilter + '&desc=' + desc;
+                // fnSearch(bySort);
+            };
+            var showFilterHandle = function () {
+                $('.sorting_select').show();
+            };
+            return {
+                fnFilter: function (byFilter) {
+                    fnFilterHandle(byFilter);
+                },
+                showFilter: function () {
+                    showFilterHandle();
+                }
+            }
+        }();
+        gotoShop = function (shopName) {
+            window.location.href = '/weixin/wehouse/RentHouseListView?keywords=' + shopName;
+        }
+    </script>
+}

@@ -1,0 +1,109 @@
+﻿@model Holidays.Model.Entites.HouseEvaluate
+@{
+    ViewBag.Title = "查看评价";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+<link href="~/Scripts/score.js/css/jQuery.score.css" rel="stylesheet" type="text/css" />
+<div class="header">
+    <h2 class="header-title">评价</h2>
+</div>
+<div class="weui-form-preview">
+    <div class="weui-form-preview__hd">
+        <label class="weui-form-preview__label">房源标题</label>
+        <em class="weui-form-preview__value">@ViewBag.Order.HouseTitle</em>
+    </div>
+    <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">订单金额</label>
+            <span class="weui-form-preview__value">@ViewBag.Order.TotalPrice 元</span>
+        </div>
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">交易时间</label>
+            <span class="weui-form-preview__value">@ViewBag.Order.CreateTime.ToString("yyyy/MM/dd HH:mm:ss")</span>
+        </div>
+    </div>
+</div>
+<div class="weui-cells__title">评价</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="" class="weui-label">整洁卫生</label></div>
+        <div class="weui-cell__bd">
+            <div id="CleanScore"></div>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="" class="weui-label">交通位置</label></div>
+        <div class="weui-cell__bd">
+            <div id="LocationScore"></div>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="" class="weui-label">设施环境</label></div>
+        <div class="weui-cell__bd">
+            <div id="EnvironmentScore"></div>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="" class="weui-label">房东服务</label></div>
+        <div class="weui-cell__bd">
+            <div id="ServiceScore"></div>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="" class="weui-label">性&nbsp;&nbsp;价&nbsp;&nbsp;比</label></div>
+        <div class="weui-cell__bd">
+            <div id="PerformanceScore"></div>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <input id="inputID" type="hidden" value="@Model.ID" />
+            <textarea id="inputComments" class="weui-textarea" readonly="readonly" rows="3"></textarea>
+            <div class="weui-textarea-counter"></div>
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="" class="weui-label">评价时间</label></div>
+        <div class="weui-cell__bd">
+            <div>@Model.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+        </div>
+    </div>
+</div>
+<div class="weui-btn-area">
+    <a href="/Weixin/WeUser/Index" class="weui-btn weui-btn_default">返回</a>
+</div>
+
+@section footerjs{
+
+    <script src="~/Scripts/score.js/js/jQuery.score.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#CleanScore').score({
+                color: '#FFD700',
+                readOnly:true,
+                score: @Model.CleanScore
+            });
+            $('#LocationScore').score({
+                color: '#FFD700',
+                readOnly:true,
+                score: @Model.LocationScore
+            });
+            $('#EnvironmentScore').score({
+                color: '#FFD700',
+                readOnly:true,
+                score: @Model.EnvironmentScore
+            });
+            $('#ServiceScore').score({
+                color: '#FFD700',
+                readOnly:true,
+                score: @Model.ServiceScore
+            });
+            $('#PerformanceScore').score({
+                color: '#FFD700',
+                 readOnly:true,
+                score: @Model.PerformanceScore
+            });
+        });
+    </script>
+}

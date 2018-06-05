@@ -1,0 +1,203 @@
+﻿@model Holidays.Model.Entites.UserInfoExtView
+
+@{
+    ViewBag.Title = "实名认证";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/percenter.css" rel="stylesheet" />
+}
+
+<div class="page-wrap">
+    @if (ViewBag.IsLogin)
+    {
+        <form id="frmUserInfoExt" action="#">
+            @if (Model != null && ViewBag.UserInfoCertificate != null && ViewBag.UserInfoCertificate.State != 2)
+            {
+                // 已提交实名认证信息
+                if (Model.IsCertification == 1)
+                {
+                    <p style="text-align: center; padding: 20px; font-size: 14px;">恭喜你，实名认证已通过</p>
+                }
+                else
+                {
+                    <p style="text-align: center; padding: 20px; font-size: 14px;">实名认证信息已提交，我们会尽快审核！</p>
+                }
+            }
+            else
+            {
+                <div class="nameverify-wrap">
+                    <ul>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left">真实姓名</div>
+                            <div class="naverfy-right">
+                                <input id="txtExtUsername" maxlength="20" name="Username" type="text" class="input-enter" value="@ViewBag.UserInfo.Username" />
+                            </div>
+                        </li>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left">身份证号</div>
+                            <div class="naverfy-right">
+                                <input id="txtExtIDCardNo" maxlength="18" name="IDCardNo" type="text" class="input-enter" value="@ViewBag.UserInfo.IDCardNo" />
+                            </div>
+                        </li>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left">身份证件照</div>
+                            <div class="naverfy-right clearfix">
+                                <label id="lblUploadIDCardImg1" class="naverfy-upfile">
+                                    <img id="idcardImg1" src="" />
+                                    <input type="hidden" id="txtIDCardImg1" name="IDCardImg1" />
+                                </label>
+                                <label id="lblUploadIDCardImg2" class="naverfy-upfile">
+                                    <img id="idcardImg2" src="" />
+                                    <input type="hidden" id="txtIDCardImg2" name="IDCardImg2" />
+                                </label>
+                            </div>
+                        </li>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left">支付宝账号</div>
+                            <div class="naverfy-right">
+                                <input id="txtAlipayAccount" name="AlipayAccount" type="text" class="input-enter" value="" />
+                            </div>
+                        </li>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left">微信号</div>
+                            <div class="naverfy-right">
+                                <input id="txtWeixinAccount" name="WeixinAccount" type="text" class="input-enter" value="" />
+                            </div>
+                        </li>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left">房源地址</div>
+                            <div class="naverfy-right">
+                                <input id="txtHouseAddress" name="HouseAddress" type="text" class="input-enter" value="" />
+                            </div>
+                        </li>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left">房产证照</div>
+                            <div class="naverfy-right clearfix">
+                                <label id="lblUploadHousecertificate" class="naverfy-upfile">
+                                    <img id="housecertificateImg" src="" />
+                                    <input type="hidden" id="txtHousecertificate" name="Housecertificate" />
+                                </label>
+                            </div>
+                        </li>
+                        <li class="naverfy-item">
+                            <div class="naverfy-left"></div>
+                            <div class="naverfy-right clearfix">
+                                <label id="">
+                                    <input id="chkReadme" checked="checked" type="checkbox" readonly="readonly"  onclick="return false" />同意并接受上述平台协议
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="personinfo-footer pl22pr26"> <a id="lbtnSaveUserExtInfo" href="javascript:;" class="canorder-submit">确定</a> </div>
+            }
+        </form>
+    }
+    else
+    {
+        <p style="text-align: center; padding: 20px; font-size: 14px;">登录失效，请重新登录！</p>
+    }
+</div>
+
+@section footerjs{
+    <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // 实名认证
+            $("#lbtnSaveUserExtInfo").on("click", function () {
+                var username = $("#txtExtUsername").val();
+                var idcard = $("#txtExtIDCardNo").val();
+                var idcardimg1 = $("#txtIDCardImg1").val();
+                var idcardimg2 = $("#txtIDCardImg2").val();
+                var alipayAccount = $("#txtAlipayAccount").val();
+                var weixinAccount = $("#txtWeixinAccount").val();
+                var houseAddress = $("#txtHouseAddress").val();
+                var housecertificate = $("#txtHousecertificate").val();
+                
+                // 校验数据
+                if (!username || username.length <= 0) {
+                    layermsg("真实姓名不能为空!");
+                    return;
+                }
+
+                if (!fnCheckIdCard(idcard)) {
+                    layermsg("身份证号格式不正确!");
+                    return;
+                }
+
+                if (!idcardimg1 || idcardimg1.length <= 0) {
+                    layermsg("请上传身份证正面照!");
+                    return;
+                }
+
+                if (!idcardimg2 || idcardimg2.length <= 0) {
+                    layermsg("请上传身份证背面照!");
+                    return;
+                }
+
+                if (!alipayAccount || alipayAccount.length <= 0) {
+                    layermsg("支付宝账号不能为空!");
+                    return;
+                }
+
+                if (!weixinAccount || weixinAccount.length <= 0) {
+                    layermsg("微信号不能为空!");
+                    return;
+                }
+
+                if (!houseAddress || houseAddress.length <= 0) {
+                    layermsg("房源地址不能为空!");
+                    return;
+                }
+
+                if (!housecertificate || housecertificate.length <= 0) {
+                    layermsg("请上传房产证照!");
+                    return;
+                }
+                //if (!$("#chkReadme").attr("checked")) {
+                //    return;
+                //}
+
+                var loadIndex = layerload();
+                var data = $("#frmUserInfoExt").serialize();
+                $.post("/User/SaveUserInfoExt", data, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "ok") {
+                        layermsg(result.Msg, function () {
+                            window.location.href = "/weixin/weuser/index";
+                        });
+                    } else {
+                        layermsg(result.Msg);
+                    }
+                });
+
+            });
+
+            function fnInitUpload() {
+                // 身份证正面
+                fnWeUploadImage("lblUploadIDCardImg1", function (url) {
+                    $("#idcardImg1").attr("src", url);
+                    $("#txtIDCardImg1").val(url);
+                });
+
+                // 身份证反面
+                fnWeUploadImage("lblUploadIDCardImg2", function (url) {
+                    $("#idcardImg2").attr("src", url);
+                    $("#txtIDCardImg2").val(url);
+                });
+
+                // 房产证照
+                fnWeUploadImage("lblUploadHousecertificate", function (url) {
+                    $("#housecertificateImg").attr("src", url);
+                    $("#txtHousecertificate").val(url);
+                });
+            }
+
+            fnInitUpload();
+        });
+    </script>
+}

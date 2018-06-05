@@ -1,0 +1,276 @@
+﻿@model Holidays.Model.Entites.UserInfoView
+
+@{
+    ViewBag.Title = "管理中心";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Styles/accountman.css">
+}
+
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页 <span>&gt;</span> 账户管理</div>
+</div>
+
+@if (Model != null)
+{
+    <div class="accountman-wrap w1080 clearfix">
+        <div class="actman-menu"> <a href="/User/UserInfo" class="acmenu actived">基本信息</a> <a href="/Order/OrderDetails" class="acmenu">订单详情</a> </div>
+        <div class="actman-info">
+            <div class="actinfo-header"><a href="javascript:;" class="actoperate checked" data-actoperate="1">查看</a><a href="javascript:;" class="actoperate" data-actoperate="2">修改</a></div>
+            <div class="actinfo-main">
+                <div class="actinfo-view acinfo-contain">
+                    <table cellpadding="0" cellspacing="0" border="0" class="table-wrap">
+                        <tr>
+                            <td rowspan="4" class="userphoto">
+                                @if (!String.IsNullOrEmpty(Model.Img))
+                                {
+                                    <img src="@Model.Img">
+                                }
+                                else
+                                {
+                                    <img src="/Images/default.jpg">
+                                }
+                            </td>
+                            <td class="taright" width="108">用 户 名：</td>
+                            <td>@Model.Nikename</td>
+                        </tr>
+                        <tr>
+                            <td class="taright">真实姓名：</td>
+                            <td>@Model.Username</td>
+                        </tr>
+                        <tr>
+                            <td class="taright">性　　别：</td>
+                            @if (Model.Gender == 0)
+                            {
+                                <td>男</td>
+                            }
+                            else if (Model.Gender == 1)
+                            {
+                                <td>女</td>
+                            }
+                            else
+                            {
+                                <td>保密</td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="taright">邮　　箱：</td>
+                            <td>@Model.Email</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="taright">手机号码：</td>
+                            <td>@Model.PhoneNo</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="taright">备用手机号码：</td>
+                            <td>@Model.PhoneNo2</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="taright">身份证号码：</td>
+                            <td>@Model.IDCardNo</td>
+                        </tr>
+                    </table>
+                </div>
+                <form id="frmEditUserInfo" action="#">
+                    <div class="actinfo-edit acinfo-contain  enter-edit">
+                        <table cellpadding="0" cellspacing="0" border="0" class="table-wrap">
+                            <tr>
+                                <td rowspan="7" class="userphoto">
+                                    <label id="uploadPhoto" for="uphoto">
+                                        @if (!String.IsNullOrEmpty(Model.Img))
+                                        {
+                                            <img id="userImg" src="@Model.Img" class="ml0" alt="photo" />
+                                        }
+                                        else
+                                        {
+                                            <img id="userImg" src="/Images/default.jpg" class="ml0" alt="photo" />
+                                        }
+                                        <input id="txtUserImg" name="Img" value="@Model.Img" type="hidden" />
+                                        <span>[修改头像]</span>
+                                    </label>
+                                </td>
+                                <td class="taright" width="108">用 户 名：</td>
+                                <td><input id="txtNikename" name="Nikename" maxlength="20" type="text" class="text-input" value="@Model.Nikename"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">真实姓名：</td>
+                                <td>
+                                    @if (ViewBag.UserInfo.IsRealName != null && ViewBag.UserInfo.IsRealName == 1)
+                                    {
+                                        <input id="txtUsername" readonly="readonly" name="Username" maxlength="20" type="text" class="text-input" value="@Model.Username">
+                                        <p class="entertips">已实名认证，真实姓名不能修改</p>
+                                    }
+                                    else
+                                    {
+                                        <input id="txtUsername" name="Username" maxlength="20" type="text" class="text-input" value="@Model.Username">
+                                        <p class="entertips">请务必使用真实姓名，否则影响账户支付</p>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="taright">性　　别：</td>
+                                <td>
+                                    <select name="Gender">
+                                        <option @if (Model.Gender == 0) { @Html.Raw("selected='selected'") ; } value="0">男</option>
+                                        <option @if (Model.Gender == 1) { @Html.Raw("selected='selected'") ; } value="1">女</option>
+                                        <option @if (Model.Gender != 0 && Model.Gender != 1) { @Html.Raw("selected='selected'") ; } value="2">保密</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="taright">身份证号码：</td>
+                                <td>
+                                    @if (ViewBag.UserInfo.IsRealName != null && ViewBag.UserInfo.IsRealName == 1)
+                                    {
+                                        <input readonly="readonly" id="txtIDCardNo" name="IDCardNo" maxlength="18" type="text" class="text-input" value="@Model.IDCardNo">
+                                        <p class="entertips">已实名认证，身份证号不能修改</p>
+                                    }
+                                    else
+                                    {
+                                        <input id="txtIDCardNo" name="IDCardNo" maxlength="18" type="text" class="text-input" value="@Model.IDCardNo">
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="taright">邮　　箱：</td>
+                                <td><input id="txtEmail" name="Email" maxlength="100" type="text" class="text-input" value="@Model.Email"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">手机号码：</td>
+                                <td><input id="txtPhoneNo" name="PhoneNo" maxlength="11" type="text" class="text-input" value="@Model.PhoneNo"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">备用手机号码：</td>
+                                <td>
+                                    <input id="txtPhoneNo2" name="PhoneNo2" maxlength="11" type="text" class="text-input" value="@Model.PhoneNo2">
+                                    <p class="entertips">备用手机号码，以便特殊情况下可及时联系到您</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="actedit-footer"><a href="javascript:;" id="btnSaveUserInfo" class="actedit-btn">保存</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section footerjs{
+        <script src="~/Scripts/Utility.js"></script>
+        <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#btnSaveUserInfo").on("click", function () {
+                    var nikename = $("#txtNikename").val();
+                    var username = $("#txtUsername").val();
+                    var idcard = $("#txtIDCardNo").val();
+                    var email = $("#txtEmail").val();
+                    var phoneNo = $("#txtPhoneNo").val();
+                    var phoneNo2 = $("#txtPhoneNo2").val();
+
+                    // 校验数据
+                    if (!nikename || nikename.length <= 0) {
+                        layer.alert("用户名不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!username || username.length <= 0) {
+                        layer.alert("真实姓名不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (idcard && !fnCheckIdCard(idcard)) {
+                        layer.alert("身份证号格式不正确！", { icon: 2 });
+                        return;
+                    }
+
+                    if (email && email.length > 0) {
+                        if (!fnCheckEmail(email)) {
+                            layer.alert("邮箱地址格式不正确！", { icon: 2 });
+                            return;
+                        }
+                    }
+
+                    if (!fnCheckPhone(phoneNo)) {
+                        layer.alert("请输入正确的手机号码！", { icon: 2 });
+                        return;
+                    }
+
+                    if (phoneNo2 && phoneNo2.length > 0) {
+                        if (!fnCheckPhone(phoneNo2)) {
+                            layer.alert("备用手机号格式不正确！", { icon: 2 });
+                            return;
+                        }
+                    }
+
+                    var loadIndex = layer.load();
+                    $.post("/User/SaveUserInfo", $("#frmEditUserInfo").serialize(), function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            layer.alert(result.Msg, { icon: 1 }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                    });
+                });
+
+                var bodyH = $("body").height()
+
+                $(window).resize();
+                //ie89 placeholder
+                $("a[href='javascript:;']").on("click", function (event) {
+                    if (document.all) {
+                        event.preventDefault();
+                    }
+                });
+                //actinfo-header 操作
+                $(".actinfo-header .actoperate").on("click", function () {
+                    $(this).addClass("checked").siblings().removeClass("checked");
+                    if ($(this).data("actoperate") == 1) {
+                        $(".actinfo-view").show();
+                        $(".actinfo-edit").removeAttr("style");
+                    } else if ($(this).data("actoperate") == 2) {
+                        $(".actinfo-edit").show();
+                        $(".actinfo-view").hide();
+
+                        // 图片处理
+                        fnUploadImage("uploadPhoto", function (url) {
+                            $("#userImg").attr("src", url);
+                            $("#txtUserImg").val(url);
+                        });
+                    }
+                    fnWindowResize();
+                });
+
+                // 重置窗口大小
+                function fnWindowResize() {
+                    $(window).resize(function () {
+                        if ($(this).height() > bodyH) {
+                            $(".ghaccount-footer").css({ "position": "absolute" });
+                        } else {
+                            $(".ghaccount-footer").removeAttr("style");
+                        }
+                    });
+                }
+
+                fnWindowResize();
+            });
+        </script>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

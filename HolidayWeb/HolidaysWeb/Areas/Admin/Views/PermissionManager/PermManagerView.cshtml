@@ -1,0 +1,262 @@
+﻿
+@{
+    ViewBag.Title = "功能权限管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .menu_span {
+        display: inline-block;
+        margin: 7px 10px 0px 0px;
+    }
+</style>
+<div ng-app="permissionApp" ng-controller="PermissionListController" ng-init="initPermList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>功能权限管理</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="row">
+            <form class="form-horizontal form-label-left">
+                <div class="col-md-3"><input name="menuName" type="text" class="form-control" placeholder="功能菜单名" /></div>
+                <div class="col-md-3"><button type="button" ng-click="initPermList(1)" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>菜单名</th>
+                        <th>菜单相对路径</th>
+                        <th>菜单级别</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="menu in MenuList">
+                        <td>{{ $index+1 }}</td>
+                        <td>{{ menu.MenuName }}</td>
+                        <td>{{  menu.Url }}</td>
+                        <td>{{  menu.MenuLevel }}</td>
+
+                        <td>
+                            <a href="javascript:;" ng-click="openEditPermModal( menu.Id)" title="编辑角色权限" class="fa fa-edit btn-xs"></a>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="MenuList.length==0">
+                        <td colspan="6" align="center">暂无数据</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initPermList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initPermList(pageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage == pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initPermList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initPermList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initPermList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--编辑权限信息窗口-->
+    <div id="editPermModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <h4 class="modal-title">编辑功能权限</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form1" class="form-horizontal form-label-left" novalidate>
+                        <input name="ID" type="hidden" value="{{  EditMenu.Id }}" />
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="tmpMenuName">
+                                菜单：
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input value="{{EditMenu.MenuName}}" readonly name="tmpMenuName" class="form-control col-md-7 col-xs-12" maxlength="25" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group" ng-if="RoleList.length>0">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                                分配角色
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12 targetRoleId" >
+                                <span  ng-repeat="role in RoleList" class="menu_span">
+                                    <label>
+                                        <input type="checkbox" value="{{role.RoleId}}" id="role_{{role.RoleId}}" ng-model="role.IsSelected" />
+                                        {{role.Name}}
+                                    </label>
+                                </span>
+
+                            </div>
+                        </div>
+                        <div class="item form-group" ng-if="RoleList.length>0">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                                设置权限
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12 targetPerm">
+                                <span class="menu_span">
+                                    <input type="radio" name="perms" id="hasperms" value="1"  />
+                                    <label for="hasperms">有权限</label>
+                                    <input type="radio" name="perms" id="noperms" value="0" checked/>
+                                    <label for="noperms">无权限</label>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" ng-click="saveMenuPerm()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var permApp = angular.module("permissionApp", []);
+        permApp.controller("PermissionListController", function PermissionListController($scope, $http) {
+            //初始化功能权限列表
+            $scope.initPermList = function (page) {
+                var menuName = $("input[name='menuName']").val();
+                var data = {
+                    pageIndex: page,
+                    pageSize: 10,
+                    Id: "",
+                    menuName: menuName
+                };
+                $scope.getAllMenuList(data);
+            };
+            //打开编辑权限界面
+            $scope.openEditPermModal = function (Id) {
+                var self = this;
+                var data = {
+                    pageIndex: 1,
+                    pageSize: 10,
+                    Id: Id,
+                    menuName: ""
+                }
+                $http({
+                    method: "post",
+                    url: "/Admin/PermissionManager/GetMenuList",
+                    data: data
+                }).then(function successCallback(result) {
+                        
+                    if (result && result.data && result.data.Data && result.data.Data.length > 0) {
+                        $scope.EditMenu = result.data.Data[0];
+                       
+                        $("#editPermModal").modal();
+                        setTimeout(function () {
+                            var menuName = $("input[name='tmpMenuName']").val();
+                            self.getRoleList(menuName);
+                            setTimeout(function () {
+                                $.each($scope.RoleList, function (index, data) {
+                                    if (data.IsSelected) {
+                                        $("#hasperms").attr("checked", "checked");
+                                    }
+                                });
+                            }, 200);
+                        }, 300)
+                    
+
+                    }
+                });
+            };
+
+            //获取菜单列表
+            $scope.getAllMenuList = function (data) {
+                $http({
+                    method: "post",
+                    url: "/Admin/PermissionManager/GetMenuList",
+                    data: data
+                }).then(function successCallback(result) {
+                       
+                        if (result && result.data && result.data.Data&& result.data.Data.length > 0) {
+                          
+                            $scope.PageModel = result.data;
+
+                            $scope.MenuList = result.data.Data;
+                    }
+                });
+
+            };
+            //获取角色列表
+            $scope.getRoleList = function (menuName) {
+
+                $http({
+                    method: "post",
+                    url: "/Admin/PermissionManager/GetRoleListWithSelected",
+                    data: {
+                        menuName: menuName
+                    }
+                }).then(function (result) {
+                    if (result.data) {
+                        $scope.RoleList = result.data;
+                    }
+                })
+
+            };
+            //保存菜单权限
+            $scope.saveMenuPerm = function () {
+                var loadIndex = layer.load();
+                var data = $("#form1").serialize();
+                var roleDom = $(".targetRoleId").find("input[type='checkbox']");
+                var selectedRoleArray = [];
+                if (roleDom.length > 0) {
+                    $.each(roleDom, function (index, data) {
+                        if (data.checked) {
+                            permValue = $('input:radio:checked').val();
+                            var roleId = data.id.split("_")[1];
+                            selectedRoleArray.push(roleId + "," + permValue);
+                        }
+                    })
+                }
+
+                var roleIds = selectedRoleArray.join(";");
+                var data = {
+
+                    roleIdsAndpermValues: roleIds,
+                    funcId: $scope.EditMenu.Id
+                }
+                $.post('/Admin/PermissionManager/AddMenuPermission', data, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "1") {
+                        layer.alert("保存成功", { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            }
+        });
+
+
+    </script>
+}
+
+@*<h2>PermissionManagerView</h2>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script>
+        $.ajax({
+            url: "/PermissionManager/AddPermission",
+            type: "post",
+            dataType: "json",
+            data: { Name: "1111", Description: "2222222", Type: 0 }
+        });
+    </script>*@

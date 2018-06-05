@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="91c03cc2a3c84d27b2c0bfc8494c3c28" Name="Diagram1" ZoomLevel="95">
+        <EntityTypeShape EntityType="HolidaysDBModel.AdminUser" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.CarInfo" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HomeData" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HouseConfigure" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HouseEvaluate" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HouseImg" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HouseInfo" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.OrderInfo" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.OrderItem" Width="1.5" PointX="4.75" PointY="8.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.ProductCategory" Width="1.5" PointX="6.75" PointY="8.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.ProductInfo" Width="1.5" PointX="8.75" PointY="7.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.Region" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.SpotInfo" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.SystemConfig" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.TenantInfo" Width="1.5" PointX="10.75" PointY="7.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserAccount" Width="1.5" PointX="6.75" PointY="11.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserFavorite" Width="1.5" PointX="8.75" PointY="11.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserInfo" Width="1.5" PointX="10.75" PointY="11.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserInfoCertificate" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserInfoExt" Width="1.5" PointX="2.75" PointY="12.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserOrderRecord" Width="1.5" PointX="12.75" PointY="3.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HouseInfoView" Width="1.5" PointX="12.75" PointY="5.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.OrderInfoView" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserFavoriteView" Width="1.5" PointX="4.75" PointY="14.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserInfoCertificateView" Width="1.5" PointX="6.75" PointY="15" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserInfoExtView" Width="1.5" PointX="14.75" PointY="7.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserInfoView" Width="1.5" PointX="14" PointY="15" />
+        <EntityTypeShape EntityType="HolidaysDBModel.ShopCategory" Width="1.5" PointX="3.375" PointY="18.625" />
+        <EntityTypeShape EntityType="HolidaysDBModel.ShopInfo" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.ShopInfoCertificate" Width="1.5" PointX="2.875" PointY="21.375" />
+        <EntityTypeShape EntityType="HolidaysDBModel.ShopInfoCertificateView" Width="2.375" PointX="6.875" PointY="21" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HouseComment" Width="1.5" PointX="10.75" PointY="19.375" />
+        <EntityTypeShape EntityType="HolidaysDBModel.HouseEvaluateView" Width="1.5" PointX="16" PointY="16.125" />
+        <EntityTypeShape EntityType="HolidaysDBModel.SysLog" Width="1.5" PointX="9.375" PointY="16.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.User" Width="1.5" PointX="2.625" PointY="28.75" />
+        <EntityTypeShape EntityType="HolidaysDBModel.Role" Width="1.5" PointX="5.375" PointY="28.875" />
+        
+        
+        <EntityTypeShape EntityType="HolidaysDBModel.Permission" Width="1.5" PointX="8" PointY="29" />
+        <EntityTypeShape EntityType="HolidaysDBModel.Function" Width="1.5" PointX="1.875" PointY="32.5" />
+        <EntityTypeShape EntityType="HolidaysDBModel.FuncPermission" Width="1.5" PointX="10.125" PointY="32.375" />
+        <EntityTypeShape EntityType="HolidaysDBModel.UserRole" Width="1.5" PointX="6.375" PointY="32.625" />
+        <EntityTypeShape EntityType="HolidaysDBModel.ShopToDayPrice" Width="1.5" PointX="4.75" PointY="33.5" />
+
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

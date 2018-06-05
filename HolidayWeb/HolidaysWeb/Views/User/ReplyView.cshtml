@@ -1,0 +1,146 @@
+﻿@model Holidays.Model.Entites.HouseEvaluateView
+
+@{
+    ViewBag.Title = "回复评论";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+    <style type="text/css">
+        .layui-form-label {
+            width: 100px;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Framework/layui2/layui.all.js"></script>
+    <script src="~/Scripts/jQuery-Util.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页<span>&gt;</span> 店铺中心</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="w1080">
+            <ul class="layui-nav layui-bg-blue ">
+                <li class="layui-nav-item "><a href="/User/UserCenter">店铺信息</a></li>
+                <li class="layui-nav-item"><a href="/User/HouseManager">房源管理</a></li>
+                <li class="layui-nav-item"><a href="/User/OrderManager">订单管理</a></li>
+                <li class="layui-nav-item"><a href="/User/FinanceManager">财务管理</a></li>
+                <li class="layui-nav-item layui-this"><a href="/User/CommentManager">评论管理</a></li>
+                <li class="layui-nav-item"><a href="/User/ResetPassword">修改密码</a></li>
+            </ul>
+            <div class="layui-row">
+                <div class="layui-col-md12 layui-col-xs12 layui-col-sm12" style="margin-top:5px;">
+                    <form id="form1" lay-filter="form1" class="layui-form ">
+                        <input type="hidden" id="inputID" value="@Model.ID" />
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">房屋标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="@Model.HouseTitle"  readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">评价时间</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="@Model.CreateTime" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">评价人</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" value="@Model.Username" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">评价内容</label>
+                            <div class="layui-input-block">
+                                <textarea class="layui-textarea" readonly="readonly">@Model.EvaluateContent</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">回复评论*</label>
+                            <div class="layui-input-block">
+                                <textarea class="layui-textarea" id="inputComments" >@Model.Comments</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-block">
+                                <a href="javascript:;" id="btnSave" class="layui-btn layui-inline" lay-submit lay-filter="save">确定</a>
+                                <a href="/User/CommentManager" class="layui-btn layui-btn-primary layui-inline">取消</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @section footerjs{
+            <script type="text/javascript">
+                var replyView = function () {
+
+                    var initPage = function () {
+                        layui.use(['form', 'element', 'upload', 'layer'], function () {
+                            var form = layui.form;
+                            var upload = layui.upload;
+                            var element = layui.element;
+                            var layer = layui.layer;
+
+                            form.render();
+                        });
+                        $("#btnSave").on("click", function () {
+                            var comments = $.trim($("#inputComments").val());
+                            var id = $.trim($("#inputID").val());
+                            if (comments == '') {
+                                layer.msg("请输入评论回复！", { icon: 0 });
+                                return false;
+                            }
+                            var loadIndex = layer.load(2);
+                            $.ajax({
+                                url: '/Weixin/WeUser/ReplyComments',
+                                type: 'post',
+                                data: { id: id, comments: comments },
+                                success: function (res) {
+                                    layer.close(loadIndex);
+                                    if (res.Status == "ok") {
+                                        layer.msg(res.Msg, { icon: 1 }, function () {
+                                            window.location.href = '/User/CommentManager';
+                                        });
+                                    } else {
+                                        layer.msg(res.Msg, { icon: 2 });
+                                    }
+                                },
+                                error: function () {
+                                    layer.close(loadIndex);
+                                    layer.msg("发生错误！", { icon: 2 });
+                                }
+                            });
+
+                        });
+                    };
+                    return {
+                        init: function () {
+                            initPage();
+                        }
+                    }
+                }();
+                $(function () { replyView.init(); });
+            </script>
+        }
+    }
+    else
+    {
+        <p style="text-align: center;">对不起，你无此权限，请联系平台管理员。</p>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

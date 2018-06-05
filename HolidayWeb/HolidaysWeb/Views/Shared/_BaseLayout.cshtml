@@ -1,0 +1,511 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="我要去度假，景区度假房租赁平台，度假信息在线发布，度假信息咨询服务;线上旅游车辆租赁，旅游纪念品及土特产销售等" />
+    <meta name="keywords" content="度假,景区,景区咨询,旅游车辆,旅游特产" />
+    <title>我要去度假 | @ViewBag.Title</title>
+
+    <link rel="stylesheet" type="text/css" href="~/Styles/public.css">
+
+    @RenderSection("styles", false)
+
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Framework/layer/layer.js"></script>
+
+    @RenderSection("scripts", false)
+    <!--[if lt IE 9]>
+        <script src="~/Scripts/selectivizr.js"></script>
+        <script src="~/Scripts/css3-mediaqueries.js"></script>
+        <script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        function fnGoUrl(url) {
+            var isLogin = "@ViewBag.IsLogin";
+            if (isLogin == "True" || isLogin == "true") {
+                window.location.href = url;
+            } else {
+                $("#lbtnLoginButton").click();
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <!--header-->
+    <div class="goholiday-header clearfix">
+        <div class="gheader-wrap">
+            <div class="gh-logo fl"><a href="/Home/Index"><img src="/Images/logo.png"></a></div>
+            <div class="switch-city fl">
+
+                @if (ViewBag.CurrentCity != null)
+                {
+                    <span>切换城市</span>
+                    <a href="javascript:;" class="switch-btn">
+                        @ViewBag.CurrentCity.ShortName
+                    </a>
+                }
+
+                <div class="switchcity-wrap">
+                    <div class="scity-header">
+                        <div class="scity-search">
+                            <input type="text" id="txtCityName" class="text-input" placeholder="输入城市">
+                            <a href="javascript:;" id="lbtnSearchCity" class="scity-seabtn">搜索</a>
+                        </div>
+                    </div>
+                    <div class="scity-main">
+                        <!--默认展示-->
+                        <div class="scity-view">
+                            @*<div class="popular-city">
+                                    <div class="popcity-title">热门城市：</div>
+                                    <div class="popcity-list"> <a href="javascript:;">上海</a> <a href="javascript:;">广州</a> <a href="javascript:;">天津</a> <a href="javascript:;" class="checked">重庆</a> <a href="javascript:;">武汉</a> <a href="javascript:;">杭州</a> <a href="javascript:;">苏州</a> <a href="javascript:;">成都</a> <a href="javascript:;">南京</a></div>
+                                </div>*@
+                            <div class="letter-search">
+                                <div class="letter-title">按首字母查询</div>
+                                <div class="letter-list clearfix">
+                                    <a href="javascript:fnQueryByLetter('A')">A</a>
+                                    <a href="javascript:fnQueryByLetter('B')">B</a>
+                                    <a href="javascript:fnQueryByLetter('C')">C</a>
+                                    <a href="javascript:fnQueryByLetter('D')">D</a>
+                                    <a href="javascript:fnQueryByLetter('E')">E</a>
+                                    <a href="javascript:fnQueryByLetter('F')">F</a>
+                                    <a href="javascript:fnQueryByLetter('G')">G</a>
+                                    <a href="javascript:fnQueryByLetter('H')">H</a>
+                                    <a href="javascript:fnQueryByLetter('I')">I</a>
+                                    <a href="javascript:fnQueryByLetter('J')">J</a>
+                                    <a href="javascript:fnQueryByLetter('K')">K</a>
+                                    <a href="javascript:fnQueryByLetter('L')">L</a>
+                                    <a href="javascript:fnQueryByLetter('M')">M</a>
+                                    <a href="javascript:fnQueryByLetter('N')">N</a>
+                                    <a href="javascript:fnQueryByLetter('O')">O</a>
+                                    <a href="javascript:fnQueryByLetter('P')">P</a>
+                                    <a href="javascript:fnQueryByLetter('Q')">Q</a>
+                                    <a href="javascript:fnQueryByLetter('R')">R</a>
+                                    <a href="javascript:fnQueryByLetter('S')">S</a>
+                                    <a href="javascript:fnQueryByLetter('T')">T</a>
+                                    <a href="javascript:fnQueryByLetter('U')">U</a>
+                                    <a href="javascript:fnQueryByLetter('W')">W</a>
+                                    <a href="javascript:fnQueryByLetter('X')">X</a>
+                                    <a href="javascript:fnQueryByLetter('Y')">Y</a>
+                                    <a href="javascript:fnQueryByLetter('Z')">Z</a>
+                                </div>
+                            </div>
+                            <div class="letter-sort" style="display: none;">
+                                <ul>
+                                    <li class="clearfix">
+                                        <div id="letter" class="lsort-name"></div>
+                                        <div id="cityList" class="lsort-list"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--/默认展示-->
+                        <!--搜索列表-->
+                        <div class="search-citylist" style="display: none;">
+                            <p class="search-citytips">以下为您搜索“<em id="cityName"></em>”的结果：</p>
+                            <div class="citylist-wrap"></div>
+                        </div>
+                        <!--搜索列表-->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="gh-operate fr">
+                <div class="contact-tel">联系电话：023-48266667</div>
+                <div class="menu-wrap">
+                    <ul>
+                        @if (ViewBag.IsLogin && ViewBag.UserInfo != null)
+                        {
+                            <li>
+                                <div class="loguser-wrap">
+                                    @if (!String.IsNullOrEmpty(ViewBag.UserInfo.Img))
+                                    {
+                                        <img src="@ViewBag.UserInfo.Img">
+                                    }
+                                    else
+                                    {
+                                        <img src="/Images/default.jpg">
+                                    }
+                                    <span>@ViewBag.UserInfo.Nikename</span>
+                                    <div class="loguser-menu">
+                                        <a href="/User/UserInfo">基本信息</a>
+                                        <a href="/Order/OrderDetails">订单详情</a>
+                                        <a href="/Home/Logout">退出登录</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a href="javascript:;" id="lbtnLoginButton" class="login-btn">登录</a>/<a onclick="$('#lbtnLoginButton').click();" class="login-btn" href="javascript:;">注册</a></li>
+                        }
+
+                        <li><a href="javascript:fnGoUrl('/User/LandlordInfo')">房东招募</a></li>
+                        <li><a href="javascript:fnGoCenter('/User/UserCenter')">店铺中心</a></li>
+                        <li><a href="javascript:fnGoUrl('/House/HouseManager')" class="send-room">发布房源</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/header-->
+    @RenderBody()
+
+    @RenderSection("footer", true)
+
+    <!--登录弹窗-->
+    <div class="page-mask"><!--弹窗遮罩--></div>
+    <div id="userLogin" class="poplogin-wrap">
+        <div class="poplogin-header"> <a href="javascript:;" class="pop-close">X</a></div>
+        <div class="poplogin-main">
+            <div class="plogin-menu">
+                <a href="javascript:;" class="menu-nav checked" data-type="1">手机验证码登录</a>
+                <a href="http://www.wyqdj.com/Home/DoWeixinLogin" class="menu-nav" data-type="2">微信登录</a>
+            </div>
+            <!--手机验证码登录-->
+            <div class="phonecode-login">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td colspan="2"><input id="txtPhoneNo" maxlength="11" type="text" class="text-input" placeholder="手机号"></td>
+                    </tr>
+                    <tr>
+                        <td><input id="txtAuthCode" maxlength="6" type="text" class="text-input w128" placeholder="图形验证码"></td>
+                        <td><div class="photocode"><img onclick="fnUpdateAuthCodeImg()" id="authCodeImg" src="#"></div></td>
+                    </tr>
+                    <tr>
+                        <td><input id="txtSmsCode" maxlength="4" type="text" class="text-input w128" placeholder="短信验证码"></td>
+                        <td>
+                            <a id="lbtnGetSmsCode" class="text-input obtaincode">获取验证码<span id="countDown"></span></a>
+                            @*<a id="lbtnGetSmsCode" href="javascript:;" class="text-input obtaincode disablecode">获取验证码<span id="countDown">(60s)</span></a>*@
+                        </td>
+                    </tr>
+                </table>
+                <div class="check-box clearfix">
+                    <label for="autologin"><input type="checkbox" id="autologin" checked="checked" onclick="return false" disabled="disabled">我已阅读并同意平台协议</label>
+                    @*<label for="savepwd"><input type="checkbox" id="savepwd">保存密码</label>*@
+                </div>
+                <div class="login-tips">未注册的手机号将自动创建为我要去度假账号</div>
+                <a href="javascript:;" id="lbtnLogin" class="poplogin-btn">登录</a>
+            </div>
+            <!--手机验证码登录-->
+
+        </div>
+    </div>
+    <!--店铺中心登录-->
+    <div id="userCenterLogin" class="poplogin-wrap">
+        <div class="poplogin-header"><a href="javascript:;" class="pop-close">X</a></div>
+        <div class="poplogin-main">
+            <div class="plogin-menu">
+                <a href="javascript:;" class="menu-nav checked">登录到店铺中心</a>
+            </div>
+            <div class="phonecode-login">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td colspan="2"><input id="input1" maxlength="100" type="text" class="text-input" placeholder="请输入登录账号" /> </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input id="input2" maxlength="100" type="password" class="text-input" placeholder="请输入登录密码" /> </td>
+                    </tr>
+                    <tr>
+                        <td><input id="verifyCode" type="text" maxlength="6" class="text-input w128" placeholder="图形验证码" /> </td>
+                        <td><div class="photocode"><img onclick="fnRefreshVerifyCodeImg()" id="verifyCodeImg" src="#" /></div></td>
+                    </tr>
+                </table>
+                <a href="javaqscript::" id="btnSubmit" class="poplogin-btn">登录</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 切换城市
+        function fnSwithCity(cityId) {
+            var loadIndex = layer.load();
+            $.post("/Home/SwithCityById", { id: cityId }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    window.location.reload();
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        }
+
+        // 根据字母搜索城市
+        function fnQueryByLetter(letter) {
+            $("#letter").html(letter);
+            $(".letter-sort").css("display", "block");
+            var loadIndex = layer.load();
+
+            $.post("/Home/GetCityByPinYin", { pinyin: letter }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    var cityList = result.Data;
+
+                    if (cityList && cityList.length > 0) {
+                        var cityHtml = "";
+                        for (var i = 0; i < cityList.length; i++) {
+                            cityHtml += "<a href='javascript:fnSwithCity(" + cityList[i].Id + ");'>" + cityList[i].ShortName + "</a>";
+                        }
+
+                        $(".lsort-list").html(cityHtml);
+                    } else {
+                        $(".lsort-list").html(" <p class='search-citytips' style='padding-left: 20px;'>未搜索到信息，请重新选择！</p>");
+                    }
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        }
+
+        $(function () {
+            //ie89 placeholder
+            $("a[href='javascript:;']").on("click", function (event) {
+                if (document.all) {
+                    event.preventDefault();
+                }
+            });
+
+            //切换城市
+            $(".switch-btn").on("click", function (event) {
+                event.stopPropagation();
+                $(".switchcity-wrap").show();
+                $(".loguser-menu").removeAttr("style");
+
+                $("#txtCityName").val("");
+                $(".scity-view").css("display", "block");
+                $(".search-citylist").css("display", "none");
+            });
+            $(".switchcity-wrap").on("click", function (event) {
+                event.stopPropagation();
+            });
+
+            // 根据名称查询城市
+            $("#lbtnSearchCity").on("click", function () {
+                var cityName = $("#txtCityName").val();
+
+                var loadIndex = layer.load();
+                $.post("/Home/GetCityByName", { name: cityName }, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "ok") {
+                        var cityList = result.Data;
+
+                        if (cityList && cityList.length > 0) {
+                            var cityHtml = "";
+                            for (var i = 0; i < cityList.length; i++) {
+                                cityHtml += "<a href='javascript:fnSwithCity(" + cityList[i].Id + ");'>" + cityList[i].ShortName + "</a>";
+                            }
+
+                            $(".citylist-wrap").html(cityHtml);
+                        } else {
+                            $(".citylist-wrap").html(" <p class='search-citytips' style='padding-left: 20px;'>未搜索到信息，请重新输入！</p>");
+                        }
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+
+                $("#cityName").html(cityName);
+                $(".scity-view").css("display", "none");
+                $(".search-citylist").css("display", "block");
+            });
+
+            //登录弹窗操作
+            $("#lbtnLoginButton").on("click", function () {
+                $(".page-mask").show();
+                $("#userLogin").show();
+
+                fnUpdateAuthCodeImg();
+
+                //ie89
+                // $("input").placeholder();
+            });
+            $(".page-mask,.pop-close").on("click", function () {
+                $(".page-mask").hide();
+                $("#userLogin").hide();
+                $("#userCenterLogin").hide();
+            });
+
+            //用户登录后操作
+            $(".loguser-wrap").on("click", function (event) {
+                event.stopPropagation();
+                $(".loguser-menu").show();
+                $(".switchcity-wrap").removeAttr("style");
+            });
+
+            $("html,body").on("click", function (event) {
+                event.stopPropagation();
+                $(".loguser-menu").removeAttr("style");
+                $(".switchcity-wrap").removeAttr("style");
+            });
+
+                        //店铺中心登录
+            $("#btnSubmit").on("click", function () {
+                var input1 = $.trim($("#input1").val());
+                var input2 = $.trim($("#input2").val());
+                var verifyCode = $.trim($("#verifyCode").val());
+                if (input1 == null || input1 == "" || input1.length == 0) {
+                    layer.msg("请输入登录账号！", { icon: 0 });
+                    return;
+                }
+                if (input2 == null || input2 == "" || input2.length == 0) {
+                    layer.msg("请输入登录密码！", { icon: 0 });
+                    return;
+                }
+                if (verifyCode == null || verifyCode == "" || verifyCode.length == 0) {
+                    layer.msg("请输入图形验证码！", { icon: 0 });
+                    return;
+                }
+             var data = { input1: input1, input2: input2, verifyCode: verifyCode };
+            var loadIndex = layer.load();
+            $.post("/Home/LoginCenter", data, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    $("#userCenterLogin").hide();
+                    layer.msg(result.Msg, { icon: 1 }, function () {
+                        $(".page-mask").hide();
+                        window.location.href = '/User/UserCenter';
+                    });
+                } else {
+                    layer.msg(result.Msg, { icon: 2 });
+                }
+            });
+            });
+        });
+
+        // 更换验证码图片
+        function fnUpdateAuthCodeImg() {
+            $("#authCodeImg").attr("src", "/Home/AuthCode?t" + new Date().getTime());
+        }
+         // 更换店铺中心验证码图片
+        function fnRefreshVerifyCodeImg() {
+            $("#verifyCodeImg").attr("src", "/Home/AuthCode?t" + new Date().getTime());
+        }
+        function fnGoCenter(url) {
+            var isLogin = "@ViewBag.IsLogin";
+            var userType = "@ViewBag.UserType";
+            if (isLogin.toLowerCase() == "true" && userType.toLowerCase() == "2") {
+                window.location.href = url;
+            } else {
+                $(".page-mask").show();
+                $("#userCenterLogin").show();
+
+                fnRefreshVerifyCodeImg();
+            }
+        }
+
+        // 校验图形验证码且发送短信
+        $("#lbtnGetSmsCode").on("click", fnGetSmsCode);
+
+        // 登录方法
+        $("#lbtnLogin").on("click", function () {
+            var phoneNo = $("#txtPhoneNo").val();
+            var smsCode = $("#txtSmsCode").val();
+            var isAutoLogin = false;// $("#autologin").is(":checked");
+
+            if (phoneNo == null || phoneNo == "" || phoneNo.length <= 0) {
+                layer.alert("请输入手机号！", { icon: 2 });
+                return;
+            }
+
+            if (smsCode == null || smsCode == "" || smsCode.length <= 0) {
+                layer.alert("请输入短信验证码！", { icon: 2 });
+                return;
+            }
+
+            var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
+            if (!reg.test(phoneNo)) {
+                layer.alert("请输入正确的手机号码！", { icon: 2 });
+                return;
+            }
+
+            var data = { phoneNo: phoneNo, smscode: smsCode, isAutoLogin: isAutoLogin };
+
+            var loadIndex = layer.load();
+            $.post("/Home/PhoneLogin", data, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layer.alert(result.Msg, { icon: 1 }, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+
+        });
+
+        // 校验图形验证码并发送短信
+        function fnGetSmsCode() {
+            var phoneNo = $("#txtPhoneNo").val();
+            var authCode = $("#txtAuthCode").val();
+
+            // 校验数据
+            if (phoneNo == null || phoneNo == "" || phoneNo.length <= 0) {
+                layer.alert("请输入手机号！", { icon: 2 });
+                return;
+            }
+
+            if (authCode == null || authCode == "" || authCode.length <= 0) {
+                layer.alert("请输入图形验证码！", { icon: 2 });
+                return;
+            }
+
+            var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
+            if (!reg.test(phoneNo)) {
+                layer.alert("请输入正确的手机号码！", { icon: 2 });
+                return;
+            }
+
+            var data = { phoneNo: phoneNo, authCode: authCode };
+
+            var loadIndex = layer.load();
+            $.post("/Home/CheckAuthCode", data, function (result) {
+                fnUpdateAuthCodeImg();
+
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layer.alert(result.Msg, { icon: 1 });
+
+                    count = 60;
+                    $("#lbtnGetSmsCode").unbind("click", fnGetSmsCode).addClass("disablecode");
+                    fnSetCountDown();
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        }
+
+        // 倒计时
+        var count = 0;
+        function fnSetCountDown() {
+            if (count == 0) {
+                $("#lbtnGetSmsCode").on("click", fnGetSmsCode).removeClass("disablecode");
+                $("#countDown").html("");
+            } else {
+                $("#countDown").html("(" + count + "s)");
+                count--;
+                setTimeout(fnSetCountDown, 1000);
+            }
+        }
+    </script>
+
+    @RenderSection("footerjs", false)
+</body>
+</html>

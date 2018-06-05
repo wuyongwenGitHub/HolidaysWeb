@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "店铺分类管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-app="shopCategoryApp" ng-controller="ShopCategoryListController" ng-init="initShopCategoryList()" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>店铺风格管理</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <button ng-click="openAddShopCategoryModal()" class="btn btn-danger">添加风格</button>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>风格名称</th>
+                        <th>显示顺序</th>
+                        <th>添加时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="category in shopCategoryList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ category.CategoryName }}</td>
+                        <td>{{ category.SortBy }}</td>
+                        <td>{{ category.CreateTime }}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="openEditShopCategoryModal(category.ID)" title="编辑" class="fa fa-edit btn-xs"></a>
+                            <a href="javascript:;" ng-click="del(category.ID)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="shopCategoryList.length == 0">
+                        <td colspan="5" align="center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--编辑店铺分类信息窗口-->
+    <div class="modal fade" id="editShopCategoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <h4 class="modal-title">编辑店铺风格信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form1" class="form-horizontal form-label-left" novalidate>
+                        <input name="ID" type="hidden" value="{{ ShopCategory.ID}}" />
+                        <input name="CreateTime" type="hidden" value="{{ ShopCategory.CreateTime }}" />
+
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CategoryName">
+                                风格名称<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="ShopCategory.CategoryName" name="CategoryName" class="form-control col-md-7 col-xs-12" maxlength="100" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SortBy">
+                                显示顺序
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="ShopCategory.SortBy" name="SortBy" class="form-control col-md-7 col-xs-12" type="number" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" ng-click="saveShopCategory()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--编辑店铺分类信息窗口end-->
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        var shopCategoryApp = angular.module('shopCategoryApp', []);
+        shopCategoryApp.controller('ShopCategoryListController', function ShopCategoryListController($scope, $http) {
+
+            $scope.initShopCategoryList = function () {
+                $http({
+                    method: 'post',
+                    url: '/Admin/Shop/GetShopCategoryList'
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+                    //
+                    for (var i = 0, len = data.length; i < len; i++) {
+                        data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                    }
+                    $scope.shopCategoryList = data;
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+
+            $scope.openAddShopCategoryModal = function () {
+                $scope.ShopCategory = null;
+                $("#editShopCategoryModal").modal();
+            };
+            $scope.openEditShopCategoryModal = function (id) {
+                $scope.queryShopCategoryByID(id);
+                $("#editShopCategoryModal").modal();
+            };
+
+            $scope.del = function (id) {
+                layer.confirm('确定要删除吗？', {
+                    btn: ['确定', '取消'],
+                    btn1: function () {
+                        $http({
+                            method: 'post',
+                            url: '/Admin/Shop/DelShopCategoryByID',
+                            data: { id: id }
+                        }).then(function successCallback(response) {
+                            if (response.data.Status == "ok") {
+                                layer.alert(response.data.Msg, { icon: 1 }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                layer.alert(response.data.Msg, { icon: 2 });
+                                }
+                            }, function errorCallback(response) {
+                                layer.alert('系统异常', { icon: 2 });
+                            });
+                    }
+                });
+            };
+
+            $scope.queryShopCategoryByID = function (id) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/Shop/QueryShopCategoryByID',
+                    data: { id: id }
+                }).then(function successCallback(response) {
+                    $scope.ShopCategory = response.data.Data;
+                    $scope.ShopCategory.CreateTime = jsonDatetimeFormat($scope.ShopCategory.CreateTime);
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+
+            $scope.saveShopCategory = function () {
+                var loadIndex = layer.load();
+                var data = $("#form1").serialize();
+                $.post("/Admin/Shop/SaveShopCategory", data, function (result) {
+                    layer.close(loadIndex);
+                    if (result.Status == "ok") {
+                        layer.alert(result.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            };
+        });
+    </script>
+}

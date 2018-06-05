@@ -1,0 +1,122 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "商品列表";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Styles/ghspecialty.css">
+    <!-- Bootstrap -->
+    <link href="~/Framework/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+}
+
+@section scripts{
+    <!-- Bootstrap -->
+    <script src="~/Framework/gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Framework/angular-1.6.0-rc.2/angular.min.js"></script>
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+
+<div ng-app="productApp" ng-controller="ProductListController" ng-init="initProductList(1)">
+    <div class="navigation"><div class="w1080">首页 <span>&gt;</span> 商品列表</div></div>
+    <div class="ghsearch-contain w1080">
+        <div class="ghsearch-wrap">
+            <input id="txtProductName" type="text" class="text-input" placeholder="关键词">
+            <a ng-click="initProductList(1)" class="ghsearch-btn">搜索</a>
+        </div>
+    </div>
+    <div class="ghsearch-condition w1080">
+        <table cellpadding="0" cellspacing="0" border="0">
+            @if (ViewBag.CategoryList != null && ViewBag.CategoryList.Count > 0)
+            {
+                <tbody>
+                    <tr>
+                        <td class="condtitle">分类</td>
+                        <td class="condtlist">
+                            <span ng-click="fnCategoryQuery(0)" class="checked">全部</span>
+                            @foreach (var category in ViewBag.CategoryList)
+                            {
+                                <span ng-click="fnCategoryQuery(@category.ID)">@category.CategoryName</span>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            }
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="condtips">温馨提示：商品暂无支付，用户欲购买需联系平台<span>023-48266667</span></td>
+                </tr>
+            </tfoot>
+        </table>
+        <!--goods-list-->
+        <div class="goods-list clearfix">
+            <ul>
+                <li ng-repeat="product in productList" class="goods-item">
+                    <div class="goods-icon"><img width="316" height="173" ng-src="{{ product.ProductImg }}"></div>
+                    <div class="goods-info" title="￥{{ product.Price }} {{ product.ProductName }}"><span>￥<em>{{ product.Price }}</em></span>{{ product.ProductName }}</div>
+                </li>
+
+                <li class="goods-item" ng-if="productList.length == 0"><div>未查询到商品信息！</div></li>
+            </ul>
+        </div>
+        <!--goods-list-->
+        <!--page-wrap-->
+        <div id="page-wrap" ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initProductList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initProductList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initProductList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initProductList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initProductList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--page-wrap-->
+    </div>
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        var productApp = angular.module('productApp', []);
+
+        productApp.controller('ProductListController', function ProductListController($scope, $http) {
+            // 初始化数据
+            $scope.initProductList = function (page) {
+                var productName = $("#txtProductName").val();
+                var data = { page: page, productName: productName, categoryID: $scope.categoryID };
+
+                $http({
+                    method: 'POST',
+                    url: '/Product/GetProductList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+
+                    $scope.productList = data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 根据分类查询
+            $scope.fnCategoryQuery = function (id) {
+                $scope.categoryID = id;
+                $scope.initProductList(1);
+            }
+        });
+
+        $(function () {
+            //选择查询条件
+            $(".condtlist span").on("click", function () {
+                $(this).addClass("checked").siblings().removeAttr("class");
+            })
+        });
+    </script>
+}

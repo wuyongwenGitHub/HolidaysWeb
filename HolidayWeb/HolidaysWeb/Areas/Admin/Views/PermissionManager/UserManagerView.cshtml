@@ -1,0 +1,300 @@
+﻿@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .role_span {
+        display: inline-block;
+        margin: 7px 10px 0px 0px;
+    }
+</style>
+<div ng-app="userApp" ng-controller="UserListController" ng-init="initUserList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>用户管理</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <button ng-click="openAddUserModal()" class="btn btn-danger">添加用户</button>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="row">
+            <form class="form-horizontal form-label-left">
+                <div class="col-md-3"><input name="userName" type="text" class="form-control" placeholder="登录名、真实姓名" /></div>
+                <div class="col-md-3"><button type="button" ng-click="initUserList(1)" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>用户名</th>
+                        @*<th>密码</th>*@
+                        <th>真实姓名</th>
+                        <th>电子邮件</th>
+                        <th>创建时间</th>
+                        <th>描述</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in userList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ user.LoginName }}</td>
+                        @*<td>{{ user.Password }}</td>*@
+                        <td>{{ user.UserRealName }}</td>
+                        <td>{{ user.Email }}</td>
+                        <td>{{ user.CreateTime }}</td>
+                        <td>{{ user.Description }}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="openEditUserModal(user.Id)" title="编辑" class="fa fa-edit btn-xs"></a>
+                            <a href="javascript:;" ng-click="del(user.Id)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="shopList.length == 0">
+                        <td colspan="6" align="center">暂无数据</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initUserList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initUserList(pageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage == pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initUserList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initUserList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initUserList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--编辑用户信息窗口-->
+    <div id="editUserModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <h4 class="modal-title">编辑用户信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form1" class="form-horizontal form-label-left" novalidate>
+                        <input name="ID" type="hidden" value="{{  User.Id }}" />
+                        @*<input name="IsCheck" type="hidden" value="{{  User.IsCheck }}" />
+        <input name="State" type="hidden" value="{{  User.State }}" />
+        <input name="IsDel" type="hidden" value="{{  User.IsDel }}" />*@
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="LoginName">
+                                登录名 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="User.LoginName" name="LoginName" class="form-control col-md-7 col-xs-12" min="1" maxlength="25" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Password">
+                                密码<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="User.Password" name="Password" class="form-control col-md-7 col-xs-12" min="6" type="password" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="UserRealName">
+                                真实姓名
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="User.UserRealName" name="UserRealName" class="form-control col-md-7 col-xs-12" min="1" maxlength="25" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Email">
+                                电子邮件
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="User.Email" name="Email" class="form-control col-md-7 col-xs-12" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Description">
+                                描述
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <textarea ng-model="User.Description" name="Description" class="form-control col-md-7 col-xs-12" rows="3" maxlength="255"></textarea>
+                            </div>
+                        </div>
+                        <div class="item form-group" ng-if="Role.length>0">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Description">
+                                分配角色
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12 targetRoleClass">
+                                <span ng-repeat="role in Role" class="role_span">
+                                    
+                                    <label ><input type="checkbox"  ng-model="role.IsSelected" value="{{role.RoleId}}"     ng-value="role.RoleId"/>
+                                        {{role.Name}}
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" ng-click="saveUser()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var userApp = angular.module("userApp", []);
+        userApp.controller("UserListController", function ($scope, $http) {
+            $scope.conf = [];
+            //初始化用户列表
+            $scope.initUserList = function (page) {
+                var userName = $("input[name='userName']").val();
+                var data = {
+                    page: page,
+                    userName: userName
+                };
+                $http({
+                    method: "post",
+                    dataType:"json",
+                    url: "/Admin/PermissionManager/GetUserList",
+                    data: data
+                }).then(function successCallback(result) {
+                    
+                    var data = JSON.parse(result.data).Data;
+                    for (var i = 0; i < data.length; i++) {
+                        //data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                        data[i].CreateTime=  new Date(data[i].CreateTime).toLocaleString()
+                    }
+                    $scope.userList = data;
+                    $scope.PageModel = result.data;
+
+                }, function errorCallback(result) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+            //打开添加用户窗口
+            $scope.openAddUserModal = function (User) {
+                var allInputDom = $("#form1").find("input");
+                $.each(allInputDom, function (index, data) {
+                    $(data).val("");
+                });
+                $("#form1").find("textarea").val("");
+                var data = {
+                    roleName: ""
+                };
+                $http({
+                    method: "post",
+                    dataType: "json",
+                    url: "/Admin/PermissionManager/GetRoleList",
+                    data: data
+                }).then(function (result) {
+                    var datas = result.data.Data;
+
+                    $.each(datas, function (index, data) {
+                        data.RoleId = data.Id;
+                    });
+                    $scope.Role = datas;
+                    $("#editUserModal").modal();
+                });
+                
+                
+                
+            };
+            //添加用户
+            $scope.saveUser = function () {
+                var loadIndex = layer.load();
+                var data = $("#form1").serializeArray();
+                var roleDom = $(".targetRoleClass").find("input[type='checkbox']");
+                var selectedRoleArray = [];
+                
+                if (roleDom.length > 0) {
+                    $.each(roleDom, function (index, data) {
+                        if (data.checked) {
+                            var roleId = data.value;
+                            selectedRoleArray.push(roleId);
+                        }
+                    })
+                }
+                var roleIds = selectedRoleArray.join(',');
+              
+                $http({
+                    method: 'post',
+                    dataType: 'json',
+                    url: '/Admin/PermissionManager/AddUser',
+                    data: {
+                        ID: data[0].value,
+                        LoginName: data[1].value,
+                        Password: data[2].value,
+                        UserRealName: data[3].value,
+                        Email: data[4].value,
+                        Description: data[5].value,
+                        roleIds: roleIds
+
+                    }
+                }).then(function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.data.Status == "1" && result.data.Msg == "addSuccess") {
+                        layer.alert("保存成功", { icon: 1 }, function (result) {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.data.Msg, { icon: 2 });
+                    }
+                });
+            };
+            //打开编辑用户信息窗口
+            $scope.openEditUserModal = function (id) {
+                $scope.queryUserByID(id);
+                $("#editUserModal").modal();
+                
+            };
+            //根据ID查询用户信息
+            $scope.queryUserByID = function (id) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/PermissionManager/QueryUserById',
+                    data: { Id: id }
+                }).then(function successCallback(response) {
+                    $scope.User = response.data.Data.User;
+                    $scope.Role = response.data.Data.RoleWithSelectedViewModels;
+                    // $scope.ImgArray = $scope.Shop.ShopImgs.split(',');
+                    // $scope.fnUpdateImgInput();
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+            $scope.del = function (id) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/PermissionManager/DeleteUser',
+                    data: { Id: id }
+                }).then(function (response) {
+                    var result = response.data;
+                    if (result.Status == '1') {
+                        layer.alert("删除成功", { icon: 1 });
+                        $scope.initUserList(1);
+                    }
+                    else {
+                        layer.alert("删除失败", { icon: 2 });
+                    }
+                });
+            };
+        })
+    </script>
+}

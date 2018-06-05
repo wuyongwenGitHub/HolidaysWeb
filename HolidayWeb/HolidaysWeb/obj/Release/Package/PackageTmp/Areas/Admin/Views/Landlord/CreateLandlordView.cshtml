@@ -1,0 +1,275 @@
+﻿@model Holidays.Model.Entites.UserInfoExtView
+
+@{
+    ViewBag.Title = "房东信息";
+    Layout = null;
+}
+
+<link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Framework/layui2/layui.all.js"></script>
+<script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+<script src="~/Scripts/Utility.js"></script>
+
+
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <form id="form1" lay-filter="form1" class="layui-form" style="margin:10px;">
+                <input type="hidden" name="ID" value="@Model.ID" />
+                @if(Model.ID > 0)
+                {
+                    <input type="hidden" name="LoginPwd" value="@Model.LoginPwd" />
+                }
+                <div class="layui-form-item">
+                    <label class="layui-form-label">头像</label>
+                    <div class="layui-input-block">
+                        @if (!String.IsNullOrEmpty(Model.Img))
+                        {
+                            <input id="inputImg" type="hidden" name="Img" value="@Model.Img" />
+                            <img id="Img" class="layui-upload-img" src="@Model.Img" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        else
+                        {
+                            <input id="inputImg" type="hidden" name="Img" value="~/Images/default.jpg" />
+                            <img id="Img" class="layui-upload-img" src="~/Images/default.jpg" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        <a id="uploadImg" href="javascript:;" class="layui-btn layui-btn-primary">上传</a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input id="Nikename" type="text" class="layui-input" name="Nikename" value="@Model.Nikename" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真实姓名*</label>
+                    <div class="layui-input-block">
+                        <input id="Username" type="text" class="layui-input" name="Username" value="@Model.Username" lay-verify="required" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别*</label>
+                    <div class="layui-input-block">
+                        <select name="Gender">
+                            <option @if (Model.Gender == 0) { @Html.Raw("selected='selected'") } value="0">男</option>
+                            <option @if (Model.Gender == 1) { @Html.Raw("selected='selected'") } value="1">女</option>
+                            <option @if (Model.Gender != 0 && Model.Gender != 1) { @Html.Raw("selected='selected'") } value="2">保密</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录账号*</label>
+                    <div class="layui-input-block">
+                        <input id="LoginAccount" type="text" class="layui-input" name="LoginAccount" value="@Model.LoginAccount" lay-verify="required" />
+                    </div>
+                </div>
+                @if (Model.ID == 0)
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">登录密码*</label>
+                        <div class="layui-input-inline">
+                            <input id="LoginPwd" type="text" class="layui-input" name="LoginPwd" value="@Model.LoginPwd" lay-verify="required" />
+                        </div>
+                        <div class="layui-form-mid">
+                            <a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-sm" style="margin-top:-5px;" onclick="landlordView.newPassword()">重新生成密码</a>
+                        </div>
+                    </div>
+                }
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证号码</label>
+                    <div class="layui-input-block">
+                        <input id="IDCardNo" type="text" class="layui-input" name="IDCardNo" value="@Model.IDCardNo" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证正面</label>
+                    <div class="layui-input-block">
+                        @if (!String.IsNullOrEmpty(Model.IDCardImg1))
+                        {
+                            <input id="inputIDCardImg1" type="hidden" name="IDCardImg1" value="@Model.IDCardImg1" />
+                            <img id="IDCardImg1" class="layui-upload-img" src="@Model.IDCardImg1" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        else
+                        {
+                            <input id="inputIDCardImg1" type="hidden" name="IDCardImg1" value="~/Images/Admin/fb-02.jpg" />
+                            <img id="IDCardImg1" class="layui-upload-img" src="~/Images/Admin/fb-02.jpg" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        <a id="uploadIDCardImg1" href="javascript:;" class="layui-btn layui-btn-primary">上传</a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证反面</label>
+                    <div class="layui-input-block">
+                        @if (!String.IsNullOrEmpty(Model.IDCardImg2))
+                        {
+                            <input id="inputIDCardImg2" type="hidden" name="IDCardImg2" value="@Model.IDCardImg2" />
+                            <img id="IDCardImg2" class="layui-upload-img" src="@Model.IDCardImg2" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        else
+                        {
+                            <input id="inputIDCardImg2" type="hidden" name="IDCardImg2" value="~/Images/Admin/fb-04.jpg" />
+                            <img id="IDCardImg2" class="layui-upload-img" src="~/Images/Admin/fb-04.jpg" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        <a id="uploadIDCardImg2" href="javascript:;" class="layui-btn layui-btn-primary">上传</a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input id="Email" type="text" class="layui-input" name="Email" value="@Model.Email" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机号码*</label>
+                    <div class="layui-input-block">
+                        <input id="PhoneNo" type="text" class="layui-input" name="PhoneNo" value="@Model.PhoneNo" lay-verify="required" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备用号码</label>
+                    <div class="layui-input-block">
+                        <input id="PhoneNo2" type="text" class="layui-input" name="PhoneNo2" value="@Model.PhoneNo2" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付宝账号</label>
+                    <div class="layui-input-block">
+                        <input id="AlipayAccount" type="text" class="layui-input" name="AlipayAccount" value="@Model.AlipayAccount" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">微信</label>
+                    <div class="layui-input-block">
+                        <input id="WeixinAccount" type="text" class="layui-input" name="WeixinAccount" value="@Model.WeixinAccount" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房源地址</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="HouseAddress">@Model.HouseAddress</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房产证照</label>
+                    <div class="layui-input-block">
+                        @if (!String.IsNullOrEmpty(Model.Housecertificate))
+                        {
+                            <input id="inputHousecertificate" type="hidden" name="Housecertificate" value="@Model.Housecertificate" />
+                            <img id="Housecertificate" class="layui-upload-img" src="@Model.Housecertificate" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        else
+                        {
+                            <input id="inputHousecertificate" type="hidden" name="Housecertificate" value="~/Images/add-icon.png" />
+                            <img id="Housecertificate" class="layui-upload-img" src="~/Images/add-icon.png" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                        }
+                        <a id="uploadHousecertificate" href="javascript:;" class="layui-btn layui-btn-primary">上传</a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <button id="buttonSave" class="layui-btn" lay-submit="" lay-filter="buttonSave" style="display:none;">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var landlordView = function () {
+        var form, upload;
+        var initPage = function () {
+            layui.use(['form', 'upload'], function () {
+                upload = layui.upload;
+                form = layui.form;
+                form.render();
+
+                //上传头像
+                upload.render({
+                    elem: '#uploadImg',
+                    url: '/Upload/UploadImage',
+                    done: function (res) {
+                        if (res.state == "0") {
+                            var imgSrc = "/Images/Upload/" + res.url;
+                            $('#Img').attr('src', imgSrc);
+                            $("#inputImg").val(imgSrc);
+                        } else {
+                            parent.layer.msg(res.state);
+                        }
+                    }
+                });
+                //上传身份证正面
+                upload.render({
+                    elem: '#uploadIDCardImg1',
+                    url: '/Upload/UploadImage',
+                    done: function (res) {
+                        if (res.state == "0") {
+                            var imgSrc = "/Images/Upload/" + res.url;
+                            $('#IDCardImg1').attr('src', imgSrc);
+                            $("#inputIDCardImg1").val(imgSrc);
+                        } else {
+                            parent.layer.msg(res.state);
+                        }
+                    }
+                });
+                //上传身份证反面
+                upload.render({
+                    elem: '#uploadIDCardImg2 ',
+                    url: '/Upload/UploadImage',
+                    done: function (res) {
+                        if (res.state == "0") {
+                            var imgSrc = "/Images/Upload/" + res.url;
+                            $('#IDCardImg2').attr('src', imgSrc);
+                            $("#inputIDCardImg2").val(imgSrc);
+                        } else {
+                            parent.layer.msg(res.state);
+                        }
+                    }
+                });
+                //上传房产证照片
+                upload.render({
+                    elem: '#uploadHousecertificate ',
+                    url: '/Upload/UploadImage',
+                    done: function (res) {
+                        if (res.state == "0") {
+                            var imgSrc = "/Images/Upload/" + res.url;
+                            $('#Housecertificate').attr('src', imgSrc);
+                            $("#inputHousecertificate").val(imgSrc);
+                        } else {
+                            parent.layer.msg(res.state);
+                        }
+                    }
+                });
+            });
+        };
+
+        var submitHandle = function (ok) {
+            form.on('submit(buttonSave)', function (data) {
+                if (ok) {
+                    ok(data);
+                }
+                return false;
+            });
+            $("#buttonSave").trigger('click');
+        };
+        var newPasswordHandle = function () {
+            var num = "";
+            for (var i = 0; i < 6; i++) {
+                num += Math.floor(Math.random() * 10);
+            }
+            $("#LoginPwd").val(num);
+        };
+        return {
+            init: function () {
+                initPage();
+            },
+            submit: function (ok) {
+                submitHandle(ok);
+            },
+            newPassword: function () {
+                newPasswordHandle();
+            }
+        }
+    }();
+    $(function () { landlordView.init(); });
+</script>

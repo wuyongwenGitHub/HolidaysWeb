@@ -1,0 +1,82 @@
+﻿@model IList<Holidays.Model.Entites.ProductInfo>
+
+@{
+    ViewBag.Title = "特产";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+}
+
+<div class="page-wrap pb102">
+    <div class="page-search chareas-header">
+        <a class="search-icon"></a>
+        <input id="txtKeywords" value="@ViewBag.Keywords" type="text" class="input-enter" placeholder="请输入关键词">
+    </div>
+    <div class="specity-header">
+        <ul>
+            @if (ViewBag.CategoryList != null && ViewBag.CategoryList.Count > 0)
+            {
+                foreach (var category in ViewBag.CategoryList)
+                {
+                    if (ViewBag.Type != null && ViewBag.Type == category.ID)
+                    {
+                        <li class="specder-item checked"><a href="/weixin/weproduct/productlistview?type=@category.ID">@category.CategoryName</a></li>
+                    }
+                    else
+                    {
+                        <li class="specder-item"><a href="/weixin/weproduct/productlistview?type=@category.ID">@category.CategoryName</a></li>
+                    }
+
+                }
+            }
+        </ul>
+    </div>
+    <div class="specity-contain">
+        <p class="specity-tips"><span>温馨提示：</span>商品暂无支付，用户购买需联系平台<a href="tel:023-48266667">023-48266667</a></p>
+        <div class="specity-list specty1 clearfix">
+            @if (Model != null && Model.Count > 0)
+            {
+                <ul>
+                    @foreach (var product in Model)
+                    {
+                        <li class="specian-item">
+                            <img src="@product.ProductImg" class="specian-icon">
+                            <div class="specian-name"><p><span>￥@product.Price</span> @product.ProductName</p></div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p style="text-align: center; padding: 20px; font-size: 14px;">暂无数据！</p>
+            }
+        </div>
+    </div>
+    <div class="ghday-footer">
+        <ul>
+            <li class="checked">
+                <a href="/weixin/wemain">
+                    <img src="/Images/wechart/mgh_10hover.png" class="index-icon">
+                    <p>首页</p>
+                </a>
+            </li>
+            <li>
+                <a href="/weixin/weuser">
+                    <img src="/Images/wechart/mgh_11.png" class="person-icon">
+                    <p>个人中心</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        $("#txtKeywords").on("blur", function () {
+            var keywords = $("#txtKeywords").val();
+            window.location.href = "/weixin/weproduct/productlistview?keywords=" + keywords;
+        });
+    </script>
+}

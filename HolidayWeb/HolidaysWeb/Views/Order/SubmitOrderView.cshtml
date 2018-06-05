@@ -1,0 +1,296 @@
+﻿@model Holidays.Model.Entites.HouseInfoView
+
+@{
+    ViewBag.Title = "提交订单";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Styles/submitorder.css">
+    <link href="~/Framework/layui/css/layui.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script src="~/Framework/layui/layui.js"></script>
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页 <span>&gt;</span> 租房搜索 <span>&gt;</span> 房屋详情 <span>&gt;</span> 提交订单</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (Model != null)
+    {
+        <div class="suborder-wrap w1080 clearfix">
+            <form id="frmOrder">
+                <input type="hidden" name="HouseInfoID" value="@Model.ID" />
+                <input type="hidden" name="LandlordID" value="@Model.UserInfoID" />
+                <div class="sorder-left">
+                    <div class="sorderl-main">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td rowspan="3" class="w118">预定</td>
+                                <td width="136">预定日期</td>
+                                <td colspan="2">
+                                    <input type="text" name="StartDate" class="text-input laydate-icon" id="startTime" placeholder="入住日期">
+                                    -
+                                    <input type="text" name="EndDate" class="text-input laydate-icon" id="endTime" placeholder="退房时间">
+                                    <span class="sunday">共<span id="count"></span>晚</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                @*<td>预定套数</td>
+                                    <td width="232" class="pl3">1</td>*@
+                                <td colspan="3">房费 <span id="price" class="ghprice">￥155</span></td>
+                            </tr>
+                            <tr>
+                                <td>入住人数</td>
+                                <td colspan="2"><input id="txtPersonNum" oninput="if(value.length>2)value=value.slice(0,2)" type="number" name="PersonNum" class="text-input" value="@Model.StayPersonNum" placeholder="最多可住 @Model.StayPersonNum 人"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="sorderl-main">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td rowspan="3" class="w118">联系人</td>
+                                <td width="136">姓名</td>
+                                <td><input type="text" id="txtUsername" name="Username" class="text-input" value="@ViewBag.UserInfo.Username" placeholder="必填"></td>
+                            </tr>
+                            <tr>
+                                <td>手机号</td>
+                                <td width="232"><input type="number" id="txtUserPhone" name="UserPhone" oninput="if(value.length>11)value=value.slice(0,11)" value="@ViewBag.UserInfo.PhoneNo" class="text-input" placeholder="必填"></td>
+                            </tr>
+                            @*<tr>
+                                    <td>短信验证码</td>
+                                    <td class="verifycode-wrap">
+                                        <input type="text" class="text-input" placeholder="6位数字" maxlength="4">
+                                        <a href="javascript:;" class="verifycode-btn">发送验证码</a>
+                                    </td>
+                                </tr>*@
+                        </table>
+                    </div>
+                    @*<div class="sorderl-main realintro">
+                            <table cellpadding="0" cellspacing="0" border="0">
+                                <thead>
+                                    <tr>
+                                        <th width="74">真实姓名</th>
+                                        <th width="84">证件类型</th>
+                                        <th width="248" class="tlpl-12">证件号码</th>
+                                        <th>性别</th>
+                                        <th>民族/国家</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" class="text-input"></td>
+                                        <td>
+                                            <select class="select-content">
+                                                <option value="1">身份证</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="text-input w975"></td>
+                                        <td></td>
+                                        <td>
+                                            <select class="select-content">
+                                                <option value="1">汉</option>
+                                            </select>
+                                        </td>
+                                        <td><a href="javascript:;">清空</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>*@
+                    @if (!String.IsNullOrWhiteSpace(Model.ChargesNotes))
+                    {
+                        <div class="sorderl-main provision">
+                            <table cellpadding="0" cellspacing="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td class="w118">房东规定</td>
+                                        <td class="provinfo">
+                                            @Model.ChargesNotes
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    <div class="sorderl-footer"> <a href="javascript:;" id="lbtnSubmitOrder" class="subitorder-btn">提交订单并支付</a> </div>
+                </div>
+            </form>
+            <div class="sorder-right">
+                <div class="sortmain-wrap">
+                    <div class="sortmain-header clearfix">
+                        <div class="sort-icon"><img src="@Model.FirstImg"></div>
+                        <div class="sort-info">
+                            <p class="sortinfo-title">@Model.HouseTitle</p>
+                            <p class="sortinfo-place">
+                                位置：@Model.Address
+                            </p>
+                            <p class="sortinfo-price"><span>￥@Model.Price</span>/晚</p>
+                        </div>
+                    </div>
+                    <div class="sortmain-footer">
+                        <p><label id="timeView"></label><span id="countView">共1晚</span></p>
+                        <p>线上支付到我要去度假<span class="price" id="totalPrice"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @section footerjs{
+            <script type="text/javascript">
+                // 计算日期差（天）
+                function fnDiffDate(startDate, endDate) {
+                    if (startDate && endDate) {
+                        var s = Date.parse(startDate);
+                        var e = Date.parse(endDate);
+
+                        return parseInt((e - s) / 1000 / 3600 / 24);
+                    }
+
+                    return 0;
+                }
+
+                // 入住时间
+                var startTime = localStorage.getItem("startTime");
+                var endTime = localStorage.getItem("endTime");
+
+                if (startTime) {
+                    $("#startTime").val(startTime);
+                }
+
+                if (endTime) {
+                    $("#endTime").val(endTime);
+                }
+
+                // 更新界面数据
+                function fnUpdateUIData() {
+                    startTime = $("#startTime").val();
+                    endTime = $("#endTime").val();
+                    $("#timeView").html(startTime + " 至 " + endTime);
+
+                    // 入住天数
+                    var diff = fnDiffDate($("#startTime").val(), $("#endTime").val());
+                    $("#count").html(diff);
+                    $("#countView").html("共" + diff + "晚");
+
+                    // 房费
+                    var day = parseInt(diff);
+                    var price = parseFloat("@Model.Price");
+                    $("#price").html("￥" + day * price);
+                    $("#totalPrice").html("￥" + day * price);
+                }
+
+                fnUpdateUIData();
+
+                $("#lbtnSubmitOrder").on("click", function () {
+                    // 校验数据
+                    var startTime = $("#startTime").val();
+                    var endTime = $("#endTime").val();
+                    var personNum = $("#txtPersonNum").val();
+                    var username = $("#txtUsername").val();
+                    var userPhone = $("#txtUserPhone").val();
+
+                    if (startTime == "" || startTime.length <= 0) {
+                        layer.alert("请选择入住时间！", { icon: 2 });
+                        return;
+                    }
+
+                    if (endTime == "" || endTime.length <= 0) {
+                        layer.alert("请选择退房时间！", { icon: 2 });
+                        return;
+                    }
+
+                    if (fnDiffDate(startTime, endTime) <= 0) {
+                        layer.alert("退房时间必须大于入住时间！", { icon: 2 });
+                        return;
+                    }
+
+                    if (personNum == "" || personNum.length <= 0) {
+                        layer.alert("请填写入住人数！", { icon: 2 });
+                        return;
+                    }
+
+                    var temp1 = parseInt(personNum);
+                    var temp2 = parseInt("@Model.StayPersonNum");
+                    if (temp1 <= 0 || temp1 > temp2) {
+                        layer.alert("入住人数为1-" + temp2 + "人！", { icon: 2 });
+                        return;
+                    }
+
+                    if (username == "" || username.length <= 0) {
+                        layer.alert("请填写联系人姓名！", { icon: 2 });
+                        return;
+                    }
+
+                    if (userPhone == "" || userPhone.length <= 0) {
+                        layer.alert("请填写联系人手机号！", { icon: 2 });
+                        return;
+                    }
+
+                    // 判断时间段是否预定
+                    var loadIndex = layer.load();
+                    $.post("/House/IsReservation", { houseId: "@Model.ID", startTime: startTime, endTime: endTime }, function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            loadIndex = layer.load();
+                            $.post("/Order/SubmitOrder", $("#frmOrder").serialize(), function (result) {
+                                layer.close(loadIndex);
+
+                                if (result.Status == "ok") {
+                                    layer.alert("提交订单成功！", { icon: 1 }, function () {
+                                        window.location.href = "/Order/OrderPayView?orderNo=" + result.Msg
+                                    });
+                                } else {
+                                    layer.alert(result.Msg, { icon: 2 });
+                                }
+                            });
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                    });
+                });
+
+                layui.use('laydate', function () {
+                    var laydate = layui.laydate;
+                    var start = {
+                        min: laydate.now(),
+                        max: '2099-06-16 23:59:59',
+                        istoday: false,
+                        choose: function (datas) {
+                            end.min = datas; //开始日选好后，重置结束日的最小日期
+                            end.start = datas; //将结束日的初始值设定为开始日
+                            fnUpdateUIData();
+                        }
+                    };
+                    var end = {
+                        min: laydate.now(),
+                        max: '2099-06-16 23:59:59',
+                        istoday: false,
+                        choose: function (datas) {
+                            start.max = datas; //结束日选好后，重置开始日的最大日期
+                            fnUpdateUIData();
+                        }
+                    };
+                    document.getElementById('startTime').onclick = function () {
+                        start.elem = this;
+                        laydate(start);
+                    }
+                    document.getElementById('endTime').onclick = function () {
+                        end.elem = this
+                        laydate(end);
+                    }
+                });
+            </script>
+        }
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

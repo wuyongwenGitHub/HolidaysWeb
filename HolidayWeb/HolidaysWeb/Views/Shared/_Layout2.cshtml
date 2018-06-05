@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
+}
+
+@RenderSection("styles", false)
+@RenderSection("scripts", false)
+
+@RenderBody()
+
+@section footer{
+    <!--goholiday-footer-->
+    <div class="goholiday-footer ghaccount-footer">
+        <div class="ghfooter-wrap w1080 clearfix">
+            <ul>
+                <li> <a href="javascript:;">服务热线：023-48266667</a> </li>
+                <li> <a href="javascript:;">帮助中心</a> </li>
+                <li> <a href="javascript:;">公司信息</a> </li>
+            </ul>
+        </div>
+        <div class="copyright">CopyRight © 2016-2017 wyqdj.com 渝ICP备16014633号 </div>
+    </div>
+    <!--goholiday-footer-->
+}
+@RenderSection("footerjs", false)

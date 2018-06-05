@@ -1,0 +1,12 @@
+E:\Projects\holidaysweb\Holidays.Common\bin\Release\Holidays.Common.dll
+E:\Projects\holidaysweb\Holidays.Common\bin\Release\Holidays.Common.pdb
+E:\Projects\holidaysweb\Holidays.Common\obj\Release\Holidays.Common.csproj.CoreCompileInputs.cache
+E:\Projects\holidaysweb\Holidays.Common\obj\Release\Holidays.Common.dll
+E:\Projects\holidaysweb\Holidays.Common\obj\Release\Holidays.Common.pdb
+E:\Projects\holidaysweb\Holidays.Common\obj\Release\Holidays.Common.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\bin\Release\Holidays.Common.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\bin\Release\Holidays.Common.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Release\Holidays.Common.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Release\Holidays.Common.csproj.CoreCompileInputs.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Release\Holidays.Common.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Release\Holidays.Common.pdb

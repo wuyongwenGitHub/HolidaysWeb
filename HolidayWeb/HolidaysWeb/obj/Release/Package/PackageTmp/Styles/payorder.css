@@ -1,0 +1,360 @@
+@charset "utf-8";
+/* goonholiday applyrefund.html 2016-12-08 rhg */
+body{
+	background-color: #eee;
+}
+.payorder-wrap{
+	height: auto;
+}
+.payorder-header{
+	width: auto;
+	height: 86px;
+	margin-top: 29px;
+	border-bottom: 1px solid #d2d2d2;
+}
+.payorder-header table{
+	width: auto;
+	height: 52px;
+}
+.payorder-header td{
+	height: 28px;
+	font-size: 12px;
+	color: #5f5e5e;
+}
+.payorder-header .icon{
+	text-align: center;
+}
+.fs16{
+	font-size: 16px;
+	color: #333;
+}
+.orderview,
+.orderview:hover{
+	margin-left: 54px;
+	color: #5f5e5e;
+	border-bottom:1px dashed #5f5e5e;
+}
+.payorder-main{
+	width: auto;
+	height: auto;
+}
+.paymode-name{
+	height: 40px;
+	margin-top: 18px;
+	font-size: 18px;
+	color: #333;
+	line-height: 40px;
+	text-indent: 4px;
+}
+.paymode-list{
+	width: auto;
+	height: 58px;
+	margin-left: 110px;
+}
+.paymode-check{
+	float: left;
+	width: auto;
+	height: 58px;
+	line-height: 58px;
+}
+.paymode-check label {
+	display: inline-block;
+	width: auto;
+	min-width: 155px;
+	height: 58px;
+	margin-right: 14px;
+	padding-left: 34px;
+	font-size: 18px;
+	color: #333;
+	cursor: pointer;
+	background: url(../Images/gh-40.png) no-repeat;
+	background-position:left 26px;
+}
+.paymode-check.checked label{	
+	color: #27933a;
+	background: url(../Images/gh-41.png) no-repeat;
+	background-position:left 26px;
+}
+.paymode-check img{
+	*display: block;
+	*margin-top: 11px;
+}
+.mt18{
+	margin-top: 18px;
+}
+.mt10{
+	margin-top: 10px;
+}
+.payorder-tips{
+	width: 100%;
+	height: 38px;
+	font-size: 14px;
+	color: #333;
+	line-height: 38px;
+}
+.pormoney{
+	font-size: 18px;
+	color: #ff5d51;
+	padding-left: 4px;
+}
+.doubt{
+	color: #5276fa;
+}
+.order-num{
+	float: left;
+	display:block;
+	font-weight: bold;
+	color: #000;
+	padding-right: 28px;
+}
+.beneficiary{
+	float: left;
+	width: 210px;
+	display:block;
+	font-size: 14px;
+	color: #000;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.earnest{
+	float: right;
+	display: block;
+	font-size: 14px;
+	color: #333;
+}
+.earnest em{
+	font-size: 18px;
+	color: #ff5d51;
+	margin-right: 58px;
+}
+.payorder-footer{
+	width: auto;
+	height: auto;
+}
+.payorfer-main{
+	width: 100%;
+	min-height: 525px;
+	*height:525px;
+	background-color: #fff;
+	border-top: 1px solid #d2d2d2;
+	border-bottom: 1px solid #d2d2d2;
+}
+.payorter-tips{
+	font-size: 12px;
+	color: #878686;
+	text-align: center;
+	line-height: 125px;
+}
+
+/*申请退款*/
+.applyrefund-wrap{
+	height: auto;
+}
+.refund-notice{
+	font-size: 16px;
+	color: #333;
+	line-height: 32px;
+	padding-top: 16px;
+}
+
+.fs14{
+	font-size: 14px;	
+	color: #878686;
+}
+.fs16{
+	font-size: 16px;
+}
+.notice-view{
+	line-height: 24px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	text-indent: 28px;
+	padding-left: 32px;
+}
+.refund-item{
+	height: 46px;
+	font-size: 14px;
+	color: #333;
+	line-height: 46px;
+}
+.regoods-info{
+	width: auto;
+	height: auto;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+.regoods-info table{
+	width: 100%;
+	height: auto;
+	table-layout: fixed;
+	border:1px solid #c9c9c9;
+}
+.regoods-info td{
+	height: 60px;
+	font-size: 14px;		
+	color: #878686;
+	text-align: center;
+	border:1px solid #c9c9c9;
+}
+.regoods-info thead td{		
+	color: #333;
+}
+.reason-list{
+	width: auto;
+	height: auto;
+	padding-bottom: 14px;
+	padding-left: 75px;
+}
+.reason-list label{
+	float: left;
+	width: 246px;
+	height: 28px;
+	font-size: 14px;		
+	color: #878686;
+	line-height: 28px;
+}
+.reason-list input[type='checkbox']{
+	float: left;
+	line-height: 12px;
+	margin-top: 7.5px;
+	*margin-top: 3px;
+	margin-right: 4px;
+	border:0;
+}
+.w120{
+	width: 120px;
+	*width:114px;
+	height: 20px;
+	margin-left: 6px;
+	padding-left: 3px;
+	padding-right: 3px;
+	font-size: 12px;
+	line-height: 20px;
+	border:1px solid #bfbfbf;
+	border-radius: 0;
+}
+.refund-footer{
+	width: auto;
+	height: auto;
+	padding-top: 60px;
+	padding-bottom: 74px;
+	text-align: center;
+}
+.refund-submit,
+.refund-submit:hover{
+	display: inline-block;
+	width: 124px;
+	height: 34px;
+	margin-right: 40px;
+	font-size: 14px;
+	color: #fff;
+	line-height: 34px;
+	text-align: center;
+	background: url(../Images/gh-44.png) no-repeat;
+}
+.refund-cancel,
+.refund-cancel:hover{
+	display: inline-block;
+	font-size: 14px;
+	color: #5265f6;
+}
+/*支付状态*/
+.paystatus-wrap{
+	height: 480px;
+}
+.payder-tips{
+	width: 385px;
+	height: 220px;
+	margin-top: 160px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.w410{
+	width: 410px;
+}
+.payder-icon{
+	float: left;
+	width: 53px;
+	height: 53px;
+}
+.paysuces{
+	width: 53px;
+	height: 32px;
+	margin-top: 12px;
+}
+.payfail{
+	width: 52px;
+	height:52px;
+	border-radius: 50%;
+}
+.payder-info{
+	margin-left: 100px;
+}
+.status-info {
+  font-size: 16px;
+  color: #333;
+  line-height: 24px;
+}
+.status-tips {
+  font-size: 12px;
+  color: #5f5e5e;
+  line-height: 32px;
+}
+.status-tips .orderview{
+	margin-left: 12px;
+}
+.payder-footer{
+	width: 474px;
+	height: auto;
+	margin-right: auto;
+	margin-left: auto;
+}
+.backindex,
+.backindex:hover{
+	float: left;
+	display: inline-block;
+	width: 123px;
+	height: 36px;
+	font-size: 14px;
+	color: #fff;
+	line-height: 36px;
+	text-align: center;
+	background: url(../Images/gh-51.png) no-repeat;
+}
+.usercenter{
+	float: right;
+	display: inline-block;
+	width: 123px;
+	height: 36px;
+	font-size: 14px;
+	color: #5f5e5e;
+	line-height: 36px;
+	text-align: center;
+	background: url(../Images/gh-52.png) no-repeat;
+}
+.wechat-pay{
+	width: auto;
+	height: auto;
+	padding-top: 70px;
+}
+.wechatpay-left{
+	float: left;
+}
+.wechatpay-left img{
+	width: 200px;
+	height: auto;
+	margin-left: 100px;
+}
+.wechatpay-right{
+	margin-left: 410px;
+}
+.wechatqrcode-wrap{
+	width: 260px;
+	padding-top: 8px;
+	margin-bottom: 10px;
+}
+.wechatqrcode-wrap img{
+	width: 260px;
+	height: 260px;
+}

@@ -1,0 +1,202 @@
+﻿@{
+    ViewBag.Title = "房东实名认证审核";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-app="certificateApp" ng-controller="CertificateListController" ng-init="initCertificateList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>房东实名认证审核 </h2>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"><input type="text" name="username" class="form-control" placeholder="姓名" /></div>
+            <div class="col-md-3"><input type="text" name="phoneNo" class="form-control" placeholder="手机号" /></div>
+            <div class="col-md-3"><input type="text" name="idcard" class="form-control" placeholder="身份证号" /></div>
+            <div class="col-md-3"><button ng-click="initCertificateList(1)" type="button" class="btn btn-default">查询</button></div>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>房东姓名</th>
+                        <th>性别</th>
+                        <th>手机号</th>
+                        <th>身份证号</th>
+                        <th>审核操作</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="certificate in certificateList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ certificate.Username }}</td>
+                        <td ng-if="certificate.Gender == 0">男</td>
+                        <td ng-if="certificate.Gender == 1">女</td>
+                        <td ng-if="certificate.Gender != 1 && certificate.Gender != 0">保密</td>
+                        <td>{{ certificate.PhoneNo }}</td>
+                        <td>{{ certificate.IDCardNo }}</td>
+                        <td>
+                            <a href="javascript:(0)" ng-click="openViewCertificateModal(certificate)" title="查看" class="fa fa-eye btn-xs"></a>
+                            <a href="javascript:(0)" ng-click="checkPass(certificate.ID)" title="审核通过" class="fa fa-check-circle btn-xs"></a>
+                            <a href="javascript:(0)" ng-click="checkFail(certificate.ID)" title="审核不通过" class="fa fa-ban btn-xs"></a>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="certificateList.length == 0">
+                        <td colspan="6" align="center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initCertificateList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initCertificateList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initCertificateList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initCertificateList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initCertificateList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看房东认证审核信息窗口 -->
+    <div class="modal fade" id="viewCertificateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">认证信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">真实姓名</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Certificate.Username }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">支付宝账号</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Certificate.AlipayAccount }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">微信账号</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Certificate.WeixinAccount }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">身份证号</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Certificate.IDCardNo }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">身份证件照</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <a target="_blank" href="{{ Certificate.IDCardImg1 }}"><img width="100" height="100" src="{{ Certificate.IDCardImg1 }}" /></a>
+                            <a target="_blank" href="{{ Certificate.IDCardImg2 }}"><img width="100" height="100" src="{{ Certificate.IDCardImg2 }}" /></a>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">房源地址</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Certificate.HouseAddress }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">房产证照</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <a target="_blank" href="{{ Certificate.Housecertificate }}"><img width="100" height="100" src="{{ Certificate.Housecertificate }}" /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看房东认证审核信息窗口END -->
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var certificateApp = angular.module('certificateApp', []);
+
+        certificateApp.controller('CertificateListController', function CertificateListController($scope, $http) {
+            $scope.initCertificateList = function (page) {
+                var username = $("input[name=username]").val();
+                var phoneNo = $("input[name=phoneNo]").val();
+                var idcard = $("input[name=idcard]").val();
+                var data = { page: page, username: username, phoneNo: phoneNo, idcard: idcard };
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Landlord/GetCertificateList',
+                    data: data
+                }).then(function successCallback(response) {
+                    $scope.certificateList = response.data.Data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 打开查看房东认证审核信息窗口
+            $scope.openViewCertificateModal = function (certificate) {
+                $scope.Certificate = certificate;
+                $("#viewCertificateModal").modal();
+            }
+
+            // 审核通过
+            $scope.checkPass = function (id) {
+                layer.confirm("确定要审核通过吗？", function () {
+                    $scope.saveCheckState(id, 1, null);
+                });
+            }
+
+            // 审核不通过
+            $scope.checkFail = function (id) {
+                layer.prompt({
+                    formType: 2,
+                    title: '请输入认证不通过原因',
+                }, function (value, index, elem) {
+                    $scope.saveCheckState(id, 2, value);
+                });
+            }
+
+            // 保存房东认证审核信息
+            $scope.saveCheckState = function (id, state, failReason) {
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Landlord/SaveCheckState',
+                    data: { id: id, state: state, failReason: failReason }
+                }).then(function successCallback(response) {
+                    if (response.data.Status == "ok") {
+                        layer.alert(response.data.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(response.data.Msg, { icon: 2 });
+                    }
+                }), function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                };
+            }
+        });
+    </script>
+}
+
+

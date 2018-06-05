@@ -1,0 +1,1 @@
+lessc --clean-css index.less index.css

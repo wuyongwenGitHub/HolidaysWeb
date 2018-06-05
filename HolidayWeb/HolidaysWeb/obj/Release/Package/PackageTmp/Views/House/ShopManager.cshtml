@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "店铺管理";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Framework/layui2/layui.all.js"></script>
+}
+<div class="navigation">
+    <div class="w1080">首页<span>&gt;</span> 店铺管理</div>
+</div>
+@if (ViewBag.IsLogin)
+{
+    if (!ViewBag.IsRequireRealName)
+    {
+        if (ViewBag.IsPermission)
+        {
+            <div class="w1080">
+                <div class="layui-row">
+                    <div class="layui-col-md12 layui-col-xs12 layui-col-sm12">
+                        <a href="/User/LandlordInfo" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon">&#xe65c;</i> 返回账户管理</a>
+                        <button id="btn_add" class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe654;</i> 创建店铺</button>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md12 layui-col-xs12 layui-col-sm12">
+                        <table id="grid1"></table>
+                    </div>
+                </div>
+            </div>
+            @section footerjs{
+                <script type="text/javascript">
+                    layui.use(['table', 'form', 'layer'], function () {
+                        var table = layui.table;
+                        var form = layui.form;
+                        var layer = layui.layer;
+                        //
+                        table.render({
+                            elem: '#grid1',
+                            height: 420,
+                            loading: true,
+                            id: 'grid1',
+                            url: '/House/GetShopData',
+                            method: 'post',
+                            page: true,
+                            limits: [10],
+                            cols: [[
+                                { field: 'ID', title: '#', width: 60, fixed: 'left', type:'numbers' },
+                                {
+                                    field: 'IsCheck', title: '状态', width: 80, sort: true, templet: function (d) {
+                                        var content = '';
+                                        switch (d.IsCheck) {
+                                            case 0:
+                                                content = '<div><span style="color:#FF5722;">待审核</span></div>';
+                                                break;
+                                            case 1:
+                                                content = '<div><span style="color:#5FB878;">正常</span></div>';
+                                                break;
+                                            case 2:
+                                                content = '<div><span style="color:#FFB800;">未通过</span> </div>';
+                                                break;
+                                        }
+
+                                        return content;
+                                    }
+                                },
+                                { field: 'ShopName', title: '店铺名称', width: 180, align: 'left' },
+                                { field: 'ShopTypeName', title: '风格', width: 80 },
+                                { field: 'StartPrice', title: '起订价格(元)', width: 110, align: 'right', templet: function (d) { return '￥' + d.StartPrice; } },
+                                { field: 'SpotName', title: '所在景区', width: 140, align: 'left' },
+                                { field: 'Locations', title: '地址', width: 140, align: 'left' },
+                                { field: 'About', title: '房源介绍', width: 120, align: 'left' },
+                                { field: 'Rules', title: '访客守则', width: 120, align: 'left' },
+                                { field: 'ChargesNotes', title: '收费说明', width: 120, align: 'left' }
+                            ]],
+                            text: {
+                                none: '暂无相关数据。'
+                            }
+                        });
+
+                        $("#btn_add").on("click", function () {
+                            layer.open({
+                                type: 2,
+                                title: '店铺信息',
+                                content: '/House/ShopView',
+                                area: ['580px', '480px'],
+                                success: function (layero, index) {
+                                },
+                                btn: ['确定', '取消'],
+                                yes: function (index, layero) {
+                                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                                    iframeWin.shopView.submit(function (data) {
+                                        var loadIndex = layer.load(1);
+                                        $.post('/House/SaveShop', data.field, function (res) {
+                                            layer.close(loadIndex);
+                                            layer.alert(res.Msg, function (index1) {
+                                                if (res.Status == "ok") {
+                                                    layer.closeAll();
+                                                    table.reload('grid1');
+                                                }
+                                            });
+
+                                        });
+                                    });
+                                }
+                            });
+
+                        });
+                    });
+
+                </script>
+
+            }
+        }
+        else
+        {
+            <p style="text-align: center;">对不起，你无此权限，请联系平台管理员。</p>
+        }
+    }
+    else
+    {
+        <p style="text-align: center;">使用该功能需要实名认证，请先实名认证。</p>
+        <script type="text/javascript">
+            /**/
+            /**/
+            /**/
+            layer.alert("使用该功能需要实名认证，请先实名认证！", { icon: 2 }, function () {
+                window.location.href = "/User/LandlordInfo";
+            });
+        </script>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

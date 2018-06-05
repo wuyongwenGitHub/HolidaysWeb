@@ -1,0 +1,10 @@
+﻿.header{
+    padding:20px 0;
+}
+.header-title {
+    text-align: center;
+    font-size: 26px;
+    color: #3cc51f;
+    font-weight: 400;
+    margin: 0 15%;
+}

@@ -1,0 +1,388 @@
+﻿@{
+    ViewBag.Title = "首页";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+    @*<link href="~/Scripts/elastislide/css/elastislide.css" rel="stylesheet" />*@
+    <link href="~/Scripts/FlexSlider/flexslider.css" rel="stylesheet" />
+    <link href="~/Framework/flexImages/jquery.flex-images.css" rel="stylesheet" />
+    <link href="~/Styles/hotel_list.mins.css" rel="stylesheet" />
+    <style type="text/css">
+        .flex-control-nav {
+            bottom: -25px;
+        }
+
+        .item {
+            margin: 0 1px 10px 1px;
+            border: 0;
+        }
+
+            .item .img {
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 2px;
+                bottom: 20px;
+            }
+
+        .bottom {
+            position: absolute;
+            left: 2px;
+            bottom: 0;
+            right: 2px;
+            font-size: 13px;
+            height: 18px;
+        }
+
+        .over {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            /*padding: 4px 6px;*/
+            font-size: 13px;
+            color: #000;
+            background: #fff;
+            /*background: rgba(0,0,0,.7);*/
+            width: 98%;
+            padding-left: 6px;
+            padding-top: 2px;
+        }
+        li {
+            list-style: none;
+        }
+
+        .news {
+            height: 20px;
+            background: #fff;
+            overflow: hidden;
+            z-index:9999;
+        }
+
+            .news .t_news {
+                height: 20px;
+                color: #2a2a2a;
+                margin-top: 3px;
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+            }
+
+            .news .news_li, .swap {
+                line-height: 20px;
+                display: inline-block;
+                position: absolute;
+                top: 0;
+                font-size: 14px;
+                color: #585858
+            }
+
+            .news .swap {
+                top: 20px;
+            }
+    </style>
+}
+
+    <div class="page-wrap pb102">
+        @*头部搜索框 *@
+        <div class="ghday-header">
+            <div class="areas-wrap"><a href="/Weixin/WeMain/CityList"><span class="areas-info">@ViewBag.CurrentCity.ShortName</span></a></div>
+            <div class="search-wrap">
+                <a class="search-icon"></a>
+                <input id="txtKeywords" type="text" class="input-enter" placeholder="搜索">
+            </div>
+        </div>
+        @*//轮播*@
+        @if (ViewBag.BannerList != null && ViewBag.BannerList.Count > 0)
+    {
+        <div class="ghday-banner">
+            <div class="news">
+                <div class="t_news">
+                    <ul class="news_li">
+                        <li>夏季活动开始了,大家赶快参加活动</li>
+                    </ul>
+                    <ul class="swap"></ul>
+                </div>
+            </div>
+            <div class="flicking_con">
+                @for (int i = 0; i < ViewBag.BannerList.Count; i++)
+            {
+                <a href="javascript:;">@i</a>
+        }
+            </div>
+            @if (ViewBag.BannerList.Count == 1)
+        {
+            <a href="@ViewBag.BannerList[0].Url" target="_blank"><img src="@ViewBag.BannerList[0].ImgUrl"></a>
+    }
+    else
+    {
+        <div class="main_image">
+            <ul>
+                @foreach (var banner in ViewBag.BannerList)
+            {
+                if (!String.IsNullOrEmpty(banner.Url))
+                {
+                    <li><a href="@banner.Url" target="_blank"><img src="@banner.ImgUrl" alt="@banner.Title"></a></li>
+            }
+            else
+            {
+                <li><img src="@banner.ImgUrl" alt="@banner.Title"></li>
+        }
+    }
+            </ul>
+            <a href="javascript:;" id="btn_prev"></a><a href="javascript:;" id="btn_next"></a>
+        </div>
+}
+        </div>
+}
+
+    @*菜单ui导航*@
+        <div class="ghday-menu" style="display:none;">
+            <ul>
+                <li class="gmenu-item"><a href="/weixin/wehouse/renthouselistview"><img src="/Images/wechart/mgh_03.png" alt="" class="img01"></a></li>
+                <li class="gmenu-item"><a href="/weixin/wehouse/sellhouselistview"><img src="/Images/wechart/mgh_04.png" alt="" class="img02"></a></li>
+                <li class="gmenu-item"><a href="/weixin/weproduct/productlistview"><img src="/Images/wechart/mgh_05.png" alt="" class="img03"></a></li>
+                <li class="gmenu-item"><a href="/weixin/wecar/carlistview"><img src="/Images/wechart/mgh_06.png" alt="" class="img04"></a></li>
+            </ul>
+        </div>
+
+        @*热门景点展示*@
+        @if (ViewBag.SpotInfoList != null && ViewBag.SpotInfoList.Count > 0)
+    {
+        <div class="ghday-room">
+            <div class="ghline-header"><span>热门景区</span></div>
+            <div class="room-main">
+                <div id="spotList" class="flex-images" style="margin-top:10px;">
+                    @foreach (var spot in ViewBag.SpotInfoList)
+                {
+                    var scenicSpotImgArray = spot.ScenicSpotImgs.Split(',');
+                    if (scenicSpotImgArray.Length > 0)
+                    {
+                        <div class="item" data-w="130" data-h="130">
+                            <div class="img">
+                                <a href="/weixin/wehouse/ShopListView?keywords=@(string.IsNullOrEmpty(spot.LinkSpotName) ? spot.ScenicSpotName : spot.LinkSpotName)&spotId=@spot.ID"><img src="@scenicSpotImgArray[0]" /></a>
+                            </div>
+                            <div class="over">@spot.ScenicSpotName</div>
+                        </div>
+                }
+            }
+                </div>
+            </div>
+        </div>
+}
+    @*热门店铺展示*@
+        @if (ViewBag.ShopList != null && ViewBag.ShopList.Count > 0)
+    {
+        <div class="ghday-room">
+            <div class="ghline-header"><span>热门店铺</span></div>
+            <div class="room-main">
+                <div class="hotel-list">
+                    @foreach (var shop in ViewBag.ShopList)
+                {
+                    <div class="hotel" onclick="gotoShop('@shop.ShopName')">
+
+                        <div class="hotel-hd clearfix" style="height:auto;">
+                            <div class="hotel-logo fl has-more-snapshots" style="height:135px;width:135px;min-width:38%;">
+                                <a href="/weixin/wehouse/RentHouseListView?keywords=@shop.ShopName">
+                                    <img src="@shop.ShopImgs" width="75" height="75" />
+                                </a>
+                            </div>
+                            @*<div class="hotel-type fl"><i class="icon icon-gold-medal"></i></div>*@
+                            <div class="hotel-info fl" style="width:60%;min-height:105px">
+                                <div class="nameAndIcon">
+                                    <a href="javascript:;" class="name">@shop.ShopName</a>
+                                    <div class="addressInfo">@(shop.Scores > 0 ? shop.Scores.ToString() + " 分" : "暂无评分") &nbsp;&nbsp;@shop.ShopTypeName</div>
+                                </div>
+                                <div class="route">@shop.Locations</div>
+                                <div class="remarkTag">@(!string.IsNullOrEmpty(shop.Tags) ? shop.Tags : "暂无评价")</div>
+                            </div>
+
+                            <div class="hotel-brief fl">
+                                <div class="startPrice">
+                                    <span class="yen">￥</span><span class="digit"><a href="/weixin/wehouse/RentHouseListView?keywords=@shop.ShopName" style="color:#f80;">@shop.StartPrice</a> </span><span class="text">起</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            }
+                </div>
+            </div>
+        </div>
+}
+else
+{
+    <p style="text-align: center; padding: 20px; font-size: 14px;">暂无数据！</p>
+}
+        @*吃喝玩乐*@
+        <div class="ghday-specialty">
+            <div class="ghline-header"><span>之最</span></div>
+            <ul style="text-align: center;font-size:18px;color:#efefef">
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;background-color:darkorange;line-height:60px">最好玩</li>
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;background-color:aquamarine;line-height:60px">最舒适</li>
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;margin-top:5px;background-color:burlywood;line-height:60px">最交通</li>
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;margin-top:5px;background-color:cadetblue;line-height:60px">更多</li>
+            </ul>
+        </div>
+        @*吃喝玩乐*@
+        <div class="ghday-specialty" style="height:120px">
+            <div class="ghline-header"><span>吃喝玩乐</span></div>
+            <ul style="text-align: center;font-size:24px;">
+                <li style="height:60px;width:60px;display:inline-block;text-align:center;border:1px solid #333;background-color:white;line-height:60px;border-radius:60px">吃</li>
+                <li style="height:60px;width:60px;display:inline-block;text-align:center;background-color:red;line-height:60px;border-radius:60px;color:white">喝</li>
+                <li style="height:60px;width:60px;display:inline-block;text-align:center;border:1px solid #333;background-color:white;margin-top:5px;line-height:60px;border-radius:60px">玩</li>
+                <li style="height:60px;width:60px;display:inline-block;text-align:center;margin-top:5px;background-color:red;line-height:60px;border-radius:60px;color:white">乐</li>
+            </ul>
+        </div>
+        @*热门特产展示*@
+        @if (ViewBag.ProductList != null && ViewBag.ProductList.Count > 0)
+    {
+        <div class="ghday-specialty">
+            <div class="ghline-header"><span>热门特产</span></div>
+            <div class="specialty-main">
+                <ul>
+                    @foreach (var product in ViewBag.ProductList)
+                {
+                    <li class="special-item">
+                        <a href="/weixin/weproduct/productlistview">
+                            <img src="@product.HomeImg" alt="">
+                            <p>@product.ProductName</p>
+                        </a>
+                    </li>
+            }
+                </ul>
+            </div>
+        </div>
+}
+    @*热门房源展示*@
+        @if (ViewBag.buildInfos != null && ViewBag.buildInfos.Count > 0)
+    {
+        <div class="ghday-specialty">
+            <div class="ghline-header"><span>热门房源</span></div>
+            <div class="specialty-main">
+                <ul>
+                    @foreach (var buildInfos in ViewBag.buildInfos)
+                {
+                    <li class="special-item">
+                        <a href="javascript:void(0)" onclick="bulderC(this)">
+                            <img src="@buildInfos.buildPic" alt="">
+                            <p>@buildInfos.buildName</p>
+                        </a>
+                    </li>
+            }
+                </ul>
+            </div>
+        </div>
+}
+    @*车辆租赁*@
+        @if (ViewBag.CarList != null && ViewBag.CarList.Count > 0)
+    {
+        <div class="ghday-cars">
+            <div class="ghline-header"><span>车辆租赁</span></div>
+            <div class="specialty-main">
+                <ul>
+                    @foreach (var car in ViewBag.CarList)
+                {
+                    <li class="special-item">
+                        <a href="/weixin/wecar/carlistview">
+                            <img src="@car.CarImg" alt="">
+                            <p>@car.CarName</p>
+                        </a>
+                    </li>
+            }
+                </ul>
+            </div>
+        </div>
+}
+    @*底部展示*@
+        <div class="ghday-footer">
+            <ul>
+                <li class="checked"><a href="javascript:;"><img src="/Images/wechart/mgh_10hover.png" class="index-icon"><p>首页</p></a></li>
+                <li><a href="/Weixin/WeUser"><img src="/Images/wechart/mgh_11.png" class="person-icon"><p>个人中心</p></a></li>
+                @*<li><a href="/Weixin/WeUser/UserCenter"><img src="~/Images/weixin/cloud.png" class="person-icon" /><p>管理中心</p></a></li>*@
+            </ul>
+        </div>
+    </div>
+
+@section footerjs{
+    <script src="~/Scripts/FlexSlider/jquery.flexslider-min.js" type="text/javascript"></script>
+    <script src="~/Framework/flexImages/jquery.flex-images.min.js"></script>
+    <script type="text/javascript">
+        $("#txtKeywords").on("blur", function () {
+            var keywords = $("#txtKeywords").val();
+            window.location.href = "/weixin/wehouse/renthouselistview?keywords=" + keywords;
+        });
+
+        $(function () {
+            //公告滚动
+            $('.swap').html($('.news_li').html());
+            x = $('.news_li');
+            y = $('.swap');
+            h = $('.news_li li').length * 20; //20为每个li的高度
+            var hh = $('.news_li li').length;
+            if (hh > 1)
+                //setTimeout(b,3000);//滚动间隔时间 现在是3秒
+                b();
+            b();
+            function b() {
+                t = parseInt(x.css('top'));
+                y.css('top', '20px');
+                x.animate({
+                    top: t - 20 + 'px'
+                }, 'slow'); //20为每个li的高度
+                if (Math.abs(t) == h - 20) { //20为每个li的高度
+                    y.animate({
+                        top: '0px'
+                    }, 'slow');
+                    z = x;
+                    x = y;
+                    y = z;
+                }
+                setTimeout(b, 2000); //滚动间隔时间 现在是3秒
+            }
+            //图片幻灯片
+            $(".main_image").touchSlider({
+                flexible: true,
+                speed: 200,
+                btn_prev: $("#btn_prev"),
+                btn_next: $("#btn_next"),
+                paging: $(".flicking_con a"),
+                counter: function (e) {
+                    $(".flicking_con a").removeClass("on").eq(e.current - 1).addClass("on");
+                }
+            });
+            timer = setInterval(function () {
+                $("#btn_next").click();
+            }, 5000);
+            $(".main_image").hover(function () {
+                clearInterval(timer);
+            }, function () {
+                timer = setInterval(function () {
+                    $("#btn_next").click();
+                }, 5000);
+            });
+            $(".main_image").bind("touchstart", function () {
+                clearInterval(timer);
+            }).bind("touchend", function () {
+                timer = setInterval(function () {
+                    $("#btn_next").click();
+                }, 5000);
+            });
+        });
+        $(function () {
+            $("#spotList").flexImages({ rowHeight: 140, truncate: 1 });
+        });
+        function gotoShop(shopName) {
+            window.location.href = '/weixin/wehouse/RentHouseListView?keywords=' + shopName;
+        }
+        function bulderC(e) {
+          alert("程序猿正在加班加点赶工此功能")
+        }
+   
+    </script>
+
+   
+
+}

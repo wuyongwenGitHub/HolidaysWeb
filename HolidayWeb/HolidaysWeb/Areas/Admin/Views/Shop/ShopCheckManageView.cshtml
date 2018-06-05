@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "店铺审核";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+}
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>店铺审核</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="row">
+            <form class="form-horizontal form-label-left">
+                <div class="col-md-3"><input id="keywords" name="keywords" type="text" class="form-control" placeholder="店铺名称,景区名称,房东" /></div>
+                <div class="col-md-3">
+                    <select class="form-control" id="shopType" name="shopType">
+                        <option value="-1" selected="selected">全部</option>
+                        @if (ViewBag.ShopCategoryList != null)
+                        {
+                            foreach (var item in ViewBag.ShopCategoryList)
+                            {
+                                <option value="@item.ID">@item.CategoryName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3"><button type="button" class="btn btn-default" onclick="shopCheck.search()">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="grid1" lay-filter="grid1"></table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Framework/layui2/layui.all.js"></script>
+    <script type="text/javascript">
+        var shopCheck = function () {
+            var table,layer;
+            var initPage = function () {
+                layui.use(['table', 'form', 'layer'], function () {
+                     table = layui.table;
+                     layer = layui.layer;
+
+                    table.render({
+                        elem: '#grid1',
+                        loading: true,
+                        id: 'grid1',
+                        url: '/Admin/Shop/GetShopCheckList',
+                        method: 'post',
+                        page: true,
+                        limits: [10],
+                        cols: [[
+                            { field: 'ID', title: '#', width: 60, fixed: 'left', type: 'numbers' },
+                            { field: 'ShopImgs', title: '图片', width: 65, align: 'right', templet: function (d) { return '<img src="' + d.ShopImgs + '" style="width:32px;height:32px;" />'; } },
+                            { field: 'ShopName', title: '店铺名称', width: 280, align: 'left' },
+                            { field: 'UserName', title: '房东', width: 160 },
+                            { field: 'ShopTypeName', title: '风格', width: 80 },
+                            { field: 'StartPrice', title: '起订价格(元)', width: 110, align: 'right', templet: function (d) { return '￥' + d.StartPrice; } },
+                            { field: 'SpotName', title: '所在景区', width: 240, align: 'left' },
+                            //{ field: 'Locations', title: '地址', width: 140, align: 'left' },
+                            //{ field: 'About', title: '房源介绍', width: 120, align: 'left' },
+                            //{ field: 'Rules', title: '访客守则', width: 120, align: 'left' },
+                            //{ field: 'ChargesNotes', title: '收费说明', width: 120, align: 'left' }
+                            { field: '', title: '操作', width: 240, align: 'center', toolbar: '#gridBar' }
+                        ]],
+                        text: {
+                            none: '暂无相关数据。'
+                        }
+                    });
+
+                    //
+                    table.on('tool(grid1)', function (obj) {
+                        var data = obj.data;
+                        if (obj.event === 'detail') {
+                            detailHandle(data.ShopId);
+                        }
+                        else if (obj.event === 'checkPass') {
+                            checkPassHandle(data.ID);
+                        } else if (obj.event === 'checkNoPass') {
+                            checkNoPassHandle(data.ID);
+                        }
+                    });
+                });
+            };
+            var detailHandle = function (id) {
+                layer.open({
+                    type: 2,
+                    title: '店铺信息',
+                    content: '/Admin/Shop/ShopView?id=' + id,
+                    area: ['580px', '480px'],
+                    success: function (layero, index) {
+                    },
+                    btn: ['关闭'],
+                    yes: function (index, layero) {
+                        layer.close(index);
+                    }
+                });
+            };
+            var checkPassHandle = function (id) {
+                layer.confirm('确定要审核通过吗？', function () {
+                    saveCheckState(id, 1,null);
+                });
+            };
+            var checkNoPassHandle = function (id) {
+                layer.prompt({
+                    formType: 2,
+                    title: '请输入审核不通过原因'
+                }, function (value, index, elem) {
+                    saveCheckState(id, 2, value);
+                    });
+            };
+            var saveCheckState = function (id, state, failReason) {
+                layer.closeAll();
+                $.post('/Admin/Shop/SaveCheckState', { id: id, state: state, failReason: failReason }, function (res) {
+                    if (res.Status == "ok") {
+                        layer.alert(res.Msg, { icon: 1 }, function () {
+                            layer.closeAll();
+                            table.reload('grid1');
+                        });
+                    } else {
+                        layer.alert(res.Msg, { icon: 2 });
+                    }
+                });
+            };
+            var searchHandle = function () {
+                var keywords = $("#keywords").val();
+                var shopType = $("#shopType").val();
+                table.reload('grid1', {
+                    page: {
+                        curr:1
+                    },
+                    where: {
+                        keywords: keywords,
+                        shopType: shopType
+                    }
+                });
+            };
+            return {
+                init: function () {
+                    initPage();
+                },
+                search: function () {
+                    searchHandle();
+                }
+            }
+        }();
+        $(function () { shopCheck.init(); });
+    </script>
+    <script type="text/html" id="gridBar">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn  layui-btn-normal layui-btn-xs" lay-event="checkPass">审核通过</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="checkNoPass">审核不通过</a>
+    </script>
+}
+

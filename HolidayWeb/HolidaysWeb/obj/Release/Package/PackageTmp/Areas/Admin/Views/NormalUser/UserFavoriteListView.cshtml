@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "会员收藏管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-app="favoriteApp" ng-controller="FavoriteListController" ng-init="initFavoriteList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>会员收藏管理 </h2>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"><input name="username" type="text" class="form-control" placeholder="会员姓名" /></div>
+            <div class="col-md-3"><input name="phoneNo" type="text" class="form-control" placeholder="手机号" /></div>
+            <div class="col-md-3"><input name="houseTitle" type="text" class="form-control" placeholder="收藏房源名称" /></div>
+            <div class="col-md-3"><button ng-click="initFavoriteList(1)" type="button" class="btn btn-default">查询</button></div>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>会员姓名</th>
+                        <th>手机号</th>
+                        <th>收藏房源</th>
+                        <th>收藏时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="favorite in favoriteList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ favorite.Username }}</td>
+                        <td>{{ favorite.PhoneNo }}</td>
+                        <td>{{ favorite.HouseTitle }}</td>
+                        <td>{{ favorite.CreateTime }}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="del(favorite.ID)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="favoriteList.length == 0">
+                        <td colspan="6" align="center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initFavoriteList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initFavoriteList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initFavoriteList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initFavoriteList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initFavoriteList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    var favoriteApp = angular.module('favoriteApp', []);
+
+    favoriteApp.controller('FavoriteListController', function FavoriteListController($scope, $http) {
+        $scope.initFavoriteList = function (page) {
+            var username = $("input[name=username]").val();
+            var phoneNo = $("input[name=phoneNo]").val();
+            var houseTitle = $("input[name=houseTitle]").val();
+            var data = { page: page, username: username, phoneNo: phoneNo, houseTitle: houseTitle };
+
+            $http({
+                method: 'POST',
+                url: '/Admin/NormalUser/GetUserFavoriteList',
+                data: data
+            }).then(function successCallback(response) {
+                var data = response.data.Data;
+
+                // 格式化时间
+                for (var i = 0; i < data.length; i++) {
+                    data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                }
+
+                $scope.favoriteList = data;
+                $scope.PageModel = response.data;
+            }, function errorCallback(response) {
+                layer.alert("系统异常", { icon: 2 });
+            });
+        }
+
+        // 删除会员收藏房源信息
+        $scope.del = function (id) {
+            layer.confirm("确定要删除吗？", {
+                btn: ["确定", "取消"],
+                btn1: function () {
+                    $http({
+                        method: 'POST',
+                        url: '/Admin/NormalUser/DelUserFavoriteByID',
+                        data: { id: id }
+                    }).then(function successCallback(response) {
+                        if (response.data.Status == "ok") {
+                            layer.alert(response.data.Msg, { icon: 1 }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.alert(response.data.Msg, { icon: 2 });
+                        }
+                    }), function errorCallback(response) {
+                        layer.alert("系统异常", { icon: 2 });
+                    };
+                }
+            });
+        }
+    });
+</script>
+
+}

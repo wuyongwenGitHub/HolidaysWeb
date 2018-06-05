@@ -1,0 +1,291 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "创建店铺";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+<style type="text/css">
+    #uploaderInput div:nth-child(2) {
+        width: 100% !important;
+        height: 100% !important;
+    }
+</style>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="weui-gallery" id="gallery">
+            <span class="weui-gallery__img" id="galleryImg">
+            </span>
+            <div class="weui-gallery__opr">
+                <a href="javascript:;" class="weui-gallery__del">
+                    <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                </a>
+            </div>
+        </div>
+        <div class="header">
+            <h2 class="header-title">店铺信息</h2>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">店铺名称*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input type="text" class="weui-input" placeholder="请填写店铺名称" id="ShopName" name="ShopName" />
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class=" weui-cell__hd">
+                    <label class="weui-label">所在景区*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" id="SpotId" name="SpotId">
+                        @if (ViewBag.SpotList != null)
+                        {
+                            foreach (var item in ViewBag.SpotList)
+                            {
+                                <option value="@item.ID">@item.ScenicSpotName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class=" weui-cell__hd">
+                    <label class="weui-label">风格*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" id="ShopType" name="ShopType">
+                        @if (ViewBag.ShopCategoryList != null)
+                        {
+                            foreach (var item in ViewBag.ShopCategoryList)
+                            {
+                                <option value="@item.ID">@item.CategoryName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">起订价格*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input type="text" class="weui-input" placeholder="请填写起订价格" id="StartPrice" />
+                </div>
+            </div>
+            <div class="weui-cell" style="display:none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">地址*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="Locations"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">店铺图片上传*</p>
+                            <div class="weui-uploader__info"></div>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <input type="hidden" id="ShopImgs" name="ShopImgs" />
+                            <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+                            <div class="weui-uploader__input-box">
+                                <a href="javascript:;" id="uploaderInput" class="weui-uploader__input"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cell" style="display:none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">房源介绍*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="About"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell" style="display:none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">访客守则*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="Rules"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell" style="display:none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">收费说明*</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="ChargesNotes"></textarea>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="addShopView.submit()">提交审核</a>
+                <a href="/Weixin/WeUser/UserCenter" class="weui-btn weui-btn_default">取消</a>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">对不起，你无此权限！</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                </p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area">
+            <i class="weui-icon-info weui-icon_msg"></i>
+        </div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">登录失效，请重新登录！</h2>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="/Weixin/WeUser/LoginCenter" class="weui-btn weui-btn_primary">立即登录</a>
+            </p>
+        </div>
+    </div>
+}
+
+@section footerjs{
+
+    <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+    <script type="text/javascript">
+        var addShopView = function () {
+            var imgObj,
+                $gallery,
+                $galleryImg;
+            var initPage = function () {
+                imgObj = new Object();
+                $gallery = $("#gallery");
+                $galleryImg = $("#galleryImg");
+                //
+                $gallery.on("click", function () {
+                    $gallery.fadeOut(100);
+                });
+                //删除图片
+                $(".weui-gallery__del").click(function () {
+                    $("#uploaderFiles").find('li').eq(0).remove();
+                    $("#ShopImgs").val('');
+                    fnDestroyUploader();
+                    initUpload();
+                });
+                initUpload();
+            };
+            // 添加图片
+            var addImg = function (src) {
+                imgObj.ImgUrl = src;
+                $("#ShopImgs").val(src);
+                updateImg();
+            };
+            var updateImg = function () {
+                var strImgsHtml = "";
+                if (imgObj.ImgUrl) {
+                    strImgsHtml = '<li class="weui-uploader__file" style = "background-image:url(' + imgObj.ImgUrl + ')" ></li>';
+                }
+                $("#uploaderFiles").html(strImgsHtml);
+                $("#uploaderFiles").on("click", "li", function () {
+                    $galleryImg.attr("style", this.getAttribute("style"));
+                    $gallery.fadeIn(100);
+                });
+            };
+            var initUpload = function () {
+                fnWeUploadImage("uploaderInput", function (url) {
+                    addImg(url);
+                });
+            };
+            var submitHandle = function () {
+                var shop = new Object();
+                shop.ShopName = $.trim($("#ShopName").val());
+                shop.SpotId = $("#SpotId").val();
+                shop.ShopType = $("#ShopType").val();
+                shop.StartPrice = $("#StartPrice").val();
+                shop.Locations = $("#Locations").val();
+                shop.ShopImgs = $("#ShopImgs").val();
+                shop.About = $("#About").val();
+                shop.Rules = $("#Rules").val();
+                shop.ChargesNotes = $("#ChargesNotes").val();
+                var isValid = isValidHandle(shop);
+                if (isValid) {
+                    $.showLoading('正在提交...');
+                    $.ajax({
+                        url: '/House/SaveShop',
+                        type: 'post',
+                        data: shop,
+                        success: function (res) {
+                            $.hideLoading();
+                            if (res.Status == "ok") {
+                                $.toast("已提交到平台，审核通过后才能发布发源！", function () {
+                                    window.location.href = '/weixin/wehouse/housemanageview';
+                                });
+
+                            } else {
+                                $.toptip(res.Msg, 'error');
+                            }
+                        },
+                        error: function () {
+                            $.hideLoading();
+                            $.toptip('发生错误！', 'error');
+                        }
+                    });
+                }
+
+            };
+            var isValidHandle = function (obj) {
+                var isValid = true;
+                if (obj.ShopName == '') {
+                    $.toptip('请填写店铺名称！', 'error');
+                    isValid = false;
+                }
+                else if (obj.SpotId == '') {
+                    $.toptip('请选择景区！', 'error');
+                    isValid = false;
+                }
+                else if (obj.ShopType == '') {
+                    $.toptip('请选择风格！', 'error');
+                    isValid = false;
+                }
+                else if (obj.StartPrice == '') {
+                    $.toptip('请填写起订价格！', 'error');
+                    isValid = false;
+                }
+                else if (obj.Locations == '') {
+                    $.toptip('请填写地址！', 'error');
+                    isValid = false;
+                }
+                else if (obj.Locations == '') {
+                    $.toptip('请上传店铺图片！', 'error');
+                    isValid = false;
+                }
+                return isValid;
+            };
+            return {
+                init: function () {
+                    initPage();
+                },
+                submit: function () {
+                    submitHandle();
+                }
+            }
+        }();
+        $(function () { addShopView.init(); });
+    </script>
+}

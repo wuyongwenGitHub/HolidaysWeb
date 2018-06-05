@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "评论管理";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Framework/layui2/layui.all.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页<span>&gt;</span> 店铺中心</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="w1080">
+            <ul class="layui-nav layui-bg-blue ">
+                <li class="layui-nav-item"><a href="/User/UserCenter">店铺信息</a></li>
+                <li class="layui-nav-item layui-this"><a href="/User/HouseManager">房源管理</a></li>
+                <li class="layui-nav-item"><a href="/User/OrderManager">订单管理</a></li>
+                <li class="layui-nav-item"><a href="/User/FinanceManager">财务管理</a></li>
+                <li class="layui-nav-item"><a href="/User/CommentManager">评论管理</a></li>
+                <li class="layui-nav-item"><a href="/User/ResetPassword">修改密码</a></li>
+            </ul>
+            <div class="layui-row">
+                <div class="layui-col-md1 layui-col-sm1 layui-col-xs1 layui-col-lg1" style="margin-top:5px;">
+                    <a href="/User/CreateHouseInfoView" class="layui-btn layui-btn-normal">发布房源</a>
+                </div>
+
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;margin-left:5px;">
+                    <input id="keywords" type="text" class="layui-input" placeholder="房源标题" />
+
+                </div>
+                <div class="layui-col-md1 layui-col-sm1 layui-col-xs1 layui-col-lg1 " style="margin-top:5px;">
+                    <a href="javascript:;" class="layui-btn layui-btn-primary" style="margin-left:2px;" onclick="houesManager.search()">查询</a>
+                </div>
+                <div class="layui-col-md7 layui-col-sm7 layui-col-xs7 layui-col-lg7" style="margin-top:5px;">
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 layui-col-lg12">
+                    <table id="grid1"></table>
+                </div>
+            </div>
+        </div>
+        @section footerjs{
+            <script type="text/javascript">
+                var table, layer;
+                var houesManager = function () {
+
+                    var initPage = function () {
+                        layui.use(['table', 'element', 'layer'], function () {
+                            table = layui.table;
+                            var element = layui.element;
+                            layer = layui.layer;
+
+                            table.render({
+                                elem: '#grid1',
+                                loading: true,
+                                id: 'grid1',
+                                url: '/House/GetHouseList',
+                                method: 'post',
+                                height: '458',
+                                page: true,
+                                cols: [[
+                                    { field: 'ID', title: '#', width: 60, fixed: 'left', type: 'numbers' },
+                                    { field: 'FirstImg', title: '图片', widt: 65, align: 'center', templet: function (d) { return '<img src="' + d.FirstImg + '" style="width:32px;height:32px;" />'; } },
+                                    { field: 'HouseTitle', title: '房源标题', width: 600, align: 'left' },
+                                    //{ field: 'Address', title: '地址', width: 300, align: 'left' },
+                                    {
+                                        field: 'State', title: '状态', width: 100, align: 'left', templet: function (d) {
+                                            if (d.State == 0) {
+                                                return '<span style="color:#5FB878;">正常发布中</span>';
+                                            } else if (d.State == 1) {
+                                                return '<span style="color:#FF5722;">已下架</span>';
+                                            } else {
+                                                return '<span style="color:#FFB800;">已删除</span>';
+                                            }
+                                        }
+                                    },
+                                    {
+                                        field: '', title: '操作', width: 220, align: 'left', templet: function (d) {
+                                            var content = '<div>';
+                                            content += '<a target="_blank" href="/House/HouseDetails/' + d.ID + '" class="layui-btn layui-btn-primary layui-btn-xs">查看</a>';
+                                            content += '<a href="/User/CreateHouseInfoView/' + d.ID + '" class="layui-btn layui-btn-primary layui-btn-xs">修改</a>';
+                                            if (d.State == 0) {
+                                                content += '<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs">下架</a>';
+                                            }
+                                            if (d.State == 1) {
+                                                content += '<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs">上架</a>';
+                                            }
+                                            content += '</div>';
+                                            return content;
+                                        }
+                                    }
+
+                                ]]
+                            });
+                        });
+                    };
+                    var searchHandle = function () {
+                        var keywords = $("#keywords").val();
+                        table.reload('grid1', {
+                            page: {
+                                curr: 1
+                            },
+                            where: {
+                                keywords: keywords
+                            }
+                        });
+                    };
+                    return {
+                        init: function () {
+                            initPage();
+                        },
+                        search: function () {
+                            searchHandle();
+                        }
+                    }
+                }();
+                $(function () { houesManager.init(); });
+            </script>
+        }
+    }
+    else
+    {
+        <p style="text-align: center;">对不起，你无此权限，请联系平台管理员。</p>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

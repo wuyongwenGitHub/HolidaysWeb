@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
+}
+
+@RenderSection("styles", false)
+@RenderSection("scripts", false)
+
+@RenderBody()
+
+@section footer{
+    <!--goholiday-footer-->
+    <div class="goholiday-footer">
+        <div class="ghfooter-wrap w1080 clearfix">
+            <ul>
+                <li class="w490">
+                    <p>联系我们</p>
+                    <a>服务热线：023-48266667</a> <a>Email：wyqdjl@163.com </a>
+                </li>
+                <li class="w425">
+                    <p>帮助中心 </p>
+                    <a href="/home/readrule?rule=1">我要去度假房东规则</a>
+                    <a href="/home/readrule?rule=2">我要去度假房客规则</a>
+                    <a href="/home/readrule?rule=3">我要去度假房间审核规范</a>
+                    @*<a href="javascript:;">房源审核规范</a> <a href="javascript:;">房东经营行为管理规范</a> <a href="javascript:;">房客安心计划</a> <a href="javascript:;">优质住宿计划</a>*@
+                </li>
+                <li>
+                    <p>公司信息</p>
+                    <a href="/home/readrule?rule=4">关于度假</a> <a href="javascript:;">媒体报道</a> <a href="javascript:;">服务协议</a> <a href="javascript:;">隐私条款</a>
+                </li>
+            </ul>
+        </div>
+        <div class="copyright">CopyRight © 2016-2017 wyqdj.com 渝ICP备16014633号 </div>
+    </div>
+}
+@RenderSection("footerjs", false)

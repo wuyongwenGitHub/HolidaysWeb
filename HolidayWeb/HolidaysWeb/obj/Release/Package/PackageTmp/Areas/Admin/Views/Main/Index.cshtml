@@ -1,0 +1,263 @@
+﻿@{
+    ViewBag.Title = "后台管理首页";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row top_tiles">
+    <a href="/Admin/NormalUser/UserlistView">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-user-plus"></i></div>
+                <div class="count">@ViewBag.NormalUserTotal</div>
+                <h3>普通会员总数</h3>
+                <p>今日新增普通会员数量：<i class="green">@ViewBag.NormalUserTodayAdd</i></p>
+            </div>
+        </div>
+    </a>
+    <a href="/Admin/Landlord/LandlordManageView">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-users"></i></div>
+                <div class="count">@ViewBag.LandlordUserTotal</div>
+                <h3>房东总数</h3>
+                <p>今日新增房东数量：<i class="blue">@ViewBag.LandlordUserTodayAdd</i></p>
+            </div>
+        </div>
+    </a>
+    <a href="/Admin/HouseResource/HouseListView">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-hotel"></i></div>
+                <div class="count">@ViewBag.HouseTotal</div>
+                <h3>房源总数</h3>
+                <p>今日新增房源数：<i class="purple">@ViewBag.HouseTodayAdd</i></p>
+            </div>
+        </div>
+    </a>
+    <a href="/Admin/DataStats">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-money"></i></div>
+                <div class="count">@ViewBag.PriceTodayTotal</div>
+                <h3>今日平台交易</h3>
+                <p>今日平台提成：<i class="red">@ViewBag.PlatformRoyaltyTodayTotal</i></p>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>最新注册会员 <small>平台最近注册的普通会员数据</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a href="/Admin/NormalUser/UserlistView"><i class="fa fa-eye"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>会员姓名</th>
+                            <th>手机号</th>
+                            <th>注册时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.NormalUserList != null && ViewBag.NormalUserList.Count > 0)
+                        {
+                            for (int i = 0; i < ViewBag.NormalUserList.Count; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@Html.Raw(i + 1)</th>
+                                    <td>@ViewBag.NormalUserList[i].Username</td>
+                                    <td>@ViewBag.NormalUserList[i].PhoneNo</td>
+                                    <td>@ViewBag.NormalUserList[i].CreateTime.ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td align="center" colspan="4">暂无数据</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>最新注册房东 <small>平台最近注册的房东数据</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Landlord/LandlordManageView"><i class="fa fa-eye"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>房东姓名</th>
+                            <th>手机号码</th>
+                            <th>注册时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.LandlordUserList != null && ViewBag.LandlordUserList.Count > 0)
+                        {
+                            for (int i = 0; i < ViewBag.LandlordUserList.Count; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@Html.Raw(i + 1)</th>
+                                    <td>@ViewBag.LandlordUserList[i].Username</td>
+                                    <td>@ViewBag.LandlordUserList[i].PhoneNo</td>
+                                    <td>@ViewBag.LandlordUserList[i].CreateTime.ToString("yyyy-MM-dd hh:mm:ss")</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td align="center" colspan="4">暂无数据</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>最新房源 <small>平台最近发布的房源数据</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a href="/Admin/HouseResource/HouseListView"><i class="fa fa-eye"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>房源标题</th>
+                            <th>房间价格</th>
+                            <th>房东姓名</th>
+                            <th>手机号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.HouseList != null && ViewBag.HouseList.Count > 0)
+                        {
+                            for (int i = 0; i < ViewBag.HouseList.Count; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@Html.Raw(i + 1)</th>
+                                    <td>@ViewBag.HouseList[i].HouseTitle</td>
+                                    <td>@ViewBag.HouseList[i].Price</td>
+                                    <td>@ViewBag.HouseList[i].Username</td>
+                                    <td>@ViewBag.HouseList[i].PhoneNo</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td align="center" colspan="5">暂无数据</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>最近交易 <small>平台最近的交易数据</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a href="/Admin/DataStats"><i class="fa fa-eye"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>订单号</th>
+                            <th>会员姓名</th>
+                            <th>订单总额</th>
+                            <th>平台提成</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.OrderList != null && ViewBag.OrderList.Count > 0)
+                        {
+                            for (int i = 0; i < ViewBag.OrderList.Count; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@Html.Raw(i + 1)</th>
+                                    <td>@ViewBag.OrderList[i].OrderNo</td>
+                                    <td>@ViewBag.OrderList[i].Username</td>
+                                    <td>@ViewBag.OrderList[i].TotalPrice</td>
+                                    <td>@ViewBag.OrderList[i].PlatformRoyalty</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td align="center" colspan="5">暂无数据</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

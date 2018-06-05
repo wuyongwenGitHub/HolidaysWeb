@@ -1,0 +1,311 @@
+﻿@{
+    ViewBag.Title = "租房搜索";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/renthouse.css" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link href="~/Framework/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+}
+
+@section scripts{
+    <!-- Bootstrap -->
+    <script src="~/Framework/gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Framework/angular-1.6.0-rc.2/angular.min.js"></script>
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+
+<div ng-app="houseApp" ng-controller="HouseListController" ng-init="initHouseList(1)">
+    <div class="navigation"><div class="w1080" style="width:1000px;">首页 <span>&gt;</span> 租房搜索</div></div>
+    <div class="ghsearch-contain w1080" style="width:1000px;">
+        <div class="ghsearch-wrap">
+            <input id="txtKeywords" type="text" value="@ViewBag.Keywords" class="text-input" placeholder="关键词">
+            <a style="text-decoration:none;" ng-click="initHouseList(1)" class="ghsearch-btn">搜索</a>
+        </div>
+    </div>
+    <div class="ghsearch-condition w1080">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+                @*<tr>
+                        <td class="condtitle">区域</td>
+                        <td class="condtlist">
+                            <div class="conlist-wrap"><span class="checked">不限</span> <span>商圈<img src="/Images/gh-14.png" data-src="/Images/gh-14.png" data-checked="/Images/gh-16.png"></span> <span>景点<img src="/Images/gh-14.png" data-src="/Images/gh-14.png" data-checked="/Images/gh-16.png"></span> <span>车站<img src="/Images/gh-14.png" data-src="/Images/gh-14.png" data-checked="/Images/gh-16.png"></span> <span>地铁<img src="/Images/gh-14.png" data-src="/Images/gh-14.png" data-checked="/Images/gh-16.png"></span><span>学校<img src="/Images/gh-14.png" data-src="/Images/gh-14.png" data-checked="/Images/gh-16.png"></span> <span>医院<img src="/Images/gh-14.png" data-src="/Images/gh-14.png" data-checked="/Images/gh-16.png"></span> </div>
+                            <div class="placenames clearfix">
+                                <div class="pname-list clearfix"><em>B</em><span>巴国城</span><span>巴南</span><span>北碚</span><span>北部新区</span><span>北城天街</span><span>璧山</span></div>
+                                <div class="pname-list clearfix"><em>D</em><span>大渡口公园</span><span>大渡口商圈</span><span>大坪</span><span>大学城</span><span>大足区</span></div>
+                                <div class="pname-list clearfix"><em>F</em><span>涪陵区</span></div>
+                                <div class="pname-list clearfix"><em>G</em><span>观音桥</span></div>
+                                <div class="pname-list clearfix"><em>H</em><span>黄泥塝</span></div>
+                                <div class="pname-list clearfix"><em>B</em><span>巴国城</span><span>巴南</span><span>北碚</span><span>北部新区</span><span>北城天街</span><span>璧山</span></div>
+                                <div class="pname-list clearfix"><em>D</em><span>大渡口公园</span><span>大渡口商圈</span><span>大坪</span><span>大学城</span><span>大足区</span></div>
+                                <div class="pname-list clearfix"><em>F</em><span>涪陵区</span></div>
+                                <div class="pname-list clearfix"><em>G</em><span>观音桥</span></div>
+                                <div class="pname-list clearfix"><em>H</em><span> 黄泥塝</span></div>
+                                <div class="clear"><!--clear--></div>
+                                <div class="plname-more">更多<img src="/Images/gh-01.png"></div>
+                            </div>
+                        </td>
+                    </tr>*@
+                <tr>
+                    <td class="condtitle">价格</td>
+                    <td class="condtlist">
+                        <span class="checked" ng-click="fnPriceQuery(0, 0)">不限</span>
+                        <span ng-click="fnPriceQuery(0, 100)">100以下</span>
+                        <span ng-click="fnPriceQuery(100, 200)">100-200</span>
+                        <span ng-click="fnPriceQuery(200, 300)">200-300</span>
+                        <span ng-click="fnPriceQuery(300, 500)">300-500</span>
+                        <div class="customize-info">
+                            自定义
+                            <input id="txtMinPrice" type="number" class="text-input">
+                            <em>-</em>
+                            <input id="txtMaxPrice" type="number" class="text-input">
+                            <a href="javascript:;" ng-click="fnCustomerPriceQuery($event)" class="custsubit-btn">确定</a>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="condtitle">户型</td>
+                    <td class="condtlist">
+                        <span ng-click="fnRoomNumQuery()" class="checked">不限</span>
+                        <div class="customize-info">
+                            <input id="txtBedroomNum" type="number" class="text-input">
+                            <em>室</em>
+                            <input id="txtLivingRoomNum" type="number" class="text-input">
+                            <em>厅</em>
+                            <input id="txtToiletNum" type="number" class="text-input">
+                            <em>卫</em>
+
+                            <a ng-click="fnCustomerRoomNumQuery($event)" href="javascript:;" class="custsubit-btn">确定</a>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="condtitle">风格</td>
+                    <td class="condtlist">
+                        <span ng-click="fnDecorativeStyleQuery(0)" class="checked">不限</span>
+                        <span ng-click="fnDecorativeStyleQuery(1)">普通住宅</span>
+                        <span ng-click="fnDecorativeStyleQuery(2)">欧式小洋房</span>
+                        <span ng-click="fnDecorativeStyleQuery(3)">民宿</span>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="condtips">
+                        <a ng-if="PageModel.TotalRow > 99" href="javascript:;">{{ PageModel.TotalRow }}+</a>
+                        <a ng-if="PageModel.TotalRow < 100" href="javascript:;">{{ PageModel.TotalRow }}</a>
+                        套房源可租&nbsp;&nbsp;&nbsp;
+                        <a ng-click="fnSort(0)" href="javascript:;">推荐排序</a>
+                        <em ng-click="fnSort(1)" class="sort">价格<img src="/Images/gh-17.png" data-sort="/Images/gh-17.png" data-sortup="/Images/gh-17_1.png"></em>
+                        <em ng-click="fnSort(2)" class="sort">评论数<img src="/Images/gh-18.png" data-sort="/Images/gh-18.png" data-sortup="/Images/gh-18_1.png"></em>
+                        <em ng-click="fnSort(3)" class="sort">预订<img src="/Images/gh-18.png" data-sort="/Images/gh-18.png" data-sortup="/Images/gh-18_1.png"></em>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <!--house-list-->
+        <div class="gohouses-list clearfix">
+            <ul>
+                <li ng-repeat="house in houseList">
+                    <div class="ghmain-header">
+                        <a target="_blank" href="/House/HouseDetails/{{ house.ID }}">
+                            <img src="{{ house.FirstImg }}">
+                        </a>
+                        <span ng-if="house.IsReals == true" class="ghouse-status">实拍</span>
+                        <span ng-if="house.IsReals == false" class="ghouse-status">效果图</span>
+                        <span ng-if="house.IsCooking == true" class="ghouse-status t35">可做饭</span>
+                        <div ng-if="house.IsTrusteeship == true" class="gohouse-status">托 管</div>
+                        <div class="user-icon">
+                            <img ng-if="house.Img != null" src="{{ house.Img }}">
+                            <img ng-if="house.Img == null" src="/Images/default.jpg">
+                        </div>
+                    </div>
+                    <div class="ghmain-footer">
+                        <a target="_blank" href="/House/HouseDetails/{{ house.ID }}">
+                            <div class="price-title" title="￥{{ house.Price }} {{ house.HouseTitle }}">
+                                <span class="price-num">￥{{ house.Price }}</span>{{ house.HouseTitle }}    
+                                <span ng-hide="house.IsEmpty == 0" style="margin-left:10px;color:#ff0000;">已满</span>
+                                <span ng-hide="house.IsEmpty == 1" style="margin-left:10px;color:#38a24b;">可订</span>
+                            </div>
+                        </a>
+                        <div class="ghmain-star">
+                            <a target="_blank" href="/House/HouseDetails/{{ house.ID }}">
+                                <img ng-repeat="n in range(house.EvaluateAvgScore)" src="/Images/gh-09.png">
+                                <span>{{ house.EvaluateNum }}条评论</span>
+                            </a>
+                            <em><span ng-if="house.BedroomNum > 0">{{ house.BedroomNum }}室</span><span ng-if="house.LivingRoomNum > 0">{{ house.LivingRoomNum }}厅</span><span ng-if="house.ToiletNum > 0">{{ house.ToiletNum }}卫</span><span>可住{{ house.StayPersonNum }}人</span></em>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="goods-item" ng-if="houseList.length == 0"><div>未查询到房源信息！</div></li>
+            </ul>
+        </div>
+        <!--house-list-->
+        <!--page-wrap-->
+        <div id="page-wrap" ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initHouseList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initHouseList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initHouseList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initHouseList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initHouseList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--page-wrap-->
+    </div>
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        var houseApp = angular.module('houseApp', []);
+
+        houseApp.controller('HouseListController', function HouseListController($scope, $http) {
+            $scope.bySort = 0;
+
+            // 数字转数组
+            $scope.range = function (start, end) {
+                var ret = [];
+                if (!end) {
+                    end = start;
+                    start = 0;
+                }
+                for (var i = start; i < end; i++) {
+                    ret.push(i);
+                }
+                return ret;
+            };
+
+            // 初始化数据
+            $scope.initHouseList = function (page) {
+                var keywords = $("#txtKeywords").val();
+                var data = {
+                    page: page, keywords: keywords, minPrice: $scope.minPrice, maxPrice: $scope.maxPrice,
+                    bedroomNum: $scope.bedroomNum, livingRoomNum: $scope.livingRoomNum, toiletNum: $scope.toiletNum,
+                    decorativeStyle: $scope.decorativeStyle, bySort: $scope.bySort
+                };
+
+                $http({
+                    method: 'POST',
+                    url: '/House/GetRentHouseList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].EvaluateAvgScore = data[i].EvaluateAvgScore == 0 ? 5 : data[i].EvaluateAvgScore
+                    }
+
+                    $scope.houseList = data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 价格查询
+            $scope.fnPriceQuery = function (minPrice, maxPrice) {
+                $scope.minPrice = minPrice;
+                $scope.maxPrice = maxPrice;
+
+                $("#txtMinPrice").val("");
+                $("#txtMaxPrice").val("");
+
+                $scope.initHouseList(1);
+            }
+
+            // 自定义价格
+            $scope.fnCustomerPriceQuery = function ($event) {
+                var currentDom = $event.target;
+                $(currentDom).parent().siblings().removeClass("checked");
+
+                $scope.minPrice = $("#txtMinPrice").val();
+                $scope.maxPrice = $("#txtMaxPrice").val();
+                $scope.initHouseList(1);
+            }
+
+            // 户型不限
+            $scope.fnRoomNumQuery = function () {
+                $("#txtBedroomNum").val("");
+                $("#txtLivingRoomNum").val("");
+                $("#txtToiletNum").val("");
+
+                $scope.bedroomNum = 0;
+                $scope.livingRoomNum = 0;
+                $scope.toiletNum = 0;
+
+                $scope.initHouseList(1);
+            }
+
+            // 自定义户型
+            $scope.fnCustomerRoomNumQuery = function ($event) {
+                var currentDom = $event.target;
+                $(currentDom).parent().siblings().removeClass("checked");
+
+                $scope.bedroomNum = $("#txtBedroomNum").val();
+                $scope.livingRoomNum = $("#txtLivingRoomNum").val();
+                $scope.toiletNum = $("#txtToiletNum").val();
+
+                $scope.initHouseList(1);
+            }
+
+            // 装修风格
+            $scope.fnDecorativeStyleQuery = function (decorativeStyle) {
+                $scope.decorativeStyle = decorativeStyle;
+
+                $scope.initHouseList(1);
+            }
+
+            // 排序
+            $scope.fnSort = function (bySort) {
+                $scope.bySort = bySort;
+                $scope.initHouseList(1);
+            }
+        });
+
+        $(function () {
+            //筛选条件
+            $(".condtlist span").on("click", function () {
+                $(this).addClass("checked").siblings("span").removeClass("checked");
+                if ($(this).find("img").length > 0) {
+                    $(this).find("img").attr("src", $(this).find("img").data("checked"));
+                    $(this).siblings().find("img").attr("src", $(this).find("img").data("src"));
+                }
+            });
+            $(".placenames span").on("click", function () {
+                $(".pname-list span").removeClass("checked");
+                $(this).addClass("checked");
+            });
+            //更多
+            $(".plname-more").on("click", function () {
+                $(".placenames").toggleClass("hauto");
+            });
+            //排序
+            $(".condtips .sort").on("click", function () {
+                $(".condtips .sort").each(function () {
+                    $(this).find("img").attr("src", $(this).find("img").data("sort"));
+                    $(this).removeClass("sortup");
+                })
+                if ($(this).hasClass("sortup")) {
+                    $(this).find("img").attr("src", $(this).find("img").data("sort"));
+                    $(this).removeClass("sortup");
+                } else {
+                    $(this).find("img").attr("src", $(this).find("img").data("sortup"));
+                    $(this).addClass("sortup");
+                }
+            });
+        });
+    </script>
+}

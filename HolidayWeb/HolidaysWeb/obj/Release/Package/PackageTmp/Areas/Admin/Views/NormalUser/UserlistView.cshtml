@@ -1,0 +1,361 @@
+﻿@{
+    ViewBag.Title = "会员信息管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-app="userInfoApp" ng-controller="UserInfoListController" ng-init="initUserInfoList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>会员信息管理 </h2>
+            @*<ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button ng-click="openAddUserInfoModal()" class="btn btn-danger">添加会员</button>
+                    </li>
+                </ul>*@
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <form id="frmUserInfoQuery" class="form-horizontal form-label-left">
+                <div class="col-md-3"><input name="username" type="text" class="form-control" placeholder="会员名称" /></div>
+                <div class="col-md-3"><input name="phoneNo" type="text" class="form-control" placeholder="联系电话" /></div>
+                <div class="col-md-3"><input name="idcard" type="text" class="form-control" placeholder="身份证号" /></div>
+                <div class="col-md-3"><button ng-click="initUserInfoList(1)" type="button" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>会员名称</th>
+                        <th>性别</th>
+                        <th>手机号</th>
+                        <th>邮箱</th>
+                        <th>身份证号</th>
+                        <th>注册时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="userInfo in userInfoList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ userInfo.Username }}</td>
+                        <td ng-if="userInfo.Gender == 0">男</td>
+                        <td ng-if="userInfo.Gender == 1">女</td>
+                        <td ng-if="userInfo.Gender != 0 && userInfo.Gender != 1">保密</td>
+                        <td>{{ userInfo.PhoneNo }}</td>
+                        <td>{{ userInfo.Email }}</td>
+                        <td>{{ userInfo.IDCardNo }}</td>
+                        <td>{{ userInfo.CreateTime }}</td>
+                        <td ng-if="userInfo.State == 0"><span class="green">正常</span></td>
+                        <td ng-if="userInfo.State == 1"><span class="yellow">禁用</span></td>
+                        <td ng-if="userInfo.State == 2"><span class="red">删除</span></td>
+                        <td>
+                            <a href="javascript:;" ng-click="openViewUserInfoInfoModal(userInfo)" title="查看" class="fa fa-eye btn-xs"></a>
+                            @*<a href="#" ng-click="openEditUserInfoInfoModal(userInfo.ID)" title="编辑" class="fa fa-edit btn-xs"></a>*@
+                            <a href="javascript:;" ng-hide="userInfo.State != 0" ng-click="disenableUserInfo(userInfo.AccountID)" title="禁用账号" class="fa fa-minus-circle btn-xs"></a>
+                            <a href="javascript:;" ng-hide="userInfo.State == 0" ng-click="enableUserInfo(userInfo.AccountID)" title="启用账号" class="fa fa-check-circle btn-xs"></a>
+                            <a href="javascript:;" ng-hide="userInfo.State == 2" ng-click="del(userInfo.AccountID)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="userInfoList.length == 0">
+                        <td colspan="9" align="center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initUserInfoList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initUserInfoList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initUserInfoList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initUserInfoList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initUserInfoList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑会员信息窗口 -->
+    @*<div class="modal fade" id="editUserInfoInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title">编辑会员信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmUserInfoInfo" class="form-horizontal form-label-left" novalidate>
+                            <input name="ID" type="hidden" value="{{ UserInfoInfo.ID }}" />
+
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="UserInfoName">
+                                    会员名称 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input ng-model="UserInfoInfo.UserInfoName" name="UserInfoName" id="UserInfoName" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Linkman">
+                                    联系人 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input ng-model="UserInfoInfo.Linkman" id="Linkman" name="Linkman" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Phone1">
+                                    联系电话 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input ng-model="UserInfoInfo.Phone1" name="Phone1" id="Phone1" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Phone2">
+                                    备用电话
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input ng-model="UserInfoInfo.Phone2" name="Phone2" id="Phone2" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Address">
+                                    联系地址
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input ng-model="UserInfoInfo.Address" name="Address" id="Address" maxlength="100" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" ng-click="saveUserInfoInfo()" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <!-- 编辑会员信息窗口END -->
+    <!-- 查看会员信息窗口 -->
+    <div class="modal fade" id="viewUserInfoInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">会员信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">头像</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <img width="150" height="150" src="{{ UserInfoInfo.Img }}" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">会员姓名</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ UserInfoInfo.Username }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">性别</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <span ng-if="UserInfoInfo.Gender == 0">男</span>
+                            <span ng-if="UserInfoInfo.Gender == 1">女</span>
+                            <span ng-if="UserInfoInfo.Gender != 0 && UserInfoInfo.Gender != 1">保密</span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">手机号</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ UserInfoInfo.PhoneNo }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">备用手机号</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ UserInfoInfo.PhoneNo2 }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">邮箱</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ UserInfoInfo.Email }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">身份证号</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ UserInfoInfo.IDCardNo }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">注册时间</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ UserInfoInfo.CreateTime }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">状态</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <span ng-if="UserInfoInfo.State == 0">正常</span>
+                            <span ng-if="UserInfoInfo.State == 1">禁用</span>
+                            <span ng-if="UserInfoInfo.State == 2">删除</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看会员信息窗口END -->
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        var userInfoApp = angular.module('userInfoApp', []);
+
+        userInfoApp.controller('UserInfoListController', function UserInfoListController($scope, $http) {
+            $scope.initUserInfoList = function (page) {
+                var username = $("input[name=username]").val();
+                var phoneNo = $("input[name=phoneNo]").val();
+                var idcard = $("input[name=idcard]").val();
+                var data = { page: page, username: username, phoneNo: phoneNo, idcard: idcard };
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/NormalUser/GetUserInfoList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+
+                    // 格式化时间
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                    }
+
+                    $scope.userInfoList = data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 打开查看会员信息窗口
+            $scope.openViewUserInfoInfoModal = function (userInfoInfo) {
+                $scope.UserInfoInfo = userInfoInfo;
+                $("#viewUserInfoInfoModal").modal();
+            }
+
+            //// 打开添加会员信息窗口
+            //$scope.openAddUserInfoModal = function () {
+            //    $scope.UserInfoInfo = null;
+            //    $("#editUserInfoInfoModal").modal();
+            //}
+
+            //// 打开编辑会员信息窗口
+            //$scope.openEditUserInfoInfoModal = function (id) {
+            //    $scope.queryUserInfoInfoByID(id);
+            //    $("#editUserInfoInfoModal").modal();
+            //}
+
+            // 禁用会员账号
+            $scope.disenableUserInfo = function (accountID) {
+                layer.confirm("确定要禁用该会员账号吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        $scope.updateState(accountID, 1);
+                    }
+                });
+            }
+
+            // 启用会员账号
+            $scope.enableUserInfo = function (accountID) {
+                layer.confirm("确定要启用该会员账号吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        $scope.updateState(accountID, 0);
+                    }
+                });
+            }
+
+            // 删除会员信息
+            $scope.del = function (accountID) {
+                layer.confirm("确定要删除吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        $scope.updateState(accountID, 2);
+                    }
+                });
+            }
+
+            // 更新会员账户状态
+            $scope.updateState = function (accountID, state) {
+                $http({
+                    method: 'POST',
+                    url: '/Admin/NormalUser/UpdateState',
+                    data: { accountID: accountID, state: state }
+                }).then(function successCallback(response) {
+                    if (response.data.Status == "ok") {
+                        layer.alert(response.data.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(response.data.Msg, { icon: 2 });
+                    }
+                }), function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                };
+            }
+
+            //// 根据编号查询会员信息
+            //$scope.queryUserInfoInfoByID = function (id) {
+            //    $http({
+            //        method: 'POST',
+            //        url: '/Admin/NormalUser/QueryUserInfoInfoByID',
+            //        data: { id: id }
+            //    }).then(function successCallback(response) {
+            //        $scope.UserInfoInfo = response.data.Data;
+            //    }, function errorCallback(response) {
+            //        layer.alert("系统异常", { icon: 2 });
+            //    });
+            //}
+
+            // 保存会员信息
+            //$scope.saveUserInfoInfo = function () {
+            //    var loadIndex = layer.load();
+            //    var data = $("#frmUserInfoInfo").serialize();
+            //    $.post("/Admin/NormalUser/SaveUserInfoInfo", data, function (result) {
+            //        layer.close(loadIndex);
+
+            //        if (result.Status == "ok") {
+            //            layer.alert(result.Msg, { icon: 1 }, function () {
+            //                window.location.reload();
+            //            });
+            //        } else {
+            //            layer.alert(result.Msg, { icon: 2 });
+            //        }
+            //    });
+            //}
+        });
+    </script>
+}
+
+

@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" /> 
+  <title>zx1984, Calendar-Price-jQuery</title> 
+  <link rel="stylesheet" href="css/calendar-price-jquery.min.css" /> 
+  <style>
+    body {margin: 0; padding: 0; font-family: "Microsoft YaHei UI";}
+  </style> 
+ </head> 
+ <body> 
+  <div class="container"></div> 
+  <script src="js/jquery-1.12.4.min.js"></script> 
+  <script src="js/mock-data.js"></script> 
+  <script src="js/calendar-price-jquery.js"></script> 
+  <!--<script src="../src/js/calendar-price-jquery.js"></script>-->
+  <script>
+  $(function () {
+    // 生成模拟数据
+    var MOCK_DATA = createMockData()
+
+    var zxCalendar = $.CalendarPrice({
+        el: '.container',
+      // startDate: '2017-08-02',
+      endDate: '2018-12-20',
+      data: MOCK_DATA,
+      // 配置需要设置的字段名称
+      config: [
+        {
+          key: 'buyNumMax',
+          name: '最多购买数'
+        },
+        {
+          key: 'buyNumMin',
+          name: '最少购买数'
+        },
+        {
+          key: 'price',
+          name: '分销售价'
+        },
+        {
+          key: 'priceMarket',
+          name: '景区挂牌价'
+        },
+        {
+          key: 'priceSettlement',
+          name: '分销结算价'
+        },
+        {
+          key: 'priceRetail',
+          name: '建议零售价'
+        },
+        {
+          key: 'cashback',
+          name: '返现'
+        },
+        {
+          key: 'stock',
+          name: '当天库存'
+        }
+      ],
+      // 配置在日历中要显示的字段
+      show: [
+        {
+          key: 'price',
+          name: '分:￥'
+        },
+        {
+          key: 'priceSettlement',
+          name: '采:￥'
+        },
+        {
+          key: 'stock',
+          name: '库:'
+        }
+      ],
+      callback: function (data) {
+	  debugger;
+        log('callback ....');
+        log(data);
+      },
+      cancel: function () {
+        log('取消设置 ....');
+        // 取消设置
+        // 这里可以触发关闭设置窗口
+        // ...
+      },
+      monthChange: function (month) {
+        log('monthChange: ')
+        log(month)
+//        var newData = createMockData()
+//        zxCalendar.update(newData)
+      },
+      reset: function () {
+        log('数据重置成功！');
+      },
+      error: function (err) {
+        console.error(err.msg);
+        alert(err.msg);
+      },
+      // 自定义颜色
+      style: {
+        // 头部背景色
+        headerBgColor: 'black',
+        // 头部文字颜色
+        headerTextColor: '#fff',
+        // 周一至周日背景色，及文字颜色
+        weekBgColor: 'black',
+        weekTextColor: '#fff',
+        // 周末背景色，及文字颜色
+        weekendBgColor: '#098cc2',
+        weekendTextColor: '#fff',
+        // 有效日期颜色
+        validDateTextColor: '#333',
+        validDateBgColor: '#fff',
+        validDateBorderColor: '#eee',
+        // Hover
+        validDateHoverBgColor: '#098cc2',
+        validDateHoverTextColor: '#fff',
+        // 无效日期颜色
+        invalidDateTextColor: '#ccc',
+        invalidDateBgColor: '#fff',
+        invalidDateBorderColor: '#eee',
+        // 底部背景颜色
+        footerBgColor: 'black',
+        // 重置按钮颜色
+        resetBtnBgColor: '#77c351',
+        resetBtnTextColor: '#fff',
+        resetBtnHoverBgColor: '#55b526',
+        resetBtnHoverTextColor: '#fff',
+        // 确定按钮
+        confirmBtnBgColor: '#098cc2',
+        confirmBtnTextColor: '#fff',
+        confirmBtnHoverBgColor: '#00649a',
+        confirmBtnHoverTextColor: '#fff',
+        // 取消按钮
+        cancelBtnBgColor: '#fff',
+        cancelBtnBorderColor: '#bbb',
+        cancelBtnTextColor: '#999',
+        cancelBtnHoverBgColor: '#fff',
+        cancelBtnHoverBorderColor: '#bbb',
+        cancelBtnHoverTextColor: '#666'
+      }
+      // 点击有效的某一触发的回调函数
+      // 注意：配置了此参数，设置窗口无效，即不能针对日期做参数设置
+      // 返回每天的数据
+//        everyday: function (dayData) {
+//            console.log('点击某日，返回当天的数据');
+//            console.log(dayData);
+//        },
+      // 隐藏底部按钮（重置、确定、取消），前台使用该插件时，则需要隐藏底部按钮
+//        hideFooterButton: true
+    });
+    log(zxCalendar)
+  });
+
+  function log (s) {
+    console.log(s)
+  }   
+/*
+        var mouseX, mouseY;    
+        var objX, objY;    
+        var isDowm = false;
+	var div=$(".cddsw-container");   
+        div.mouseDown(function(obj, e) {    
+             
+            obj.style.cursor = "move1";    
+            objX = div.offsetLeft;  
+            objY = div.offsetTop;  
+            mouseX = e.clientX;    
+            mouseY = e.clientY;    
+            isDowm = true;    
+        })    
+        div.mouseMove(function(e) {    
+               
+            var x = e.clientX;    
+            var y = e.clientY;    
+            if (isDowm) {    
+                div.style.left = parseInt(objX) + parseInt(x) - parseInt(mouseX) + "px";    
+                div.style.top = parseInt(objY) + parseInt(y) - parseInt(mouseY) + "px";    
+            }    
+        })    
+        div.mouseUp(function(e) {    
+            if (isDowm) {    
+                var x = e.clientX;    
+                var y = e.clientY;    
+                   
+                div.style.left = parseInt(objX) + parseInt(x) - parseInt(mouseX) + "px";    
+                div.style.top = parseInt(objY) + parseInt(y) - parseInt(mouseY) + "px";    
+                div.style.cursor = "default";    
+                isDowm = false;    
+            }    
+        }) */   
+</script>   
+ </body>
+</html>

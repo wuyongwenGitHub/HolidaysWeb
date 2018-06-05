@@ -1,0 +1,206 @@
+﻿@model Holidays.Model.Entites.HouseInfoView
+
+@{
+    ViewBag.Title = "提交订单";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/percenter.css" rel="stylesheet" />
+}
+
+<form id="frmOrder">
+    <input type="hidden" name="HouseInfoID" value="@Model.ID" />
+    <input type="hidden" name="LandlordID" value="@Model.UserInfoID" />
+    <div class="page-wrap pb102">
+        <div class="canorder-main suborder-main">
+            <div class="perorder-contain clearfix">
+                <div class="percon-left"><img src="@Model.FirstImg"></div>
+                <div class="percon-right">
+                    <p class="pconrt-title pr0">@Model.HouseTitle</p>
+                    <p class="pconrt-landlord">位置：@Model.Address</p>
+                    <p class="poer-canum">￥@Model.Price<span>元/晚</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="suborder-contain">
+            <ul>
+                <li class="sorder-item">
+                    <div class="soerem-left">预定日期：</div>
+                    <div class="soerem-right">
+                        <input name="StartDate" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" class="input-enter w124" id="startTime" placeholder="入住日期" />
+                        <span class="line">-</span>
+                        <input name="EndDate" type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" class="input-enter w124" id="endTime" placeholder="退房时间" />
+                    </div>
+                </li>
+                @*<li class="sorder-item">
+                        <div class="soerem-left">预定套数：</div>
+                        <div class="soerem-right"><input type="text" class="input-enter w54" value="1">套</div>
+                    </li>*@
+                <li class="sorder-item">
+                    <div class="soerem-left">入住人数：</div>
+                    <div class="soerem-right"><input id="txtPersonNum" oninput="if(value.length>2)value=value.slice(0,2)" type="number" max="10" maxlength="2" name="PersonNum" class="input-enter w54" value="@Model.StayPersonNum" placeholder="必填">人</div>
+                </li>
+                <li class="sorder-item">
+                    <div class="soerem-left">联  系  人：</div>
+                    <div class="soerem-right"><input type="text" id="txtUsername" maxlength="20" name="Username" class="input-enter w100" value="@ViewBag.UserInfo.Username" placeholder="必填"></div>
+                </li>
+                @*<li class="sorder-item">
+                        <div class="soerem-left">身  份  证：</div>
+                        <div class="soerem-right"><input type="text" class="input-enter w100" placeholder="必填"></div>
+                    </li>*@
+                <li class="sorder-item">
+                    <div class="soerem-left">手  机  号：</div>
+                    <div class="soerem-right"><input maxlength="11" id="txtUserPhone" oninput="if(value.length>11)value=value.slice(0,11)" name="UserPhone" value="@ViewBag.UserInfo.PhoneNo" type="number" class="input-enter w100" placeholder="必填"></div>
+                </li>
+                @*<li class="sorder-item">
+                        <div class="soerem-left">验  证  码：</div>
+                        <div class="soerem-right"><input type="text" class="input-enter w100" placeholder="必填"></div>
+                    </li>*@
+                <li class="soerem-item" @if (ViewBag.IsFullPrice != null) { @Html.Raw("style='display:none;'")  }>
+                    <div class="soerem-left">选择支付：</div>
+                    <div class="soerem-right">
+                        <span onclick="fnChangeCheck(1, 'txtIsPet');" class="proper-radio checked">全款</span>
+                        @*<span onclick="fnChangeCheck(0, 'txtIsPet');" class="proper-radio">定金</span>*@
+                    </div>
+                </li>
+            </ul>
+        </div>
+        @if (!String.IsNullOrWhiteSpace(Model.ChargesNotes))
+        {
+            <div class="suborder-footer">
+                <p class="canoder-title">房东规定：</p>
+                <p class="canoder-tips">
+                    @Model.ChargesNotes
+                </p>
+            </div>
+        }
+        <a href="javascript:;" id="lbtnSubmitOrder" class="ghday-footer suborder-btn">提交订单并支付</a>
+    </div>
+</form>
+
+@section footerjs{
+    <script type="text/javascript">
+        $(function() {
+            //单选
+            $(".proper-radio").on("click", function () {
+                $(this).addClass("checked").siblings().removeClass("checked");
+            });
+        });
+
+        function fnSetDate() {
+            var s = $("#startTime").val();
+            var e = $("#endTime").val();
+
+            var today = "@DateTime.Now.ToString("yyyy-MM-dd")";
+            var tomorrow = "@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")";
+
+            if (s && fnDiffDate(s, today) > 0) {
+                $("#startTime").val(today);
+            }
+
+            if (e && fnDiffDate(e, tomorrow) > 0) {
+                $("#endTime").val(tomorrow);
+            }
+        }
+
+        $("#startTime,#endTime").on("change", fnSetDate);
+
+        // 入住时间
+        var startTime = localStorage.getItem("startTime");
+        var endTime = localStorage.getItem("endTime");
+
+        if (startTime) {
+            $("#startTime").val(startTime);
+        }
+
+        if (endTime) {
+            $("#endTime").val(endTime);
+        }
+
+        function fnDiffDate(startDate, endDate) {
+            if (startDate && endDate) {
+                var s = Date.parse(startDate);
+                var e = Date.parse(endDate);
+
+                return parseInt((e - s) / 1000 / 3600 / 24);
+            }
+
+            return 0;
+        }
+
+        var isFullPrice = 1;
+        function fnChangeCheck(val) {
+            isFullPrice = val;
+        }
+
+        $("#lbtnSubmitOrder").on("click", function () {
+            // 校验数据
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            var personNum = $("#txtPersonNum").val();
+            var username = $("#txtUsername").val();
+            var userPhone = $("#txtUserPhone").val();
+
+            if (startTime == "" || startTime.length <= 0) {
+                layermsg("请选择入住时间！");
+                return;
+            }
+
+            if (endTime == "" || endTime.length <= 0) {
+                layermsg("请选择退房时间！");
+                return;
+            }
+
+            if (fnDiffDate(startTime, endTime) <= 0) {
+                layermsg("退房时间必须大于入住时间！");
+                return;
+            }
+
+            if (personNum == "" || personNum.length <= 0) {
+                layermsg("请填写入住人数！");
+                return;
+            }
+
+            var temp1 = parseInt(personNum);
+            var temp2 = parseInt("@Model.StayPersonNum");
+            if (temp1 <= 0 || temp1 > temp2) {
+                layermsg("入住人数为1-" + temp2 + "人！");
+                return;
+            }
+
+            if (username == "" || username.length <= 0) {
+                layermsg("请填写联系人姓名！");
+                return;
+            }
+
+            if (userPhone == "" || userPhone.length <= 0) {
+                layermsg("请填写联系人手机号！");
+                return;
+            }
+
+            // 判断时间段是否预定
+            var loadIndex = layerload();
+            $.post("/House/IsReservation", { houseId: "@Model.ID", startTime: startTime, endTime: endTime }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    loadIndex = layerload();
+                    $.post("/Order/SubmitOrder", $("#frmOrder").serialize(), function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            layermsg("提交订单成功！", function () {
+                                window.location.href = "/weixin/wxpay/OrderPayView?orderNo=" + result.Msg + "&isFullPrice=" + isFullPrice;
+                            });
+                        } else {
+                            layermsg(result.Msg, { icon: 2 });
+                        }
+                    });
+                } else {
+                    layermsg(result.Msg);
+                }
+            });
+        });
+</script>
+}

@@ -1,0 +1,136 @@
+﻿@model IList<Holidays.Model.Entites.HouseEvaluate>
+
+@{
+    ViewBag.Title = "房源评价";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+}
+
+<div class="page-wrap pb102">
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="evaluateview-wrap">
+            <div class="evaleview-header">
+                <div class="evalh-left"><img src="/Images/wechart/cancel/mgh_23.jpg" alt=""></div>
+                <div class="evalh-right">
+                    <p class="evastar-wrap">
+                        <span>整洁卫生</span>
+                        <a href="javascript:;" class="eval-star">
+                            @if (ViewBag.CleanScore != null)
+                            {
+                                for (int i = 0; i < ViewBag.CleanScore; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_08.png">
+                                }
+
+                                for (int i = ViewBag.CleanScore; i < 5; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_09.png">
+                                }
+                            }
+                        </a>
+                    </p>
+                    <p class="evastar-wrap">
+                        <span>交通位置</span>
+                        <a href="javascript:;" class="eval-star">
+                            @if (ViewBag.LocationScore != null)
+                            {
+                                for (int i = 0; i < ViewBag.LocationScore; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_08.png">
+                                }
+
+                                for (int i = ViewBag.LocationScore; i < 5; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_09.png">
+                                }
+                            }
+                        </a>
+                    </p>
+                    <p class="evastar-wrap">
+                        <span>设施环境</span>
+                        <a href="javascript:;" class="eval-star">
+                            @if (ViewBag.EnvironmentScore != null)
+                            {
+                                for (int i = 0; i < ViewBag.EnvironmentScore; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_08.png">
+                                }
+
+                                for (int i = ViewBag.EnvironmentScore; i < 5; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_09.png">
+                                }
+                            }
+                        </a>
+                    </p>
+                    <p class="evastar-wrap">
+                        <span>房东服务</span>
+                        <a href="javascript:;" class="eval-star">
+                            @if (ViewBag.ServiceScore != null)
+                            {
+                                for (int i = 0; i < ViewBag.ServiceScore; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_08.png">
+                                }
+
+                                for (int i = ViewBag.ServiceScore; i < 5; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_09.png">
+                                }
+                            }
+                        </a>
+                    </p>
+                    <p class="evastar-wrap">
+                        <span>性&nbsp;&nbsp;价&nbsp;&nbsp;比</span>
+                        <a href="javascript:;" class="eval-star">
+                            @if (ViewBag.PerformanceScore != null)
+                            {
+                                for (int i = 0; i < ViewBag.PerformanceScore; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_08.png">
+                                }
+
+                                for (int i = ViewBag.PerformanceScore; i < 5; i++)
+                                {
+                                    <img src="/Images/wechart/mgh_09.png">
+                                }
+                            }
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="evaleview-main">
+                <ul>
+                    @foreach (var item in Model)
+                    {
+                        <li class="evalview-item">
+                            <div class="evalview-header">
+                                <div class="eval-title"><img src="@item.UserImg">@item.UserPhone</div>
+                                <div class="eval-time">@item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                            </div>
+                            <div class="evalview-main">@item.EvaluateContent</div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p style="text-align: center; padding: 20px; font-size: 14px;">该房源暂无评价信息！</p>
+    }
+
+    @if (ViewBag.HouseId != null)
+    {
+        <div class="ghday-footer">
+            <a href="tel:023-48266667" class="evalview">
+                <p class="evalv-title">平台电话：</p><p class="evalv-tel">023-48266667</p>
+            </a>
+            <a href="/Weixin/WeOrder/SubmitOrderView/@ViewBag.HouseId" class="eval-submit evalview">立即预定</a>
+        </div>
+    }
+</div>

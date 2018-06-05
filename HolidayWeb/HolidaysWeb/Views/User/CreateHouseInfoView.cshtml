@@ -1,0 +1,552 @@
+﻿@{
+    ViewBag.Title = "发布房源信息";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+    <style type="text/css">
+        .layui-form-label {
+            width: 100px;
+        }
+
+        .layui-upload-list {
+            margin-top: 10px;
+            margin-left: 20px;
+            padding: 10px;
+            height: 100px;
+            border: 1px solid #ddd;
+        }
+
+        .layui-upload-img {
+            width: 92px;
+            height: 92px;
+            margin: 0 10px 10px 0;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Framework/layui2/layui.all.js"></script>
+    <script src="~/Scripts/Utility.js"></script>
+    <script src="~/Scripts/jQuery-Util.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页<span>&gt;</span> 店铺中心</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="w1080">
+            <ul class="layui-nav layui-bg-blue ">
+                <li class="layui-nav-item layui-this"><a href="/User/UserCenter">店铺信息</a></li>
+                <li class="layui-nav-item"><a href="/User/HouseManager">房源管理</a></li>
+                <li class="layui-nav-item"><a href="/User/OrderManager">订单管理</a></li>
+                <li class="layui-nav-item"><a href="/User/FinanceManager">财务管理</a></li>
+                <li class="layui-nav-item"><a href="/User/CommentManager">评论管理</a></li>
+                <li class="layui-nav-item"><a href="/User/ResetPassword">修改密码</a></li>
+            </ul>
+            <div class="layui-row">
+                <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 layui-col-lg12" style="margin-top:5px;">
+                    <form id="form1" class="layui-form">
+                        <input type="hidden" name="ID" value="@Model.ID" />
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">房屋标题*</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="text" class="layui-input" value="@Model.HouseTitle" id="HouseTitle" name="HouseTitle" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">房屋户型*</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" value="@Model.BedroomNum" min="0" name="BedroomNum"/>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">室</div>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" value="@Model.LivingRoomNum" min="0" name="LivingRoomNum"/>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">厅</div>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" value="@Model.ToiletNum" min="0" name="ToiletNum"/>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">卫</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">出租价格*</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" value="@Model.Price" min="0" name="Price"/>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">元/天</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否可退</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="IsBack">
+                                        <option @if (Model.IsBack == 1) { @Html.Raw("selected='selected'") } value="1">不可退</option>
+                                        <option @if (Model.IsBack == 0) { @Html.Raw("selected='selected'") } value="0">入住当天18点前24小时内不可退</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否托管</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="IsTrusteeship">
+                                        <option @if (Model.IsTrusteeship) { @Html.Raw("selected='selected'") } value="true">是</option>
+                                        <option @if (!Model.IsTrusteeship) { @Html.Raw("selected='selected'") } value="false">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否出售</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="IsSell" lay-filter="sell">
+                                        <option @if (Model.IsSell) { @Html.Raw("selected='selected'") } value="true">是</option>
+                                        <option @if (!Model.IsSell) { @Html.Raw("selected='selected'") } value="false">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divSellPrice" class="layui-form-item" @if (!Model.IsSell) { @Html.Raw("style='display: none;'") }>
+                            <label class="layui-form-label">出售价格</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" value="@Model.SellPrice" min="0" name="SellPrice" />
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">万元</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">可做饭</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="IsCooking">
+                                        <option @if (Model.IsCooking) { @Html.Raw("selected='selected'") } value="true">是</option>
+                                        <option @if (!Model.IsCooking) { @Html.Raw("selected='selected'") } value="false">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">可携带宠物</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="IsPet">
+                                        <option @if (Model.IsPet) { @Html.Raw("selected='selected'") } value="true">是</option>
+                                        <option @if (!Model.IsPet) { @Html.Raw("selected='selected'") } value="false">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">可住人数*</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" value="@Model.StayPersonNum" min="1" name="StayPersonNum" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">面积*</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" value="@Model.HouseSize" min="0" name="HouseSize"/>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">平米，请填写房屋的使用面积</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">配套设施</label>
+                            <div class="layui-input-block" style="margin-left:80px;">
+                                @if (ViewBag.HouseConfigureList != null)
+                                {
+                                    foreach (var houseConfigure in ViewBag.HouseConfigureList)
+                                    {
+
+                                        <input class="cbxFacilities" fid="@houseConfigure.ID" fname="@houseConfigure.Name" ficon="@houseConfigure.Icon" fsort="@houseConfigure.Sort" type="checkbox" id="facility_@houseConfigure.ID" title="@houseConfigure.Name" />
+                                        @*<div class="fl"><img src="@houseConfigure.Icon">@houseConfigure.Name</div>*@
+
+                                    }
+                                }
+                                <input type="hidden" id="txtFacilities" name="Facilities" value="@Model.Facilities" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上传照片</label>
+                            <div class="layui-input-block" style="margin-left:80px;">
+                                <div class="layui-upload">
+                                    <button type="button" class="layui-btn" id="btn_upload">选择照片</button>
+                                    <input type="hidden" name="JsonHouseImgList" value="@Model.JsonHouseImgList" id="txtImages" />
+                                    <div class="layui-upload-list" id="uploadFileList">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-inline">
+                                <div class="layui-form-mid layui-word-aux">图片尽量清晰，最多上传6张</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">照片类型</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="IsReals">
+                                        <option @if (Model.IsReals) { @Html.Raw("selected='selected'") } value="true">实拍</option>
+                                        <option @if (!Model.IsReals) { @Html.Raw("selected='selected'") } value="false">效果图</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">所在城市</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select onchange="houseInfo.fnProvinceChange()" name="ProvinceId" id="sltProvince" lay-filter="ProvinceId"></select>
+                                </div>
+                                <div class="layui-input-inline">
+                                    <select onchange="houseInfo.fnCityChnage()" name="CityId" id="sltCity" lay-filter="CityId"></select>
+                                </div>
+                                <div class="layui-input-inline">
+                                    <select name="CountyId" id="sltCounty" lay-filter="CountyId"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-block">
+                                <a href="javascript:;" id="btnSave" class="layui-btn layui-inline" lay-submit lay-filter="save" onclick="houseInfo.submit()">保存</a>
+                                <a href="/User/HouseManager" class="layui-btn layui-btn-primary layui-inline" id="closeBtn">取消</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @section footerjs{
+            <script type="text/javascript">
+                var houseInfo = function () {
+                    var form,layer;
+                // 配套设施
+                    var facilities = [];
+                    var imgArray = [];
+                    var initPage = function () {
+                        layui.use(['form', 'element', 'upload', 'layer'], function () {
+                            form = layui.form;
+                            layer = layui.layer;
+                            var upload = layui.upload;
+                            var element = layui.element;
+
+
+                            form.render();
+
+                            form.on('select(ProvinceId)', function (data) {
+                                fnProvinceChangeHandle();
+                            });
+                            form.on('select(CityId)', function (data) {
+                                fnCityChnageHandle();
+                            });
+                            form.on('select(CountyId)', function () {
+                                form.render('select');
+                            });
+                            form.on('select(sell)', function (data) {
+                                if (data.value == 'true') {
+                                    $("#divSellPrice").show();
+                                } else {
+                                    $("#divSellPrice").hide();
+                                }
+                            });
+                            var uploadInst = upload.render({
+                                elem: '#btn_upload',
+                                url: '/Upload/UploadImage',
+                                multiple: true,
+                                number: 6,
+                                before: function () {
+                                    layer.load(2);
+                                },
+                                done: function (res) {
+                                    layer.closeAll('loading');
+                                    if (res.state == "0") {
+                                        var imgSrc = "/Images/Upload/" + res.url;
+                                        var imgObj = new Object();
+                                        imgObj.ImgUrl = imgSrc;
+                                        if (imgArray.length < 6) {
+                                            imgArray.push(imgObj);
+                                        }
+
+                                        fnUpdateImgHandle();
+                                    } else {
+                                        layer.msg(res.state, { icon: 2 });
+                                    }
+                                },
+                                error: function () {
+                                    layer.closeAll('loading');
+                                }
+                            });
+                            form.on('checkbox', function (data) {
+                                var isChecked = data.elem.checked;
+                                var tempObj = new Object();
+                                tempObj.ID = $(data.elem).attr("fid");
+                                tempObj.Name = $(data.elem).attr("fname");
+                                tempObj.Icon = $(data.elem).attr("ficon");
+                                tempObj.Sort = $(data.elem).attr("fsort");
+
+                                if (isChecked) {
+                                    facilities.push(tempObj);
+                                } else {
+                                    for (var i = 0; i < facilities.length; i++) {
+                                        if (facilities[i].ID == tempObj.ID) {
+                                            facilities.splice(i, 1);
+                                            break;
+                                        }
+                                    }
+                                }
+                                $("#txtFacilities").val(JSON.stringify(facilities));
+                            });
+
+                  var jsonFacilities = '@Html.Raw(Model.Facilities)';
+                            if (jsonFacilities) {
+                                var facilitiesObjs = JSON.parse(jsonFacilities);
+
+                                if (facilitiesObjs && facilitiesObjs.length > 0) {
+                                    for (var i = 0; i < facilitiesObjs.length; i++) {
+                                        var id = facilitiesObjs[i].ID;
+
+                                        $("#facility_" + id).attr("checked", "checked");
+                                        $("#facility_" + id).change();
+                                    }
+                                }
+                                form.render('checkbox');
+                            }
+                        });
+
+                                        // 初始化图片
+                var jsonHouseImgs = '@Html.Raw(Model.JsonHouseImgList)';
+                if (jsonHouseImgs) {
+                    var objHouseImgs = JSON.parse(jsonHouseImgs);
+
+                    if (objHouseImgs && objHouseImgs.length > 0) {
+                        for (var i = 0; i < objHouseImgs.length; i++) {
+                            var imgObj = new Object();
+                            imgObj.ImgUrl = objHouseImgs[i].ImgUrl;
+
+                            imgArray.push(imgObj);
+                            fnUpdateImgHandle();
+                        }
+                    }
+                }
+
+                    };
+                    var fnGetProvinceListHandle = function () {
+                        $.post("/Home/GetProvinceList", function (result) {
+                        if (result.Status == "ok") {
+                            var provinceList = result.Data;
+
+                            if (provinceList && provinceList.length > 0) {
+                                var provinceHtml = "";
+                                var provinceId = "@Model.ProvinceId";
+                                for (var i = 0; i < provinceList.length; i++) {
+                                    if (provinceList[i].Id == provinceId) {
+                                        provinceHtml += "<option selected='selected' value='" + provinceList[i].Id + "'>" + provinceList[i].Name + "</option>";
+                                    } else {
+                                        provinceHtml += "<option value='" + provinceList[i].Id + "'>" + provinceList[i].Name + "</option>";
+                                    }
+                                }
+
+                                $("#sltProvince").html(provinceHtml);
+
+                                fnProvinceChangeHandle();
+                            }
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                            }
+                                                    form.render('select');
+                    });
+                    };
+                    var fnDelImgByIndexHandle = function (index) {
+                        imgArray.splice(index, 1);
+                        fnUpdateImgHandle();
+                    };
+                    var fnUpdateImgHandle = function () {
+                        if (imgArray.length < 7) {
+                            var strImgsHtml = "";
+                            if (imgArray) {
+                                for (var i = 0; i < imgArray.length; i++) {
+                                    strImgsHtml += "<div class='upimg-wrap'><img src='" + imgArray[i].ImgUrl + "' class='layui-upload-img'><a onclick='houseInfo.fnDelImgByIndex(" + i + ")' href='javascript:;' class='uploadimg-cancel'></a></div>";
+                                }
+                            }
+
+                            $("#txtImages").val(JSON.stringify(imgArray));
+                            $("#uploadFileList").html(strImgsHtml);
+                        } else {
+                            layer.msg("最多只能上传6张图片", { icon: 2 });
+                        }
+                    };
+                    var fnProvinceChangeHandle = function () {
+                        var provinceId = $("#sltProvince option:selected").val();
+                    if (!provinceId) {
+                        provinceId = $("#sltProvince option:first").val();
+                        $("#sltCity").html("");
+                        return;
+                        }
+                        fnGetCityListHandle(provinceId, "sltCity", true);
+                    };
+                    var fnCityChnageHandle = function () {
+                        var cityId = $("#sltCity option:selected").val();
+
+                    if (!cityId) {
+                        cityId = $("#sltCity option:first").val();
+                        $("#sltCounty").html("");
+                        return;
+                    }
+                      //  form.render('select');
+                      fnGetCityListHandle(cityId, "sltCounty");
+                    };
+                    var fnGetCityListHandle = function (parentId, sltId, isRefreshCounty) {
+                         var data = { parentId: parentId };
+
+                    $.post("/Home/GetCityByParentId", data, function (result) {
+                        if (result.Status == "ok") {
+                            var cityList = result.Data;
+                            if (cityList && cityList.length > 0) {
+                                var cityHtml = "";
+                                var cityId = "@Model.CityId";
+                                for (var i = 0; i < cityList.length; i++) {
+                                    if (cityList[i].Id == cityId) {
+                                        cityHtml += "<option selected='selected' value='" + cityList[i].Id + " '>" + cityList[i].Name + "</option>";
+                                    } else {
+                                        cityHtml += "<option value='" + cityList[i].Id + "'>" + cityList[i].Name + "</option>";
+                                    }
+                                }
+
+                                $("#" + sltId).html(cityHtml);
+
+                                if (isRefreshCounty) {
+                                    fnCityChnageHandle();
+                                } else {
+                                    $("#sltCounty").val('@Model.CountyId');
+                                    form.render('select');
+                                }
+                            } else {
+                                $("#" + sltId).html("");
+                            }
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                        form.render('select');
+                    });
+                    };
+                    var submitHandle = function () {
+                        var obj = $("#form1");
+                        var formData = $.Util.serializeJSON(obj);
+                        if (formData.HouseTitle == "") {
+                            layer.msg("房屋标题不能为空！", { icon: 2 });
+                            return false;
+                        }
+                        if (formData.BedroomNum == "" || formData.BedroomNum < 0 || formData.LivingRoomNum == "" || formData.LivingRoomNum < 0 || formData.ToiletNum == "" || formData.ToiletNum < 0 || (formData.BedroomNum == 0 && formData.LivingRoomNum == 0 && formData.ToiletNum == 0)) {
+                            layer.msg("房屋户型填写错误！", { icon: 2 });
+                            return false;
+                        }
+                        if (formData.Price == "" || formData.Price <= 0) {
+                            layer.msg("出租价格必须大于0", { icon: 2 });
+                            return false;
+                        }
+
+                        if (formData.IsSell == 1 && (formData.SellPrice == "" || formData.SellPrice <= 0)) {
+                            layer.msg("出售价格必须大于0", { icon: 2 });
+                            return false;
+                        }
+
+                        if (formData.StayPersonNum == "" || formData.StayPersonNum <= 0) {
+                            layer.msg("可住人数填写错误！", { icon: 2 });
+                            return false;
+                        }
+
+                        if (formData.HouseSize == "" || formData.HouseSize <= 0) {
+                            layer.msg("房屋面积填写错误！", { icon: 2 });
+                            return false;
+                        }
+
+                        //if (formData. == "") {
+                        //    layer.alert("房屋位置不能为空！", { icon: 2 });
+                        //    return;
+                        //}
+
+                        if (imgArray.length == 0) {
+                            layer.msg("请至少上传一张照片！", { icon: 2 });
+                            return false;
+                        }
+
+                        if (!formData.ProvinceId || !formData.CityId) {
+                            layer.msg("请选择所在城市！", { icon: 2 });
+                            return false;
+                        }
+                        layer.load();
+                        $.ajax({
+                            url: '/House/SaveHouseInfo',
+                            type: 'post',
+                            data: formData,
+                            success: function (res) {
+                                layer.closeAll('loading');
+                                if (res.Status == "ok") {
+                                    layer.alert(res.Msg, { icon: 1 }, function () {
+                                        window.location.href = "/User/HouseManager";
+                                    });
+                                } else {
+                                    layer.alert(res.Msg, { icon: 2 });
+                                }
+                            }
+                        });
+                    };
+                    return {
+                        init: function () {
+                            initPage();
+                            fnGetProvinceListHandle();
+                        },
+                        fnProvinceChange: function () {
+                            fnProvinceChangeHandle();
+                        },
+                        fnCityChnage: function () {
+                            fnCityChnageHandle();
+                        },
+                        fnDelImgByIndex: function (index) {
+                            fnDelImgByIndexHandle(index);
+                        },
+                        submit: function () {
+                            submitHandle();
+                        }
+                    }
+                }();
+                $(function () { houseInfo.init(); });
+            </script>
+
+        }
+    }
+    else
+    {
+        <p style="text-align: center;">对不起，你无此权限，请联系平台管理员。</p>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

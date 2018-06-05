@@ -1,0 +1,177 @@
+﻿@model Holidays.Model.Entites.ShopInfo
+@{
+    ViewBag.Title = "店铺中心";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+    <style type="text/css">
+        .layui-form-label {
+            width: 100px;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Framework/layui2/layui.all.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页<span>&gt;</span> 店铺中心</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="w1080">
+            <ul class="layui-nav layui-bg-blue ">
+                <li class="layui-nav-item layui-this"><a href="/User/UserCenter">店铺信息</a></li>
+                <li class="layui-nav-item"><a href="/User/HouseManager">房源管理</a></li>
+                <li class="layui-nav-item"><a href="/User/OrderManager">订单管理</a></li>
+                <li class="layui-nav-item"><a href="/User/FinanceManager">财务管理</a></li>
+                <li class="layui-nav-item"><a href="/User/CommentManager">评论管理</a></li>
+                <li class="layui-nav-item"><a href="/User/ResetPassword">修改密码</a></li>
+            </ul>
+            <div class="layui-container">
+                <div class="layui-row">
+                    <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 layui-col-lg12">
+
+                    </div>
+                </div>
+                <div class="layui-row">
+
+                    @if (ViewBag.HasShop)
+                    {
+                        <div class="layui-col-md10 layui-col-xs10 layui-col-sm10" style="margin-top:5px;">
+                            <form class="layui-form ">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">状态</label>
+                                    <div class="layui-input-block">
+                                        @if (Model.IsCheck == 0)
+                                        {
+                                            <input class="layui-input" style="color:#1E9FFF;" value="正在审核店铺信息" readonly="readonly"/>
+                                        }
+                                        else if (Model.IsCheck == 1)
+                                        {
+                                            <input style="color:#5FB878;" class="layui-input" value="审核通过" readonly="readonly"/>
+                                        }
+                                        else if (Model.IsCheck == 2)
+                                        {
+                                            <input style="color:#FF5722;" class="layui-input" value="审核未通过" readonly="readonly" />
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">店铺名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" value="@Model.ShopName" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">店铺图片</label>
+                                    <div class="layui-input-block">
+                                        <img id="Img" class="layui-upload-img" src="@Model.ShopImgs" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">所在景区</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" value="@Model.SpotName" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">风格</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" value="@Model.ShopTypeName" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">起订价格</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" class="layui-input" value="@Model.StartPrice" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">地址</label>
+                                    <div class="layui-input-block">
+                                        <textarea class="layui-textarea" readonly="readonly">@Model.Locations</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">房源介绍</label>
+                                    <div class="layui-input-block">
+                                        <textarea class="layui-textarea" readonly="readonly">@Model.About</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">访客守则</label>
+                                    <div class="layui-input-block">
+                                        <textarea class="layui-textarea" readonly="readonly">@Model.Rules</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">收费说明</label>
+                                    <div class="layui-input-block">
+                                        <textarea class="layui-textarea" readonly="readonly">@Model.ChargesNotes</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"></label>
+                                    <div class="layui-input-block">
+                                        <a class="layui-btn" href="/User/ShopInfoView">修改</a>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="layui-col-md12 layui-col-xs12 layui-col-sm12" style="text-align:center;">
+                            <p style="margin-top:200px; margin-bottom:40px;">您还未创建店铺哦。</p>
+                            <a href="/User/ShopInfoView" class="layui-btn layui-btn-normal">创建店铺</a>
+                            <p style="margin-bottom:20px;"></p>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        @section footerjs{
+            <script type="text/javascript">
+
+                var userCenter = function () {
+
+                    var initPage = function () {
+                        layui.use(['form', 'element', 'layer'], function () {
+                            var form = layui.form;
+                            var element = layui.element;
+                            var layer = layui.layer;
+
+                            form.render();
+
+                        });
+                    };
+                    return {
+                        init: function () {
+                            initPage();
+                        }
+                    }
+                }();
+                $(function () { userCenter.init(); });
+            </script>
+        }
+    }
+    else
+    {
+        <p style="text-align: center;">对不起，你无此权限，请联系平台管理员。</p>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

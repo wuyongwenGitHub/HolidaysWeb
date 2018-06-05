@@ -1,0 +1,587 @@
+﻿@model Holidays.Model.Entites.HouseInfo
+<link href="~/Framework/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Styles/accountman.css" rel="stylesheet" />
+<link href="~/Framework/layer/skin/default/layer.css" rel="stylesheet" />
+<link href="~/Framework/chosen/amazeui.chosen.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/placeholders.min.js"></script>
+<script src="~/Scripts/Utility.js"></script>
+<script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+<script src="~/Framework/layer/layer.js"></script>
+<script src="~/Framework/chosen/amazeui.chosen.min.js"></script>
+<div class="house-release enter-edit">
+    <form id="form1">
+        <input type="hidden" name="ID" value="@Model.ID" />
+        <table cellpadding="0" cellspacing="0" border="0" class="table-wrap">
+            <tr>
+                <td class="taright" width="215">房屋标题：</td>
+                <td colspan="3">
+                    <input id="txtHouseTitle" name="HouseTitle" value="@Model.HouseTitle" maxlength="100" type="text" class="text-input">
+                </td>
+            </tr>
+            @*<tr style="display:none;">
+                <td class="taright" width="215">房东：</td>
+                <td colspan="3">
+                    <select id="txtLandlor" name="LandlorId" style="width:316px; height:22px;" data-placeholder="请选择房东">
+                        <option></option>
+                        @if (ViewBag.LandorList != null)
+                        {
+                            foreach (var item in ViewBag.LandorList)
+                            {
+                                if (Model.UserInfoID == item.ID)
+                                {
+                                    <option value="@item.ID" selected>@item.Username</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.ID">@item.Username</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </td>
+            </tr>*@
+            <tr>
+                <td class="taright" width="215">店铺：</td>
+                <td colspan="3">
+                    <select id="txtShop" name="ShopId" class="chosen-select " style="width:316px;height:22px;" data-placeholder="请选择店铺">
+                        <option></option>
+                        @if (ViewBag.ShopList != null)
+                        {
+                            foreach (var item in ViewBag.ShopList)
+                            {
+                                if (Model.ShopId == item.ID)
+                                {
+                                    <option value="@item.ID" selected>@item.ShopName</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.ID">@item.ShopName</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </td>
+            </tr>
+            @*<tr>
+                    <td class="taright">装修风格：</td>
+                    <td colspan="3">
+                        <label for="hstyle01" class="check-wrap">
+                            <input type="radio" @if (Model.DecorativeStyle != 2 && Model.DecorativeStyle != 3) { @Html.Raw("checked='checked'") } name="DecorativeStyle" value="1" id="hstyle01">
+                            普通住宅
+                        </label>
+                        <label for="hstyle02" class="check-wrap">
+                            <input type="radio" @if (Model.DecorativeStyle == 2) { @Html.Raw("checked='checked'") } name="DecorativeStyle" value="2" id="hstyle02">
+                            欧式小洋楼
+                        </label>
+                        <label for="hstyle03" class="check-wrap">
+                            <input type="radio" @if (Model.DecorativeStyle == 3) { @Html.Raw("checked='checked'") } name="DecorativeStyle" value="3" id="hstyle03">
+                            民宿
+                        </label>
+                    </td>
+                </tr>*@
+            <tr style="display:none;">
+                <td class="taright">出租类型：</td>
+                <td colspan="3">
+                    <label for="stype01" class="check-wrap">
+                        <input type="radio" @if (Model.LeaseType != 2 && Model.LeaseType != 3) { @Html.Raw("checked='checked'") } checked="checked" name="LeaseType" value="1" id="stype01">
+                        整套出租
+                    </label>
+                    <label for="stype02" class="check-wrap">
+                        <input type="radio" @if (Model.LeaseType == 2) { @Html.Raw("checked='checked'") } name="LeaseType" value="2" id="stype02">
+                        主卧出租
+                    </label>
+                    <label for="stype03" class="check-wrap">
+                        <input type="radio" @if (Model.LeaseType == 3) { @Html.Raw("checked='checked'") } name="LeaseType" value="3" id="stype03">
+                        单间配套
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">房屋户型：</td>
+                <td colspan="3">
+                    <div class="text-input w72">
+                        <input id="txtBedroomNum" name="BedroomNum" type="number" value="@Model.BedroomNum" min="0" class="text-input">
+                        室
+                    </div>
+                    <div class="text-input w72">
+                        <input id="txtLivingRoomNum" name="LivingRoomNum" type="number" value="@Model.LivingRoomNum" min="0" class="text-input">
+                        厅
+                    </div>
+                    <div class="text-input w72">
+                        <input id="txtToiletNum" name="ToiletNum" type="number" value="@Model.ToiletNum" min="0" class="text-input">
+                        卫
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">出租价格：</td>
+                <td colspan="3">
+                    <input id="txtPrice" name="Price" type="number" class="text-input" min="0" value="@Model.Price">
+                    <label>元/天</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">是否托管：</td>
+                <td colspan="3">
+                    <select name="IsTrusteeship" class="w50">
+                        <option @if (Model.IsTrusteeship) { @Html.Raw("selected='selected'") } value="true">是</option>
+                        <option @if (!Model.IsTrusteeship) { @Html.Raw("selected='selected'") } value="false">否</option>
+                    </select>
+                    <span class="pl70">&nbsp;&nbsp;&nbsp;&nbsp;是否出售：</span>
+                    <select name="IsSell" id="sltIsSell" class="w50">
+                        <option @if (Model.IsSell) { @Html.Raw("selected='selected'") } value="true">是</option>
+                        <option @if (!Model.IsSell) { @Html.Raw("selected='selected'") } value="false">否</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="trSellPrice" @if (!Model.IsSell) { @Html.Raw("style='display: none;'") }>
+                <td class="taright">出售价格：</td>
+                <td colspan="3">
+                    <input id="txtSellPrice" name="SellPrice" type="number" class="text-input" min="0" value="@Model.SellPrice">
+                    万
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">可做饭：</td>
+                <td colspan="3">
+                    <select name="IsCooking" class="w50">
+                        <option @if (Model.IsCooking) { @Html.Raw("selected='selected'") } value="true">是</option>
+                        <option @if (!Model.IsCooking) { @Html.Raw("selected='selected'") } value="false">否</option>
+                    </select>
+                    <span class="pl70">可携带宠物：</span>
+                    <select name="IsPet" class="w50">
+                        <option @if (Model.IsPet) { @Html.Raw("selected='selected'") } value="true">是</option>
+                        <option @if (!Model.IsPet) { @Html.Raw("selected='selected'") } value="false">否</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">是否可退：</td>
+                <td colspan="3">
+                    <select id="sltIsBack" name="IsBack" class="w100">
+                        <option @if (Model.IsBack== 1) { @Html.Raw("selected='selected'") } value="1">不可退</option>
+                        <option @if (Model.IsBack == 0) { @Html.Raw("selected='selected'") } value="0">入住当天18点前24小时内不可退</option>
+                    </select>
+                </td>
+                @*<td colspan="2" class="taright">入住当天18点前24小时内不可取消：</td>
+                <td>
+                    <select id="sltIsCancel" name="IsCancel" class="w50">
+                        <option @if (Model.IsCancel == 1) {@Html.Raw("selected='selected'") } value="1">是</option>
+                        <option @if (!Model.IsCancel.HasValue || Model.IsCancel == 0) { @Html.Raw("selected='selected'") } value="0">否</option>
+                    </select>
+                </td>*@
+            </tr>
+            <tr>
+                <td class="taright">可住人数：</td>
+                <td colspan="3"><input id="txtStayPersonNum" name="StayPersonNum" type="number" min="1" class="text-input w50" value="@Model.StayPersonNum"></td>
+            </tr>
+            <tr>
+                <td class="taright">面积：</td>
+                <td colspan="3">
+                    <div class="text-input w72 w85">
+                        <input id="txtHouseSize" value="@Model.HouseSize" name="HouseSize" type="number" min="1" class="text-input">
+                        平米
+                    </div>
+                    <span class="htips">请填写房屋的使用面积</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">配套设施：</td>
+                <td colspan="3">
+                    <div class="facility-list clearfix">
+                        @if (ViewBag.HouseConfigureList != null)
+                        {
+                            foreach (var houseConfigure in ViewBag.HouseConfigureList)
+                            {
+                                <label for="facility_@houseConfigure.ID" class="checkx-wrap">
+                                    <input class="cbxFacilities" fid="@houseConfigure.ID" fname="@houseConfigure.Name" ficon="@houseConfigure.Icon" fsort="@houseConfigure.Sort" type="checkbox" id="facility_@houseConfigure.ID" />
+                                    <div class="fl"><img src="@houseConfigure.Icon">@houseConfigure.Name</div>
+                                </label>
+                            }
+                        }
+
+                        <input type="hidden" id="txtFacilities" name="Facilities" />
+                    </div>
+                </td>
+            </tr>
+            @*<tr>
+                    <td class="taright">位置：</td>
+                    <td colspan="3"><input id="txtAddress" value="@Model.Address" name="Address" maxlength="200" type="text" class="text-input"></td>
+                </tr>
+                <tr>
+                    <td class="taright">房源介绍：</td>
+                    <td colspan="3"><textarea name="About" class="text-textarea">@Model.About</textarea></td>
+                </tr>
+                <tr>
+                    <td class="taright">房客守则：</td>
+                    <td colspan="3"><textarea name="Rules" class="text-textarea">@Model.Rules</textarea></td>
+                </tr>
+                <tr>
+                    <td class="taright">收费说明：</td>
+                    <td colspan="3"><textarea name="ChargesNotes" class="text-textarea">@Model.ChargesNotes</textarea></td>
+                </tr>*@
+            @*<tr>
+                    <td class="taright">基本信息：</td>
+                    <td colspan="3"><textarea name="BaseInfo" class="text-textarea">@Model.BaseInfo</textarea></td>
+                </tr>*@
+            <tr>
+                <td class="taright">上传照片：</td>
+                <td colspan="3">
+                    <label id="lblUploadImg" class="uphoto-wrap mr20" for="file">
+                        <img width="87" height="87" src="~/Images/blank.png" />
+                        <input type="hidden" name="JsonHouseImgList" value="@Model.JsonHouseImgList" id="txtImages" />
+                    </label>
+                    <div id="houseImgs"></div>
+                    <p class="uphoto-tips">图片尽量清晰，最多上传6张</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">照片类型：</td>
+                <td colspan="3">
+                    <select name="IsReals" class="w50" style="width : 80px;">
+                        <option @if (Model.IsReals) { @Html.Raw("selected='selected'") } value="true">实拍</option>
+                        <option @if (!Model.IsReals) { @Html.Raw("selected='selected'") } value="false">效果图</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="taright">所在城市：</td>
+                <td colspan="3">
+                    <select onchange="houseEditor.fnProvinceChange()" name="ProvinceId" id="sltProvince" class="w50" style="width : 80px;"></select>
+                    <select onchange="houseEditor.fnCityChnage()" name="CityId" id="sltCity" class="w50" style="width : 80px;"></select>
+                    <select name="CountyId" id="sltCounty" class="w50" style="width : 80px;"></select>
+                </td>
+            </tr>
+        </table>
+        <div class="actedit-footer"><a id="lbtnSaveHouseInfo" href="javascript:;" class="actedit-btn" style="text-decoration:none;">保存</a></div>
+    </form>
+</div>
+<script type="text/javascript">
+    var houseEditor = function () {
+        var imgArray = [];
+        var facilities = [];
+        var fnAddImg = function (src) {
+            if (imgArray.length == 6) {
+                layer.alert("最多只能上传6张图片", { icon: 2 });
+                return;
+            }
+            var imgObj = new Object();
+            imgObj.ImgUrl = src;
+
+            imgArray.push(imgObj);
+            fnUpdateImg();
+        };
+        var initPage = function () {
+            var jsonHouseImgs = '@Html.Raw(Model.JsonHouseImgList)';
+            if (jsonHouseImgs) {
+                var objHouseImgs = JSON.parse(jsonHouseImgs);
+
+                if (objHouseImgs && objHouseImgs.length > 0) {
+                    for (var i = 0; i < objHouseImgs.length; i++) {
+                        fnAddImg(objHouseImgs[i].ImgUrl);
+                    }
+                }
+            }
+            fnInitUpload();
+
+            $(".cbxFacilities").on("change", function () {
+                var isChecked = $(this).is(":checked");
+                var tempObj = new Object();
+                tempObj.ID = $(this).attr("fid");
+                tempObj.Name = $(this).attr("fname");
+                tempObj.Icon = $(this).attr("ficon");
+                tempObj.Sort = $(this).attr("fsort");
+
+                if (isChecked) {
+                    facilities.push(tempObj);
+                } else {
+                    for (var i = 0; i < facilities.length; i++) {
+                        if (facilities[i].ID == tempObj.ID) {
+                            facilities.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+
+                $("#txtFacilities").val(JSON.stringify(facilities));
+            });
+
+                  var jsonFacilities = '@Html.Raw(Model.Facilities)';
+                if (jsonFacilities) {
+                    var facilitiesObjs = JSON.parse(jsonFacilities);
+
+                    if (facilitiesObjs && facilitiesObjs.length > 0) {
+                        for (var i = 0; i < facilitiesObjs.length; i++) {
+                            var id = facilitiesObjs[i].ID;
+
+                            $("#facility_" + id).attr("checked", "checked");
+                            $("#facility_" + id).change();
+                        }
+                    }
+            }
+
+            // 是否出售
+            $("#sltIsSell").on("change", function () {
+                var isSell = $("#sltIsSell").val();
+                if (isSell == "true") {
+                    $("#trSellPrice").show();
+                } else {
+                    $("#trSellPrice").hide();
+                }
+            });
+
+            //店铺搜索
+            $('#txtShop').chosen({
+                no_results_text: '未找到匹配的店铺！'
+            });
+            //房东搜索
+            //$("#txtLandlor").chosen({
+            //    no_results_text: '未找到匹配的房东！'
+            //});
+
+        };
+        var fnDelImgByIndexHandle = function (index) {
+            imgArray.splice(index, 1);
+            fnUpdateImg();
+            fnInitUpload();
+        };
+
+        var fnUpdateImg = function () {
+            var strImgsHtml = "";
+            if (imgArray) {
+                for (var i = 0; i < imgArray.length; i++) {
+                    strImgsHtml += "<div class='upimg-wrap'><img src='" + imgArray[i].ImgUrl + "'><a onclick='houseEditor.fnDelImgByIndex(" + i + ")' href='javascript:;' class='uploadimg-cancel'></a></div>";
+                }
+            }
+
+            $("#txtImages").val(JSON.stringify(imgArray));
+            $("#houseImgs").html(strImgsHtml);
+        };
+
+        var fnInitUpload = function () {
+            fnUploadImage("lblUploadImg", function (url) {
+                fnAddImg(url);
+            });
+        };
+
+        // 设置房屋托管
+        var fnSetHouseTrusteeship = function (id) {
+            var loadIndex = layer.load();
+            $.post("/House/SetHouseTrusteeship", { id: id }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layer.alert(result.Msg, { icon: 1 }, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        };
+        var fnUpdateHouseState = function (id, state) {
+            var loadIndex = layer.load();
+            $.post("/House/UpdateState", { id: id, state: state }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layer.alert(result.Msg, { icon: 1 }, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        };
+
+        var fnGetProvinceList = function () {
+            $.post('/Home/GetProvinceList', function (result) {
+                if (result.Status == "ok") {
+                    var provinceList = result.Data;
+                    if (provinceList && provinceList.length > 0) {
+                        var provinceHtml = "";
+                        var provinceId = "@Model.ProvinceId";
+                        for (var i = 0, len = provinceList.length; i < len; i++) {
+                            if (provinceList[i].Id == provinceId) {
+                                provinceHtml += "<option selected='selected' value='" + provinceList[i].Id + "'>" + provinceList[i].Name + "</option>";
+                            } else {
+                                provinceHtml += "<option value='" + provinceList[i].Id + "'>" + provinceList[i].Name + "</option>";
+                            }
+                        }
+
+                        $("#sltProvince").html(provinceHtml);
+
+                        fnProvinceChangeHandle();
+                    }
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        };
+       var fnProvinceChangeHandle = function () {
+           var provinceId = $("#sltProvince option:selected").val();
+
+           if (!provinceId) {
+               provinceId = $("#sltProvince option:first").val();
+               $("#sltCity").html("");
+               return;
+           }
+
+           fnGetCityList(provinceId, "sltCity", true);
+        };
+
+        var fnGetCityList = function (parentId, sltId, isRefreshCounty) {
+                    var data = { parentId: parentId };
+
+                    $.post("/Home/GetCityByParentId", data, function (result) {
+                        if (result.Status == "ok") {
+                            var cityList = result.Data;
+                            if (cityList && cityList.length > 0) {
+                                var cityHtml = "";
+                                var cityId = "@Model.CityId";
+                                if (!isRefreshCounty) {
+                                    cityId = "@Model.CountyId";
+                                }
+                                for (var i = 0; i < cityList.length; i++) {
+                                    if (cityList[i].Id == cityId) {
+                                        cityHtml += "<option selected='selected' value='" + cityList[i].Id + " '>" + cityList[i].Name + "</option>";
+                                    } else {
+                                        cityHtml += "<option value='" + cityList[i].Id + "'>" + cityList[i].Name + "</option>";
+                                    }
+                                }
+
+                                $("#" + sltId).html(cityHtml);
+
+                                if (isRefreshCounty) {
+                                    fnCityChnageHandle();
+                                }
+                            } else {
+                                $("#" + sltId).html("");
+                            }
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                    });
+        };
+        var fnCityChnageHandle = function () {
+            var cityId = $("#sltCity option:selected").val();
+
+            if (!cityId) {
+                cityId = $("#sltCity option:first").val();
+                $("#sltCounty").html("");
+                return;
+            }
+
+            fnGetCityList(cityId, "sltCounty");
+        };
+        var submitHandle = function () {
+            // 保存房源数据
+            $("#lbtnSaveHouseInfo").on("click", function () {
+                var houseTitle = $("#txtHouseTitle").val();
+                //var phoneNoe = $("#txtPhoneNo").val();
+                var bedroomNum = $("#txtBedroomNum").val();
+                var livingRoomNum = $("#txtLivingRoomNum").val();
+                var toiletNum = $("#txtToiletNum").val();
+                var price = $("#txtPrice").val();
+                var isSell = $("#sltIsSell").val();
+                var sellPrice = $("#txtSellPrice").val();
+                var stayPersonNum = $("#txtStayPersonNum").val();
+                var houseSize = $("#txtHouseSize").val();
+                var address = $("#txtAddress").val();
+                var images = $("#txtImages").val();
+                var provinceId = $("#sltProvince option:selected").val();
+                var cityId = $("#sltCity option:selected").val();
+               // var landlorId = $("#txtLandlor").val();
+                var shopId = $("#txtShop").val();
+                // 校验数据
+                if (houseTitle == "" || houseTitle.length <= 0) {
+                    parent.layer.msg("房屋标题不能为空！", { icon: 2 });
+                    return;
+                }
+                //if (landlorId == "" || landlorId.length <= 0) {
+                //    parent.layer.alert("请选择房东！", { icon: 2 });
+                //    return;
+                //}
+                if (shopId == "" || shopId.length <= 0) {
+                    parent.layer.msg("请选择店铺！", { icon: 2 });
+                    return;
+                }
+                if (bedroomNum == "" || bedroomNum < 0 || livingRoomNum == "" || livingRoomNum < 0 || toiletNum == "" || toiletNum < 0 ||
+                    (bedroomNum == 0 && livingRoomNum == 0 && toiletNum == 0)) {
+                    parent.layer.msg("房屋户型填写错误！", { icon: 2 });
+                    return;
+                }
+
+                if (price == "" || price <= 0) {
+                    parent.layer.msg("出租价格必须大于0", { icon: 2 });
+                    return;
+                }
+
+                if (isSell == 1 && (sellPrice == "" || sellPrice <= 0)) {
+                    parent.layer.msg("出售价格必须大于0", { icon: 2 });
+                    return;
+                }
+
+                if (stayPersonNum == "" || stayPersonNum <= 0) {
+                    parent.layer.msg("可住人数填写错误！", { icon: 2 });
+                    return;
+                }
+
+                if (houseSize == "" || houseSize <= 0) {
+                    parent.layer.msg("房屋面积填写错误！", { icon: 2 });
+                    return;
+                }
+
+                if (address == "") {
+                    parent.layer.msg("房屋位置不能为空！", { icon: 2 });
+                    return;
+                }
+
+                if (images == "") {
+                    parent.layer.msg("请至少上传一张照片！", { icon: 2 });
+                    return;
+                }
+
+                if (!provinceId || !cityId) {
+                    parent.layer.msg("请选择所在城市！", { icon: 2 });
+                    return;
+                }
+
+                var loadIndex = parent.layer.load();
+                var data = $("#form1").serialize();
+                $.post("/Admin/HouseResource/SaveHouseInfo", data, function (result) {
+                    parent.layer.close(loadIndex);
+                    if (result.Status == "ok") {
+                        layer.msg(result.Msg, { icon: 1 }, function () {
+                            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                            parent.layer.close(index);
+                        });
+                    } else {
+                        parent.layer.msg(result.Msg, { icon: 2 });
+                    }
+                });
+            });
+        };
+
+        return {
+            init: function () {
+                initPage();
+                fnGetProvinceList();
+                submitHandle();
+            },
+            fnProvinceChange: function () {
+                fnProvinceChangeHandle();
+            },
+            fnCityChnage: function () {
+                fnCityChnageHandle();
+            },
+            fnDelImgByIndex: function (index) {
+                fnDelImgByIndexHandle(index);
+            }
+        }
+    }();
+    $(function () { houseEditor.init(); });
+</script>

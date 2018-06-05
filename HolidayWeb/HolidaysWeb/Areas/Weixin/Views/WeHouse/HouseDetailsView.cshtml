@@ -1,0 +1,368 @@
+﻿@model Holidays.Model.Entites.HouseInfoView
+
+@{
+    var title = "房屋详情";
+
+    if (Model != null)
+    {
+        title = Model.HouseTitle;
+    }
+
+    ViewBag.Title = title;
+
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/index.css" rel="stylesheet" />
+    <style type="text/css">
+        .btn-disabled:hover, .btn-disabled:focus {
+            text-decoration-line: none;
+            color: #fff;
+        }
+
+        {
+            text-decoration-line: none;
+            color: #fff;
+        }
+    </style>
+}
+
+<div class="page-wrap pb102">
+    @if (Model != null)
+    {
+        <div class="homedetail-wrap">
+            <div class="homedetail-banner">
+                <div class="flicking_con">
+                    @if (Model.HouseImgList != null && Model.HouseImgList.Count > 0)
+                    {
+                        for (int i = 0; i < Model.HouseImgList.Count; i++)
+                        {
+                            <a href="javascript:;">@i</a>
+                        }
+                    }
+                </div>
+
+                @if (Model.HouseImgList.Count == 1)
+                {
+                    <a href="javascript:;"><img src="@Model.FirstImg"></a>
+                }
+                else
+                {
+                    <div class="main_image">
+                        @if (Model.HouseImgList != null && Model.HouseImgList.Count > 0)
+                        {
+                            <ul>
+                                @foreach (var houseImg in Model.HouseImgList)
+                                {
+                                    <li><a href="javascript:;"><img src="@houseImg.ImgUrl"></a></li>
+                                }
+                            </ul>
+                        }
+
+                        <a href="javascript:;" id="btn_prev"></a><a href="javascript:;" id="btn_next"></a>
+                    </div>
+                }
+            </div>
+            <div class="homedetail-header">
+                <div class="homede-left">@Model.HouseTitle</div>
+                <div class="homede-right"><span>￥@Model.Price</span>元/晚</div>
+            </div>
+            <div class="homedetail-time">
+                <div class="hometime-wrap">
+                    <ul>
+                        <li class="htime-item">
+                            <input id="startTime" placeholder="入住时间" min="@DateTime.Now.ToString("yyyy-MM-dd")" style="width: 4.5rem" type="date" class="input-enter" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            @*<span>今天</span>*@
+                        </li>
+                        <li class="htime-item">
+                            <input id="endTime" placeholder="退房时间" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" style="width: 4.5rem" type="date" class="input-enter ml80" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                            @*<span>明天</span>*@
+                        </li>
+                    </ul>
+                    <div class="htime-mask">
+                        <div class="mask-info">共<span id="count">1</span>晚</div>
+                    </div>
+                </div>
+            </div>
+
+            @*@if (ViewBag.HouseOrderList != null && ViewBag.HouseOrderList.Count > 0)
+                {
+                    <div class="homeinfo-view">
+                        <div class="homeinfo-title" style="color:red;">注意：以下时间不可预订</div>
+                        <div class="homeinfo-main">
+                            @foreach (var order in ViewBag.HouseOrderList)
+                            {
+                                if (@order.StartDate.AddDays(1).CompareTo(order.EndDate) == 0)
+                                {
+                                    <p class="hinfo-view"><span>@order.StartDate.ToString("yyyy-MM-dd")</span></p>
+                                }
+                                else
+                                {
+                                    <p class="hinfo-view">
+                                        <span>@order.StartDate.ToString("yyyy-MM-dd")</span>
+                                        <span>至</span>
+                                        <span>@order.EndDate.AddDays(-1).ToString("yyyy-MM-dd")</span>
+                                    </p>
+                                }
+                            }
+                        </div>
+                    </div>
+                }*@
+
+            @if (Model.EvaluateNum != null && Model.EvaluateNum > 0)
+            {
+                <div class="mapeval-wrap">
+                    <div class="mapinfo-wrap">
+                        <img src="/Images/wechart/cancel/mgh_24.jpg">
+                        <div class="mapinfo-address">@Model.Address </div>
+                    </div>
+                    <a href="/weixin/wehouse/evaluateview/?houseId=@Model.ID" class="evalinfo-wrap">
+                        @{ double temp = Model.EvaluateAvgScore / 5.0 * 100; }
+                        <p>房源好评率 <em>@temp%</em></p>
+                        <span>@Model.EvaluateNum 条评论 &gt;</span>
+                    </a>
+                </div>
+            }
+
+            <div class="homeinfo-view">
+                <div class="homeinfo-title">房源信息</div>
+                <div class="homeinfo-main">
+                    @if (Model.IsBack == 1)
+                    {
+                        <p class="hinfo-view" style="color:#f00;">不可退</p>
+                    }
+                    @if(Model.IsBack == 0)
+                    {
+                        <p class="hinfo-view" style="color:#f00;">入住当天18点前24小时内不可退</p>
+                    }
+
+                    <p class="hinfo-view">
+                        面积：<span>
+                            @Model.HouseSize 平
+                            @if (Model.BedroomNum > 0)
+                            {
+                                <span>@Model.BedroomNum 室</span>
+                            }
+
+                            @if (Model.LivingRoomNum > 0)
+                            {
+                                <span>@Model.LivingRoomNum 厅</span>
+                            }
+
+                            @if (Model.ToiletNum > 0)
+                            {
+                                <span>@Model.ToiletNum 卫</span>
+                            }
+                            （
+                            @if (Model.LeaseType == 1)
+                            {
+                                <span>整套出租</span>
+                            }
+                            else if (Model.LeaseType == 2)
+                            {
+                                <span>主卧出租</span>
+                            }
+                            else if (Model.LeaseType == 3)
+                            {
+                                <span>单间配套</span>
+                            }
+                            ）
+                        </span>
+                    </p>
+                    @*<p class="hinfo-view">
+                            装修风格：@if (Model.DecorativeStyle == 1)
+                            {
+                                <span>普通住宅</span>
+                            }
+                            else if (Model.DecorativeStyle == 2)
+                            {
+                                <span>欧式小洋楼</span>
+                            }
+                            else if (Model.DecorativeStyle == 3)
+                            {
+                                <span>民宿</span>
+                            }
+                        </p>*@
+                    <p class="hinfo-view">状态：<span>@(Model.IsEmpty == 0 ? "可订" : "已满")</span></p>
+                    <p class="hinfo-view">位置：<span>@ViewBag.City</span></p>
+                    <p class="hinfo-view">　　　<span>@Model.Address</span></p>
+                    <p class="hinfo-view">配套设施：</p>
+
+                    @if (Model.HouseConfigureList != null && Model.HouseConfigureList.Count > 0)
+                    {
+                        <p class="hinfo-list clearfix">
+                            @foreach (var item in Model.HouseConfigureList)
+                            {
+                                <span>@item.Name</span>
+                            }
+                        </p>
+                    }
+                    else
+                    {
+                        <span>配套设施：无配套设施</span>
+                    }
+                    <p class="hinfo-view">客服：023-48266667<span></span></p>
+                </div>
+            </div>
+            <div class="homeinfo-view">
+                @if (!String.IsNullOrWhiteSpace(Model.About))
+                {
+                    <div class="homeinfo-title">房源介绍</div>
+                }
+
+                <div class="homeinfo-main">
+                    @if (!String.IsNullOrWhiteSpace(Model.About))
+                    {
+                        <p class="fs18 ti36">@Model.About</p>
+                    }
+
+                    @if (!String.IsNullOrWhiteSpace(Model.Rules))
+                    {
+                        <p class="hinfo-name">房客守则：</p>
+                        <p class="fs18 ti18">@Model.Rules</p>
+                    }
+
+                    @if (!String.IsNullOrWhiteSpace(Model.ChargesNotes))
+                    {
+                        <p class="hinfo-name">收费说明：</p>
+                        <p class="fs18">@Model.ChargesNotes</p>
+                    }
+
+                    @if (!String.IsNullOrWhiteSpace(Model.BaseInfo))
+                    {
+                        <p class="hinfo-name">基本信息：</p>
+                        <div class="hinfo-other clearfix">
+                            <p class="fs18">@Model.BaseInfo</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="ghday-footer">
+            <a href="tel:@Model.PhoneNo" class="evalview">
+                <p class="evalv-title">商家：</p>
+                <p class="evalv-tel">@Model.PhoneNo</p>
+            </a>@if (Model.IsEmpty == 0)
+            {
+                <a id="lbtnSubmit" href="javascript:;" class="eval-submit evalview">立即预定</a>
+            }
+            else
+            {
+                <a href="javascript:;" class="eval-submit evalview btn-disabled" style="background-color:#ddd;">暂停预订</a>
+            }
+        </div>
+    }
+    else
+    {
+        <p style="text-align: center; padding: 20px; font-size: 14px;">无该房源信息！</p>
+    }
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        $(function () {
+            function fnSetDate() {
+                var s = $("#startTime").val();
+                var e = $("#endTime").val();
+
+                var today = "@DateTime.Now.ToString("yyyy-MM-dd")";
+                var tomorrow = "@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")";
+
+                if (s && fnDiffDate(s, today) > 0) {
+                    $("#startTime").val(today);
+                    s = today;
+                }
+
+                if (e && fnDiffDate(e, tomorrow) > 0) {
+                    $("#endTime").val(tomorrow);
+                    e = tomorrow;
+                }
+
+                if (s && e) {
+                    $("#count").html(fnDiffDate(s, e));
+
+                    localStorage.setItem("startTime", s);
+                    localStorage.setItem("endTime", e);
+                }
+            }
+
+            $("#startTime,#endTime").on("change", fnSetDate);
+
+            // 计算日期差（天）
+            function fnDiffDate(startDate, endDate) {
+                if (startDate && endDate) {
+                    var s = Date.parse(startDate);
+                    var e = Date.parse(endDate);
+
+                    return parseInt((e - s) / 1000 / 3600 / 24);
+                }
+
+                return 0;
+            }
+
+            $("#lbtnSubmit").on("click", function () {
+                fnSetDate();
+
+                var s = $("#startTime").val();
+                var e = $("#endTime").val();
+
+                if (!s) {
+                    layer.alert("请选择入住时间！", { icon: 2 });
+                    return;
+                }
+
+                if (!e) {
+                    layer.alert("请选择退房时间！", { icon: 2 });
+                    return;
+                }
+
+                if (fnDiffDate(s, e) <= 0) {
+                    layermsg("退房时间必须大于入住时间！");
+                    return;
+                }
+
+                // 判断时间段是否预定
+                var loadIndex = layerload();
+                $.post("/House/IsReservation", { houseId: "@Model.ID", startTime: s, endTime: e }, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "ok") {
+                        window.location.href = "/Weixin/WeOrder/SubmitOrderView/@Model.ID";
+                    } else {
+                        layermsg(result.Msg);
+                    }
+                });
+            });
+
+            //图片幻灯片
+            $(".main_image").touchSlider({
+                flexible: true,
+                speed: 200,
+                btn_prev: $("#btn_prev"),
+                btn_next: $("#btn_next"),
+                paging: $(".flicking_con a"),
+                counter: function (e) {
+                    $(".flicking_con a").removeClass("on").eq(e.current - 1).addClass("on");
+                }
+            });
+            timer = setInterval(function () {
+                $("#btn_next").click();
+            }, 5000);
+            $(".main_image").hover(function () {
+                clearInterval(timer);
+            }, function () {
+                timer = setInterval(function () {
+                    $("#btn_next").click();
+                }, 5000);
+            });
+            $(".main_image").bind("touchstart", function () {
+                clearInterval(timer);
+            }).bind("touchend", function () {
+                timer = setInterval(function () {
+                    $("#btn_next").click();
+                }, 5000);
+            });
+        })
+    </script>
+}

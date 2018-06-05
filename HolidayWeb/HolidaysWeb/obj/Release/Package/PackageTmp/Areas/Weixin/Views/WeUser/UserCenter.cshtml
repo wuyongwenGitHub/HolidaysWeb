@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "创建店铺";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <header class="header">
+            <h2 class="header-title">管理中心</h2>
+        </header>
+        <div class="weui-grids">
+            @if (ViewBag.HasShop)
+    {
+        <a href="/weixin/wehouse/housemanageview" class="weui-grid js_grid">
+            <div class="weui-grid__icon">
+                <img src="~/Images/weixin/house.png" />
+            </div>
+            <p class="weui-grid__label">房源管理</p>
+        </a>
+}
+else
+{
+        <a href="/weixin/wehouse/CreateShopView" class="weui-grid js_grid">
+            <div class="weui-grid__icon">
+                <img src="~/Images/weixin/house.png" />
+            </div>
+            <p class="weui-grid__label">房源管理</p>
+        </a>
+}
+            <a href="/Weixin/WeUser/OrderManageView" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="~/Images/weixin/order.png" />
+                </div>
+                <p class="weui-grid__label">订单管理</p>
+            </a>
+            <a href="/Weixin/WeUser/FinanceView" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="~/Images/weixin/money.png" />
+                </div>
+                <p class="weui-grid__label">财务管理</p>
+            </a>
+            <a href="/Weixin/WeUser/ReplyCommentView" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="~/Images/weixin/comment.png" />
+                </div>
+                <p class="weui-grid__label">评论管理</p>
+            </a>
+            <a href="/Weixin/WeUser/ResetPassword" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="~/Images/weixin/password.png" />
+                </div>
+                <p class="weui-grid__label">修改密码</p>
+            </a>
+            @*<a href="/Weixin/WeMain/Logout" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="~/Images/weixin/about.png" />
+                </div>
+                <p class="weui-grid__label">退出</p>
+            </a>*@
+            <a href="#" class="weui-grid js_grid">
+                <div class="weui-grid__icon">
+                    <img src="~/Images/weixin/about.png" />
+                </div>
+                <p class="weui-grid__label">关于</p>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">对不起，你无此权限！</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                </p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area">
+            <i class="weui-icon-info weui-icon_msg"></i>
+        </div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">登录失效，请重新登录！</h2>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="/Weixin/WeUser/LoginCenter" class="weui-btn weui-btn_primary">立即登录</a>
+            </p>
+        </div>
+    </div>
+}

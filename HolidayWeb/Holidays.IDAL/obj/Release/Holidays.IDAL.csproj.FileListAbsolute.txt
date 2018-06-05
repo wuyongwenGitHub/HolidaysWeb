@@ -1,0 +1,34 @@
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Holidays.IDAL.dll.config
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Holidays.IDAL.dll
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Holidays.IDAL.pdb
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\EntityFramework.dll
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\EntityFramework.SqlServer.dll
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Holidays.Model.dll
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Newtonsoft.Json.dll
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Holidays.Model.pdb
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Holidays.Model.dll.config
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\EntityFramework.xml
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\EntityFramework.SqlServer.xml
+E:\Projects\holidaysweb\Holidays.IDAL\bin\Release\Newtonsoft.Json.xml
+E:\Projects\holidaysweb\Holidays.IDAL\obj\Release\Holidays.IDAL.csprojResolveAssemblyReference.cache
+E:\Projects\holidaysweb\Holidays.IDAL\obj\Release\Holidays.IDAL.csproj.CoreCompileInputs.cache
+E:\Projects\holidaysweb\Holidays.IDAL\obj\Release\Holidays.IDAL.csproj.CopyComplete
+E:\Projects\holidaysweb\Holidays.IDAL\obj\Release\Holidays.IDAL.dll
+E:\Projects\holidaysweb\Holidays.IDAL\obj\Release\Holidays.IDAL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Holidays.IDAL.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Holidays.IDAL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Holidays.IDAL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\EntityFramework.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\EntityFramework.SqlServer.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Holidays.Model.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Newtonsoft.Json.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Holidays.Model.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Holidays.Model.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\EntityFramework.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\EntityFramework.SqlServer.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\bin\Release\Newtonsoft.Json.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\obj\Release\Holidays.IDAL.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\obj\Release\Holidays.IDAL.csproj.CoreCompileInputs.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\obj\Release\Holidays.IDAL.csproj.CopyComplete
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\obj\Release\Holidays.IDAL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.IDAL\obj\Release\Holidays.IDAL.pdb

@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <title>我要去度假 | @ViewBag.Title</title>
+
+    <link href="~/Styles/wechart/public.css" rel="stylesheet" />
+    @RenderSection("styles", false)
+
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/wechart/jquery.touchSlider.js"></script>
+    <script src="~/Scripts/wechart/mobile-tool.js"></script>
+    <script src="~/Framework/layer_mobile/layer.js"></script>
+    <script src="~/Scripts/Utility.js"></script>
+
+    @RenderSection("scripts", false)
+</head>
+
+<body>
+    @RenderBody()
+    @RenderSection("footerjs", false)
+</body>
+</html>

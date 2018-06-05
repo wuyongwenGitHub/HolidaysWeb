@@ -1,0 +1,203 @@
+﻿@{
+    ViewBag.Title = "房源评价管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-app="evaluateApp" ng-controller="EvaluateListController" ng-init="initEvaluateList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>房源评价管理 </h2>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <form id="frmEvaluateQuery" class="form-horizontal form-label-left">
+                <div class="col-md-3"><input type="text" name="houseTitle" class="form-control" placeholder="房源标题" /></div>
+                <div class="col-md-3"><input type="text" name="username" class="form-control" placeholder="评价人" /></div>
+                <div class="col-md-3"><input type="text" name="content" class="form-control" placeholder="评价内容" /></div>
+                <div class="col-md-3"><button type="button" ng-click="initEvaluateList(1)" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>房源标题</th>
+                        <th>评价人</th>
+                        <th>评价时间</th>
+                        <th>评价内容</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="evaluate in evaluateList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ evaluate.HouseTitle }}</td>
+                        <td>{{ evaluate.Username }}</td>
+                        <td>{{ evaluate.CreateTime }}</td>
+                        <td><span>{{ evaluate.EvaluateContent }}</span></td>
+                        <td>
+                            <a href="javascript:;" ng-click="openViewEvaluateModal(evaluate)" title="查看" class="fa fa-eye btn-xs"></a>
+                            <a href="javascript:;" ng-hide="evaluate.State == 2" ng-click="del(evaluate.ID)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="evaluateList.length == 0">
+                        <td colspan="6" align="center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initEvaluateList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initEvaluateList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initEvaluateList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initEvaluateList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initEvaluateList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看评价信息窗口 -->
+    <div class="modal fade" id="viewEvaluateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">评价信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">房源标题</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.HouseTitle }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">评价人</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.Username }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">手机号</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.UserPhone }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">整洁卫生分数</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.CleanScore }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">交通位置分数</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.LocationScore }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">设施环境分数</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.EnvironmentScore }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">房东服务</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.ServiceScore }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">性价比分数</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.PerformanceScore }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">评价时间</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.CreateTime }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">评价内容</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ Evaluate.EvaluateContent }}</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看评价信息窗口END -->
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var evaluateApp = angular.module('evaluateApp', []);
+
+        evaluateApp.controller('EvaluateListController', function EvaluateListController($scope, $http) {
+            $scope.initEvaluateList = function (page) {
+                var houseTitle = $("input[name=houseTitle]").val();
+                var username = $("input[name=username]").val();
+                var content = $("input[name=content]").val();
+                var data = { page: page, houseTitle: houseTitle, username: username, content: content };
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/HouseResource/GetEvaluateList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+
+                    // 格式化时间
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                    }
+
+                    $scope.evaluateList = data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 打开查看评价信息窗口
+            $scope.openViewEvaluateModal = function (evaluate) {
+                $scope.Evaluate = evaluate;
+                $("#viewEvaluateModal").modal();
+            }
+
+            // 删除评价信息
+            $scope.del = function (id) {
+                layer.confirm("确定要删除吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        $http({
+                            method: 'POST',
+                            url: '/Admin/HouseResource/DelEvaluateByID',
+                            data: { id: id }
+                        }).then(function successCallback(response) {
+                            if (response.data.Status == "ok") {
+                                layer.alert(response.data.Msg, { icon: 1 }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                layer.alert(response.data.Msg, { icon: 2 });
+                            }
+                        }), function errorCallback(response) {
+                            layer.alert("系统异常", { icon: 2 });
+                        };
+                    }
+                });
+            }
+        });
+    </script>
+}

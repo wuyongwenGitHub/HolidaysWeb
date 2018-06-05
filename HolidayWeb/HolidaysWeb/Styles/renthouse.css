@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* goonholiday renthouse.html/sellhouse.html 2016-12-04 rhg */
+
+.gohouses-list{
+	width: auto;
+	height: auto;
+	margin-right: -45px;
+	margin-left: -45px;	
+}
+.gohouses-list li{
+	float: left;
+	width: 300px;
+	height: 390px;
+	margin-right: 45px;
+	margin-left: 45px;
+	margin-bottom: 9px;
+}
+.ghmain-header,
+.ghmain-header img{
+	position: relative;
+	width: 300px;
+	height: 300px;
+}
+.ghmain-header .user-icon{
+	bottom: -28px;
+}
+.ghmain-header .user-icon img{
+	width: 50px;
+	height: 50px;
+	margin-top:2px;
+	margin-left: 2px;
+	border-radius: 50%;
+}
+.gohouse-status{
+	position: absolute;
+	bottom:4px;
+	left:0;
+	width:56px;
+	height: 32px;
+	font-size: 16px;
+	color:#fdfafa;
+	line-height: 32px;
+	text-align: center;
+	background: url(../Images/gh-19.png) no-repeat left top;
+}
+.gohouses-list .ghmain-footer{
+	padding-top: 4px;
+}
+.gohouses-list .ghmain-star{
+	padding-top: 2px;
+}
+.ghmain-star em{	
+	font-size: 14px;
+	color: #999;
+	padding-left: 8px;
+}
+.callphone,
+.place-info{
+	font-size: 14px;
+	color: #999;
+	line-height: 20px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow:ellipsis;
+}

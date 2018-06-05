@@ -1,0 +1,287 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "首页";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Styles/index.css">
+    <link rel="stylesheet" type="text/css" href="~/Styles/flexslider.css">
+    <link rel="stylesheet" type="text/css" href="~/Scripts/slick/amazeui.slick.css" />
+    <link rel="stylesheet" href="~/Styles/hotel_list.min.css" />
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery.flexslider-min.js"></script>
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Scripts/slick/slick.min.js"></script>
+}
+
+@if (ViewBag.BannerList != null && ViewBag.BannerList.Count > 0)
+{
+    <!--banner-->
+    <div class="goholiday-banner">
+        <div class="flexslider">
+            <ul class="slides">
+                @foreach (var banner in ViewBag.BannerList)
+                {
+                    if (!String.IsNullOrEmpty(banner.Url))
+                    {
+                        <li><a href="@banner.Url" target="_blank"><img src="@banner.ImgUrl" alt="@banner.Title"></a></li>
+                    }
+                    else
+                    {
+                        <li><img src="@banner.ImgUrl" alt="@banner.Title"></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <!--/banner-->
+}
+
+<!--search-->
+<div class="goholiday-search w1080">
+    <div class="ghsearch-wrap">
+        <input id="txtKeywords" type="text" class="text-input" placeholder="房屋搜索（请输入关键字）">
+        <select id="sltHouseType" class="select-content">
+            <option value="1">租房</option>
+            <option value="2">售房</option>
+        </select>
+        <!--租房 RentHouseList 售房 SellHouseList-->
+        <a href="javascript:;" id="lbtnSearch" class="ghsearch-btn">搜索</a>
+    </div>
+</div>
+<!--/search-->
+
+
+
+@if (ViewBag.SpotInfoList != null && ViewBag.SpotInfoList.Count > 0)
+{
+    <!--hotviewpoint-->
+    <div class="hotviewpoint">
+        <div class="hvpt-header">
+            <h1 class="hvpt-title">热门景点</h1>
+            <p class="hvpt-intro">告别匆忙，给我们一个理由去度假</p>
+        </div>
+        <div class="hvpt-main">
+            @*<div class="spotInfoList-flexslider">*@
+            <div class="slider multiple-items">
+                @*<ul>*@
+                @foreach (var spot in ViewBag.SpotInfoList)
+                {
+                    var scenicSpotImgArray = spot.ScenicSpotImgs.Split(',');
+
+                    <div spotid="@spot.ID">
+                        <a target="_blank" href="/House/ShopList?keywords=@(string.IsNullOrEmpty(spot.LinkSpotName) ? spot.ScenicSpotName : spot.LinkSpotName)&spotId=@spot.ID">
+                            <div class="hvptmain-header clearfix">
+                                @if (scenicSpotImgArray.Length > 0)
+                                {
+                                    <div class="ph229"><img src="@scenicSpotImgArray[0]"></div>
+                                    if (scenicSpotImgArray.Length > 1)
+                                    {
+                                        <div class="ph115">
+                                            @for (int i = 1; i < (scenicSpotImgArray.Length > 9 ? 9 : scenicSpotImgArray.Length); i++)
+                                            {
+                                                <img src="@scenicSpotImgArray[i]" class="ph115-8">
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div class="hvptmain-info" style="height:auto;">
+                                <h1>@spot.ScenicSpotName</h1>
+                                @*<p>@spot.ScenicSpotDesc</p>*@
+                            </div>
+                        </a>
+                    </div>
+                }
+                @*</ul>*@
+            </div>
+        </div>
+        @*<div class="hvpt-footer"><a href="javascript:;" class="hvpt-viewmore">查看更多</a></div>*@
+    </div>
+    <!--hot viewpoint-->
+}
+
+@if (ViewBag.ShopList != null && ViewBag.ShopList.Count > 0)
+{
+    <!--goholiday-house-->
+    <div class="goholiday-house w1080">
+        <div class="hvpt-header">
+            <h1 class="hvpt-title">热门店铺</h1>
+            <p class="hvpt-intro">超人气特色店铺</p>
+        </div>
+        <div class="ghouse-main clearfix">
+            <div class="hotel-list">
+
+                @foreach (var item in ViewBag.ShopList)
+                {
+                    <div class="hotel">
+                        <div class="hotel-hd clearfix">
+                            <div class="hotel-logo fl has-more-snapshots">
+                                <img src="@item.ShopImgs" width="130" height="130" />
+                            </div>
+                            <div class="hotel-type fl"></div>
+                            <div class="hotel-info fl">
+                                <div class="nameAndIcon">
+                                    <a target="_blank" href="/House/RentHouseList?keywords=@item.ShopName" class="name">@item.ShopName</a>
+                                    <div class="addressInfo"> @(item.Scores > 0 ? item.Scores + " 分" : "暂无评分" ) &nbsp;&nbsp; &nbsp;&nbsp;@item.ShopTypeName</div>
+                                    <div class="route">@item.Locations</div>
+                                    <div class="remarkTag">
+                                        @(string.IsNullOrWhiteSpace(item.Tags) ? "暂无评价" : item.Tags)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hotel-seperator fl"></div>
+                            <div class="hotel-brief fl">
+                                <div class="startPrice">
+                                    <span class="yen">￥</span><span class="digit">@item.StartPrice</span><span class="text">起</span>
+                                </div>
+                                <div class="hotelDetail"><a target="_blank" href="/House/RentHouseList?keywords=@item.ShopName">查看详情</a></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+    <!--goholiday-house-->
+}
+
+
+@if (ViewBag.AD != null)
+{
+    <!--goholiday-adv-->
+    <div class="goholiday-adv">
+        @if (!String.IsNullOrEmpty(ViewBag.AD.Url))
+        {
+            <a target="_blank" href="@ViewBag.AD.Url"><img src="@ViewBag.AD.ImgUrl" alt="@ViewBag.AD.Title" /></a>
+        }
+        else
+        {
+            <img src="@ViewBag.AD.ImgUrl" alt="@ViewBag.AD.Title" />
+        }
+    </div>
+    <!--goholiday-adv-->
+}
+
+@if (ViewBag.ProductList != null && ViewBag.ProductList.Count > 0)
+{
+    <!--goholiday-specialty-->
+    <div class="goholiday-specialty w1080">
+        <div class="hvpt-header">
+            <h1 class="hvpt-title">地方特产</h1>
+            <p class="hvpt-intro">物美价廉 超人气特色产品</p>
+        </div>
+        <div class="ghspecialty-main clearfix">
+            <ul>
+                @foreach (var product in ViewBag.ProductList)
+                {
+                    <li>
+                        <div class="ghsmain-header"><img src="@product.HomeImg" /></div>
+                        <div class="ghsmain-footer" title="￥@product.Price @product.ProductName"><span>￥@product.Price </span>@product.ProductName</div>
+                    </li>
+                }
+            </ul>
+
+        </div>
+        <div class="ghspecialty-footer"><a href="/Product/List" class="hvpt-viewmore">查看更多</a></div>
+    </div>
+    <!--goholiday-specialty-->
+}
+
+@if (ViewBag.CarList != null && ViewBag.CarList.Count > 0)
+{
+    <!--goholiday-carlease-->
+    <div class="goholiday-carlease w1080">
+        <div class="hvpt-header">
+            <h1 class="hvpt-title">车辆租赁</h1>
+            <p class="hvpt-intro">质量保证 干净 舒适</p>
+        </div>
+        <div class="ghcarlease-main">
+            <div class="flexslider">
+                <ul class="slides">
+                    @foreach (var car in ViewBag.CarList)
+                    {
+                        <li>
+                            <img src="@car.CarImg" />
+                            <div class="carleaseinfo-mask"></div>
+                            <div class="carleaseinfo-view">
+                                <h1>@car.CarName</h1>
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                        <td width="58">联系人：</td>
+                                        <td>@car.Linkman</td>
+                                    </tr>
+                                    <tr>
+                                        <td>电　话：</td>
+                                        <td>@car.Phone1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>@car.Phone2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>地　址：</td>
+                                        <td>@car.Address</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--goholiday-carleasecarlease-->
+}
+
+@section footerjs{
+    <script type="text/javascript">
+        $("#lbtnSearch").on("click", function () {
+            var keywords = $("#txtKeywords").val();
+            var type = $("#sltHouseType").val();
+
+            if (type == 1) {
+                window.location.href = "/House/RentHouseList/?keywords=" + encodeURIComponent(keywords);
+            } else {
+                window.location.href = "/House/SellHouseList/?keywords=" + encodeURIComponent(keywords);
+            }
+        });
+
+        $(function () {
+            //banner幻灯片
+            $(".goholiday-banner .flexslider").flexslider({
+                slideshowSpeed: 5000,
+                controlNav: true,
+                directionNav: false
+            });
+
+            $(".hvpt-main .multiple-items").slick({
+                dots: false,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                prevArrow: '<a href="javascript:;" class="slick-prev"><</a>',
+                nextArrow: '<a href="javascript:;" class="slick-next">></a>'
+            });
+
+            //车辆租赁
+            $(".ghcarlease-main .flexslider").flexslider({
+                animation: "slide",
+                //animationLoop: false,
+                itemWidth: 219,
+                itemMargin: 39,
+                controlNav: false,
+                slideshow: false,
+                move: 1
+            });
+        });
+    </script>
+}

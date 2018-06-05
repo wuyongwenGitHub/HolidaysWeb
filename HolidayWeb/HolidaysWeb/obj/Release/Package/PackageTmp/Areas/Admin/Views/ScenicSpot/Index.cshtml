@@ -1,0 +1,421 @@
+﻿@{
+    ViewBag.Title = "旅游景点管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Framework/webuploader-0.1.5/webuploader.css" rel="stylesheet" />
+}
+
+<div ng-app="scenicSpotApp" ng-controller="ScenicSpotListController" ng-init="initScenicSpotList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>旅游景点管理 </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <button ng-click="openAddScenicSpotModal()" class="btn btn-danger">添加景点</button>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <form id="frmScenicSpotQuery" class="form-horizontal form-label-left">
+                <div class="col-md-3"><input name="scenicSpotName" type="text" class="form-control" placeholder="景点名称" /></div>
+                <div class="col-md-3"><button type="button" ng-click="initScenicSpotList(1)" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>景点名称</th>
+                        <th>发布时间</th>
+                        <th>首页展示</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="scenicSpot in scenicSpotList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ scenicSpot.ScenicSpotName }}</td>
+                        <td>{{ scenicSpot.CreateTime }}</td>
+                        <td ng-if="scenicSpot.IsHomeShow">是</td>
+                        <td ng-if="!scenicSpot.IsHomeShow">否</td>
+                        <td>
+                            <a href="javascript:;" ng-click="openViewScenicSpotModal(scenicSpot)" title="查看" class="fa fa-eye btn-xs"></a>
+                            <a href="javascript:;" ng-click="openEditScenicSpotModal(scenicSpot.ID)" title="编辑" class="fa fa-edit btn-xs"></a>
+                            <a href="javascript:;" ng-click="del(scenicSpot.ID)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="scenicSpotList.length == 0">
+                        <td colspan="5" align="center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initScenicSpotList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initScenicSpotList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initScenicSpotList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initScenicSpotList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initScenicSpotList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑景点信息窗口 -->
+    <div class="modal fade" id="editScenicSpotModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">编辑景点信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmScenicSpot" class="form-horizontal form-label-left" novalidate>
+                        <input name="ID" type="hidden" value="{{ ScenicSpot.ID }}" />
+
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ScenicSpotName">
+                                景点名称 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="ScenicSpot.ScenicSpotName" name="ScenicSpotName" class="form-control col-md-7 col-xs-12" maxlength="100" type="text">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ScenicSpotDesc">
+                                景点介绍
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <textarea ng-model="ScenicSpot.ScenicSpotDesc" name="ScenicSpotDesc" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ScenicSpotImgs">
+                                景点图片 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input name="ScenicSpotImgs" class="form-control col-md-7 col-xs-12" type="hidden" />
+
+                                <div ng-repeat="img in ImgArray">
+                                    <img width="270" height="270" src="{{ img }}" />
+                                    <button class="btn btn-xs btn-danger" ng-click="delImg($index)">删除</button>
+                                </div>
+
+                                <div id="btnUploadImg">选择图片</div>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="IsHomeShow">
+                                是否首页展示
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <select ng-model="ScenicSpot.IsHomeShow" name="IsHomeShow" class="form-control">
+                                    <option value="true" ng-selected="ScenicSpot.IsHomeShow == true">是</option>
+                                    <option value="false" ng-selected="ScenicSpot.IsHomeShow == false">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Sort">
+                                显示顺序
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="ScenicSpot.Sort" name="Sort" class="form-control col-md-7 col-xs-12" type="number">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Sort">
+                                所在城市
+                            </label>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <input name="ProvinceId" type="hidden" value="{{ ScenicSpot.ProvinceId }}" />
+                                <select class="form-control" ng-model="ScenicSpot.ProvinceId" ng-change="getCityByParentId(ScenicSpot.ProvinceId)" ng-options="Province.Id as Province.Name for Province in ProvinceList"></select>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <input name="CityId" type="hidden" value="{{ ScenicSpot.CityId }}" />
+                                <select class="form-control" ng-model="ScenicSpot.CityId" ng-options="City.Id as City.Name for City in CityList"></select>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SpotName">
+                                景点链接<span class="required"></span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input name="LinkSpotId" type="hidden" value="{{ ScenicSpot.LinkSpotId }}" />
+                                <select class="form-control " ng-model="ScenicSpot.LinkSpotId" ng-options="scenicSpot.ID as scenicSpot.ScenicSpotName for scenicSpot in spotList">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" ng-click="saveScenicSpot()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑景点信息窗口END -->
+    <!-- 查看景点信息窗口 -->
+    <div class="modal fade" id="viewScenicSpotInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">景点信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">景点名称</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ ScenicSpot.ScenicSpotName }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">景点介绍</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ ScenicSpot.ScenicSpotDesc }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">景点图片</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div ng-repeat="img in ImgArray">
+                                <img width="270" height="270" src="{{ img }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">是否首页展示</label>
+                        <div ng-if="ScenicSpot.IsHomeShow" class="col-md-6 col-sm-6 col-xs-6">是</div>
+                        <div ng-if="!ScenicSpot.IsHomeShow" class="col-md-6 col-sm-4 col-xs-6">否</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">显示顺序</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ ScenicSpot.Sort }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">发布时间</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ (ScenicSpot.CreateTime | date:'yyyy-MM-dd HH:mm:ss') }}</div>
+                    </div>
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">景点链接</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{ ScenicSpot.LinkSpotName }}</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看景点信息窗口END -->
+</div>
+
+@section scripts{
+    <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+    <script type="text/javascript">
+        var scenicSpotApp = angular.module('scenicSpotApp', []);
+
+        scenicSpotApp.controller('ScenicSpotListController', function ScenicSpotController($scope, $http) {
+            // 获取省份
+            $http({
+                method: 'POST',
+                url: '/Admin/Region/GetProvinceList',
+            }).then(function successCallback(response) {
+                $scope.ProvinceList = response.data.Data;
+            }, function errorCallback(response) {
+                layer.alert("系统异常", { icon: 2 });
+            });
+
+            // 获取城市
+            $scope.getCityByParentId = function (parentId) {
+                var data = { parentId: parentId };
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Region/GetCityByParentId',
+                    data: data
+                }).then(function successCallback(response) {
+                    $scope.CityList = response.data.Data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 图片处理
+            $scope.ImgArray = [];
+
+            $("#editScenicSpotModal").on("shown.bs.modal", function () {
+                fnUploadImage("btnUploadImg", function (url) {
+                    $scope.ImgArray.push(url);
+                    $scope.fnUpdateImgInput();
+                    $scope.$apply();
+                });
+
+                // 获取城市
+                if ($scope.ScenicSpot && $scope.ScenicSpot.ProvinceId > 0) {
+                    $scope.getCityByParentId($scope.ScenicSpot.ProvinceId);
+                }
+            }).on("hide.bs.modal", fnDestroyUploader);
+
+            // 更新图片文本框数据
+            $scope.fnUpdateImgInput = function () {
+                var strImgs = "";
+                if ($scope.ImgArray) {
+                    for (var i = 0; i < $scope.ImgArray.length; i++) {
+                        if (i == $scope.ImgArray.length - 1) {
+                            strImgs += $scope.ImgArray[i];
+                        } else {
+                            strImgs += $scope.ImgArray[i] + ",";
+                        }
+                    }
+                }
+
+                $("input[name='ScenicSpotImgs']").val(strImgs);
+            }
+
+            // 删除图片
+            $scope.delImg = function (index) {
+                $scope.ImgArray.splice(index, 1);
+                $scope.fnUpdateImgInput();
+            }
+
+            // 初始化数据
+            $scope.initScenicSpotList = function (page) {
+                var scenicSpotName = $("input[name=scenicSpotName]").val();
+                var data = { page: page, scenicSpotName: scenicSpotName };
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/ScenicSpot/GetScenicSpotList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+
+                    // 格式化时间
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);//$filter('date')(data.CreateTime, 'yyyy-MM-dd hh:mm:ss');
+                    }
+
+                    $scope.scenicSpotList = data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+                $http({
+                    method: 'post',
+                    url: '/Admin/ScenicSpot/GetScenicSpotDropdownList'
+                }).then(function successCallback(response) {
+                    $scope.spotList = response.data.Data;
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            }
+
+            // 打开查看景点信息窗口
+            $scope.openViewScenicSpotModal = function (scenicSpot) {
+                $scope.ScenicSpot = scenicSpot;
+                $scope.ImgArray = scenicSpot.ScenicSpotImgs.split(",");
+                $scope.fnUpdateImgInput();
+
+                $("#viewScenicSpotInfoModal").modal();
+            }
+
+            // 打开添加景点信息窗口
+            $scope.openAddScenicSpotModal = function () {
+                $scope.ScenicSpot = null;
+                $scope.ImgArray = [];
+                $scope.fnUpdateImgInput();
+
+                $("#editScenicSpotModal").modal();
+            }
+
+            // 打开编辑景点信息窗口
+            $scope.openEditScenicSpotModal = function (id) {
+                $scope.queryScenicSpotByID(id);
+                $("#editScenicSpotModal").modal();
+            }
+
+            // 删除景点信息
+            $scope.del = function (id) {
+                layer.confirm("确定要删除吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        $http({
+                            method: 'POST',
+                            url: '/Admin/ScenicSpot/DelScenicSpotByID',
+                            data: { id: id }
+                        }).then(function successCallback(response) {
+                            if (response.data.Status == "ok") {
+                                layer.alert(response.data.Msg, { icon: 1 }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                layer.alert(response.data.Msg, { icon: 2 });
+                            }
+                        }), function errorCallback(response) {
+                            layer.alert("系统异常", { icon: 2 });
+                        };
+                    }
+                });
+            }
+
+            // 根据编号查询景点信息
+            $scope.queryScenicSpotByID = function (id) {
+                $http({
+                    method: 'POST',
+                    url: '/Admin/ScenicSpot/QueryScenicSpotByID',
+                    data: { id: id }
+                }).then(function successCallback(response) {
+                    $scope.ScenicSpot = response.data.Data;
+                    $scope.ImgArray = $scope.ScenicSpot.ScenicSpotImgs.split(",");
+                    $scope.fnUpdateImgInput();
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 保存景点信息
+            $scope.saveScenicSpot = function () {
+                var loadIndex = layer.load();
+                var data = $("#frmScenicSpot").serialize();
+                $.post("/Admin/ScenicSpot/SaveScenicSpot", data, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "ok") {
+                        layer.alert(result.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+

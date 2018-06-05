@@ -1,0 +1,297 @@
+﻿@{
+    ViewBag.Title = "角色管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .menu_span {
+        display: inline-block;
+        margin: 7px 10px 0px 0px;
+    }
+</style>
+
+<div ng-app="roleApp" ng-controller="RoleListController" ng-init="initRoleList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>角色管理</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <button ng-click="openAddRoleModal()" class="btn btn-danger">添加角色</button>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="row">
+            <form class="form-horizontal form-label-left">
+                <div class="col-md-3"><input name="roleName" type="text" class="form-control" placeholder="角色名" /></div>
+                <div class="col-md-3"><button type="button" ng-click="initRoleList(1)" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>角色名</th>
+                        <th>拥有权限</th>
+                        <th>描述</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="role in roleList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ role.Name }}</td>
+                        @*<td>{{ role.permission }}</td>*@
+                        <td>{{ role.Description }}</td>
+                        <td>{{ role.CreateTime }}</td>
+                        <td>{{ role.IsDeleted}}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="openEditRoleModal(role.Id)" title="编辑" class="fa fa-edit btn-xs"></a>
+                            <a href="javascript:;" ng-click="del(role.Id)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="roleList.length == 0">
+                        <td colspan="6" align="center">暂无数据</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initRoleList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initRoleList(pageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage == pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initRoleList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initRoleList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initRoleList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--编辑角色信息窗口-->
+    <div id="editRoleModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <h4 class="modal-title">编辑角色信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form1" class="form-horizontal form-label-left" novalidate>
+                        <input name="ID" type="hidden" value="{{  Role.Id }}" />
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Name">
+                                角色名 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Role.Name" name="Name" class="form-control col-md-7 col-xs-12" min="1" maxlength="25" type="text" />
+                            </div>
+                        </div>
+                        @*<div class="item form-group">
+            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Permission">
+                权限<span class="required">*</span>
+            </label>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <input name="Permission" type="hidden" value="{{ Role.Permission }}" />
+                <input ng-model="Role.Permission" name="Password" class="form-control col-md-7 col-xs-12" min="6" type="text" />
+            </div>
+        </div>*@
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Description">
+                                描述
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Role.Description" name="Description" class="form-control col-md-7 col-xs-12" min="1" maxlength="25" type="text" />
+                            </div>
+                        </div>
+                            <div class="item form-group"  ng-if="MenuList.length>0">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                                    菜单权限
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12 targetMenuId">
+                                    <span ng-repeat="menu in MenuList">
+                                        <label>
+                                            <input type="checkbox" value="{{menu.Id}}" id="role_{{menu.Id}}" ng-model="menu.IsSelected" />
+                                            {{menu.MenuName}}
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        @*<div class="row">
+            <div class="item form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                    菜单权限
+                </label>
+                <div class="col-md-4 col-sm-4 col-xs-12 targetRoleId" ng-if="MenuList.length>0">
+                    <div class="form-inline" ng-repeat="menu in MenuList">
+                        <input type="checkbox" id="role_{{menu.Id}}" checked="{{menu.IsSelected}}" />
+                        <label for="role_{{menu.Id}}">{{menu.MenuName}}</label>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>*@
+                        <div class="item form-group" ng-if="MenuList.length>0">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">
+                                设置权限
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12 targetPerm" >
+                                <span class="menu_span">
+                                    <input type="radio" name="perms" id="hasperms" value="1" checked="checked" />
+                                    <label for="hasperms">有权限</label>
+                                    @*时间紧急，暂且不要无权限按钮*@
+                                    @*<input type="radio" name="perms" id="noperms" value="0" />
+                                    <label for="noperms">无权限</label>*@
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" ng-click="saveRole()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var roleApp = angular.module("roleApp", []);
+        roleApp.controller("RoleListController", function ($scope, $http) {
+            //初始化角色列表
+            $scope.initRoleList = function (page) {
+                var roleName = $("input[name='roleName']").val();
+
+                var data = {
+                    page: page,
+                    roleName: roleName
+                };
+                $http({
+                    method: "post",
+                    url: "/Admin/PermissionManager/GetRoleList",
+                    data: data
+                }).then(function successCallback(result) {
+                    var data = result.data.Data;
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                    }
+                    $scope.roleList = data;
+                    $scope.PageModel = result.data;
+
+                }, function errorCallback(result) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+            //打开添加角色窗口
+            $scope.openAddRoleModal = function (Role) {
+                $scope.Role = null;
+                $("#editRoleModal").modal();
+                var data = {
+                    pageIndex: 1,
+                    pageSize: 10000,
+                    Id: -1,
+                    menuName:""
+                }
+                setTimeout(function () {
+                    $scope.getAllMenuList(data);
+
+                }, 200);
+            };
+            //添加角色
+            $scope.saveRole = function () {
+                var loadIndex = layer.load();
+                var data = $("#form1").serializeArray();
+                var menuDom = $(".targetMenuId").find("input[type='checkbox']");
+                var selectedMenuArray = [];
+                if (menuDom.length > 0) {
+                    $.each(menuDom, function (index, data) {
+                        if (data.checked) {
+                            var menuId = data.value;
+                            selectedMenuArray.push(menuId);
+                        }
+                    })
+                }
+                var menuIds = selectedMenuArray.join(',');
+                data.push({ name: "menuIds", value: menuIds });
+                $.post('/Admin/PermissionManager/AddRole', data, function (result) {
+                    layer.close(loadIndex);
+                    if (result.Status == "1") {
+                        layer.alert("保存成功", { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            };
+            //打开编辑角色信息窗口
+            $scope.openEditRoleModal = function (id) {
+                $scope.queryRoleByID(id);
+                $("#editRoleModal").modal();
+            };
+            $scope.getAllMenuList = function (data) {
+
+                $http({
+                    method: "post",
+                    url: "/Admin/PermissionManager/GetMenuList",
+                    data: data
+                }).then(function successCallback(result) {
+                    if (result && result.data && result.data.length > 0) {
+                        $scope.MenuList = result.data;
+                    }
+                });
+
+            };
+            //根据ID查询用户信息
+            $scope.queryRoleByID = function (id) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/PermissionManager/QueryRoleById',
+                    data: { Id: id }
+                }).then(function successCallback(response) {
+                    $scope.Role = response.data.Data.Role;
+                    $scope.MenuList = response.data.Data.MenuFuncViewModels;
+                    //var data = {
+                    //    pageIndex: 1,
+                    //    pageSize: 1000,
+                    //    Id: "",
+                    //    menuName: ""
+                    //};
+                    //获取所有菜单
+                    //$scope.getAllMenuList(data);
+                    // $scope.ImgArray = $scope.Shop.ShopImgs.split(',');
+                    // $scope.fnUpdateImgInput();
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+            $scope.del = function (id) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/PermissionManager/DeleteRole',
+                    data: { Id: id }
+                }).then(function (response) {
+                    var result = response.data;
+                    if (result.Status == '1') {
+                        layer.alert("删除成功", { icon: 1 });
+                        $scope.initRoleList(1);
+                    }
+                    else {
+                        layer.alert("删除失败", { icon: 2 });
+                    }
+                });
+            };
+        })
+    </script>
+}

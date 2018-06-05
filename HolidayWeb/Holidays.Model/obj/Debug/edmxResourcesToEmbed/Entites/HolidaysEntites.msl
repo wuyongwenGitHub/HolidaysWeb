@@ -1,0 +1,781 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HolidaysDBModelStoreContainer" CdmEntityContainer="HolidaysDBEntities">
+    <EntitySetMapping Name="AdminUser">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.AdminUser)">
+        <MappingFragment StoreEntitySet="AdminUser">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LoginAccount" ColumnName="LoginAccount" />
+          <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.CarInfo)">
+        <MappingFragment StoreEntitySet="CarInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CarName" ColumnName="CarName" />
+          <ScalarProperty Name="Linkman" ColumnName="Linkman" />
+          <ScalarProperty Name="Phone1" ColumnName="Phone1" />
+          <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="CarImg" ColumnName="CarImg" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HomeData">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HomeData)">
+        <MappingFragment StoreEntitySet="HomeData">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseConfigure">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HouseConfigure)">
+        <MappingFragment StoreEntitySet="HouseConfigure">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="Sort" ColumnName="Sort" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseEvaluate">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HouseEvaluate)">
+        <MappingFragment StoreEntitySet="HouseEvaluate">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="HouseInfoID" ColumnName="HouseInfoID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+          <ScalarProperty Name="CleanScore" ColumnName="CleanScore" />
+          <ScalarProperty Name="LocationScore" ColumnName="LocationScore" />
+          <ScalarProperty Name="EnvironmentScore" ColumnName="EnvironmentScore" />
+          <ScalarProperty Name="ServiceScore" ColumnName="ServiceScore" />
+          <ScalarProperty Name="PerformanceScore" ColumnName="PerformanceScore" />
+          <ScalarProperty Name="AverageScore" ColumnName="AverageScore" />
+          <ScalarProperty Name="EvaluateContent" ColumnName="EvaluateContent" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="HouseTitle" ColumnName="HouseTitle" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="UserImg" ColumnName="UserImg" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseImg">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HouseImg)">
+        <MappingFragment StoreEntitySet="HouseImg">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="HouseInfoID" ColumnName="HouseInfoID" />
+          <ScalarProperty Name="ImgUrl" ColumnName="ImgUrl" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HouseInfo)">
+        <MappingFragment StoreEntitySet="HouseInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="HouseTitle" ColumnName="HouseTitle" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="CountyId" ColumnName="CountyId" />
+          <ScalarProperty Name="DecorativeStyle" ColumnName="DecorativeStyle" />
+          <ScalarProperty Name="LeaseType" ColumnName="LeaseType" />
+          <ScalarProperty Name="BedroomNum" ColumnName="BedroomNum" />
+          <ScalarProperty Name="LivingRoomNum" ColumnName="LivingRoomNum" />
+          <ScalarProperty Name="ToiletNum" ColumnName="ToiletNum" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="IsTrusteeship" ColumnName="IsTrusteeship" />
+          <ScalarProperty Name="IsSell" ColumnName="IsSell" />
+          <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+          <ScalarProperty Name="IsCooking" ColumnName="IsCooking" />
+          <ScalarProperty Name="IsPet" ColumnName="IsPet" />
+          <ScalarProperty Name="StayPersonNum" ColumnName="StayPersonNum" />
+          <ScalarProperty Name="HouseSize" ColumnName="HouseSize" />
+          <ScalarProperty Name="Facilities" ColumnName="Facilities" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="About" ColumnName="About" />
+          <ScalarProperty Name="Rules" ColumnName="Rules" />
+          <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
+          <ScalarProperty Name="BaseInfo" ColumnName="BaseInfo" />
+          <ScalarProperty Name="IsReals" ColumnName="IsReals" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="BuyNum" ColumnName="BuyNum" />
+          <ScalarProperty Name="EvaluateNum" ColumnName="EvaluateNum" />
+          <ScalarProperty Name="EvaluateAvgScore" ColumnName="EvaluateAvgScore" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+          <ScalarProperty Name="IsEmpty" ColumnName="IsEmpty" />
+          <ScalarProperty Name="IsBack" ColumnName="IsBack" />
+          <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.OrderInfo)">
+        <MappingFragment StoreEntitySet="OrderInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+          <ScalarProperty Name="OtherNo" ColumnName="OtherNo" />
+          <ScalarProperty Name="LandlordID" ColumnName="LandlordID" />
+          <ScalarProperty Name="LandlordName" ColumnName="LandlordName" />
+          <ScalarProperty Name="LandlordPhone" ColumnName="LandlordPhone" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+          <ScalarProperty Name="HouseInfoID" ColumnName="HouseInfoID" />
+          <ScalarProperty Name="HouseTitle" ColumnName="HouseTitle" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="BuyCount" ColumnName="BuyCount" />
+          <ScalarProperty Name="DownPayment" ColumnName="DownPayment" />
+          <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+          <ScalarProperty Name="BalancePayment" ColumnName="BalancePayment" />
+          <ScalarProperty Name="PlatformRoyalty" ColumnName="PlatformRoyalty" />
+          <ScalarProperty Name="PayType" ColumnName="PayType" />
+          <ScalarProperty Name="PersonNum" ColumnName="PersonNum" />
+          <ScalarProperty Name="IsFullPrice" ColumnName="IsFullPrice" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsEvaluate" ColumnName="IsEvaluate" />
+          <ScalarProperty Name="CouponCode" ColumnName="CouponCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderItem">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.OrderItem)">
+        <MappingFragment StoreEntitySet="OrderItem">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+          <ScalarProperty Name="OtherNo" ColumnName="OtherNo" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="BalancePayment" ColumnName="BalancePayment" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="PayTime" ColumnName="PayTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductCategory">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ProductCategory)">
+        <MappingFragment StoreEntitySet="ProductCategory">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="Sort" ColumnName="Sort" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ProductInfo)">
+        <MappingFragment StoreEntitySet="ProductInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="IsHomeShow" ColumnName="IsHomeShow" />
+          <ScalarProperty Name="Sort" ColumnName="Sort" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="ProductImg" ColumnName="ProductImg" />
+          <ScalarProperty Name="HomeImg" ColumnName="HomeImg" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Region">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.Region)">
+        <MappingFragment StoreEntitySet="Region">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="LevelType" ColumnName="LevelType" />
+          <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="MergerName" ColumnName="MergerName" />
+          <ScalarProperty Name="Lng" ColumnName="Lng" />
+          <ScalarProperty Name="Lat" ColumnName="Lat" />
+          <ScalarProperty Name="Pinyin" ColumnName="Pinyin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SpotInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.SpotInfo)">
+        <MappingFragment StoreEntitySet="SpotInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ScenicSpotName" ColumnName="ScenicSpotName" />
+          <ScalarProperty Name="ScenicSpotDesc" ColumnName="ScenicSpotDesc" />
+          <ScalarProperty Name="ScenicSpotImgs" ColumnName="ScenicSpotImgs" />
+          <ScalarProperty Name="IsHomeShow" ColumnName="IsHomeShow" />
+          <ScalarProperty Name="Sort" ColumnName="Sort" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="LinkSpotId" ColumnName="LinkSpotId" />
+          <ScalarProperty Name="LinkSpotName" ColumnName="LinkSpotName" />
+          <ScalarProperty Name="Links" ColumnName="Links" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SystemConfig">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.SystemConfig)">
+        <MappingFragment StoreEntitySet="SystemConfig">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TenantInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.TenantInfo)">
+        <MappingFragment StoreEntitySet="TenantInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="CertificateType" ColumnName="CertificateType" />
+          <ScalarProperty Name="CertificateNo" ColumnName="CertificateNo" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Nation" ColumnName="Nation" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAccount">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserAccount)">
+        <MappingFragment StoreEntitySet="UserAccount">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PhoneAccount" ColumnName="PhoneAccount" />
+          <ScalarProperty Name="WeixinUnionid" ColumnName="WeixinUnionid" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="UserToken" ColumnName="UserToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserFavorite">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserFavorite)">
+        <MappingFragment StoreEntitySet="UserFavorite">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="HouseInfoID" ColumnName="HouseInfoID" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserInfo)">
+        <MappingFragment StoreEntitySet="UserInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="Img" ColumnName="Img" />
+          <ScalarProperty Name="Nikename" ColumnName="Nikename" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="PhoneNo2" ColumnName="PhoneNo2" />
+          <ScalarProperty Name="IDCardNo" ColumnName="IDCardNo" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="IsRealName" ColumnName="IsRealName" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="LoginAccount" ColumnName="LoginAccount" />
+          <ScalarProperty Name="LoginPwd" ColumnName="LoginPwd" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserInfoCertificate">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserInfoCertificate)">
+        <MappingFragment StoreEntitySet="UserInfoCertificate">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserInfoExt">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserInfoExt)">
+        <MappingFragment StoreEntitySet="UserInfoExt">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="IsCertification" ColumnName="IsCertification" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="IDCardImg1" ColumnName="IDCardImg1" />
+          <ScalarProperty Name="IDCardImg2" ColumnName="IDCardImg2" />
+          <ScalarProperty Name="HouseAddress" ColumnName="HouseAddress" />
+          <ScalarProperty Name="Housecertificate" ColumnName="Housecertificate" />
+          <ScalarProperty Name="WeixinAccount" ColumnName="WeixinAccount" />
+          <ScalarProperty Name="AlipayAccount" ColumnName="AlipayAccount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserOrderRecord">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserOrderRecord)">
+        <MappingFragment StoreEntitySet="UserOrderRecord">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseInfoView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HouseInfoView)">
+        <MappingFragment StoreEntitySet="HouseInfoView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="HouseTitle" ColumnName="HouseTitle" />
+          <ScalarProperty Name="DecorativeStyle" ColumnName="DecorativeStyle" />
+          <ScalarProperty Name="LeaseType" ColumnName="LeaseType" />
+          <ScalarProperty Name="BedroomNum" ColumnName="BedroomNum" />
+          <ScalarProperty Name="LivingRoomNum" ColumnName="LivingRoomNum" />
+          <ScalarProperty Name="ToiletNum" ColumnName="ToiletNum" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="IsTrusteeship" ColumnName="IsTrusteeship" />
+          <ScalarProperty Name="IsSell" ColumnName="IsSell" />
+          <ScalarProperty Name="IsCooking" ColumnName="IsCooking" />
+          <ScalarProperty Name="IsPet" ColumnName="IsPet" />
+          <ScalarProperty Name="StayPersonNum" ColumnName="StayPersonNum" />
+          <ScalarProperty Name="HouseSize" ColumnName="HouseSize" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="IsReals" ColumnName="IsReals" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="BuyNum" ColumnName="BuyNum" />
+          <ScalarProperty Name="EvaluateNum" ColumnName="EvaluateNum" />
+          <ScalarProperty Name="EvaluateAvgScore" ColumnName="EvaluateAvgScore" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+          <ScalarProperty Name="Facilities" ColumnName="Facilities" />
+          <ScalarProperty Name="About" ColumnName="About" />
+          <ScalarProperty Name="Rules" ColumnName="Rules" />
+          <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
+          <ScalarProperty Name="BaseInfo" ColumnName="BaseInfo" />
+          <ScalarProperty Name="Img" ColumnName="Img" />
+          <ScalarProperty Name="Nikename" ColumnName="Nikename" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNo2" ColumnName="PhoneNo2" />
+          <ScalarProperty Name="IDCardNo" ColumnName="IDCardNo" />
+          <ScalarProperty Name="IsRealName" ColumnName="IsRealName" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="CountyId" ColumnName="CountyId" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+          <ScalarProperty Name="IsEmpty" ColumnName="IsEmpty" />
+          <ScalarProperty Name="IsBack" ColumnName="IsBack" />
+          <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderInfoView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.OrderInfoView)">
+        <MappingFragment StoreEntitySet="OrderInfoView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+          <ScalarProperty Name="LandlordID" ColumnName="LandlordID" />
+          <ScalarProperty Name="LandlordName" ColumnName="LandlordName" />
+          <ScalarProperty Name="LandlordPhone" ColumnName="LandlordPhone" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+          <ScalarProperty Name="HouseInfoID" ColumnName="HouseInfoID" />
+          <ScalarProperty Name="HouseTitle" ColumnName="HouseTitle" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="BuyCount" ColumnName="BuyCount" />
+          <ScalarProperty Name="DownPayment" ColumnName="DownPayment" />
+          <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+          <ScalarProperty Name="BalancePayment" ColumnName="BalancePayment" />
+          <ScalarProperty Name="PlatformRoyalty" ColumnName="PlatformRoyalty" />
+          <ScalarProperty Name="PersonNum" ColumnName="PersonNum" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsEvaluate" ColumnName="IsEvaluate" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="OtherNo" ColumnName="OtherNo" />
+          <ScalarProperty Name="PayType" ColumnName="PayType" />
+          <ScalarProperty Name="IsFullPrice" ColumnName="IsFullPrice" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserFavoriteView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserFavoriteView)">
+        <MappingFragment StoreEntitySet="UserFavoriteView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="HouseInfoID" ColumnName="HouseInfoID" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="HouseTitle" ColumnName="HouseTitle" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserInfoCertificateView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserInfoCertificateView)">
+        <MappingFragment StoreEntitySet="UserInfoCertificateView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="IsCertification" ColumnName="IsCertification" />
+          <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="IDCardNo" ColumnName="IDCardNo" />
+          <ScalarProperty Name="Nikename" ColumnName="Nikename" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNo2" ColumnName="PhoneNo2" />
+          <ScalarProperty Name="IsRealName" ColumnName="IsRealName" />
+          <ScalarProperty Name="IDCardImg1" ColumnName="IDCardImg1" />
+          <ScalarProperty Name="IDCardImg2" ColumnName="IDCardImg2" />
+          <ScalarProperty Name="HouseAddress" ColumnName="HouseAddress" />
+          <ScalarProperty Name="Housecertificate" ColumnName="Housecertificate" />
+          <ScalarProperty Name="Img" ColumnName="Img" />
+          <ScalarProperty Name="WeixinAccount" ColumnName="WeixinAccount" />
+          <ScalarProperty Name="AlipayAccount" ColumnName="AlipayAccount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserInfoExtView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserInfoExtView)">
+        <MappingFragment StoreEntitySet="UserInfoExtView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="IsCertification" ColumnName="IsCertification" />
+          <ScalarProperty Name="IDCardImg1" ColumnName="IDCardImg1" />
+          <ScalarProperty Name="IDCardImg2" ColumnName="IDCardImg2" />
+          <ScalarProperty Name="HouseAddress" ColumnName="HouseAddress" />
+          <ScalarProperty Name="Housecertificate" ColumnName="Housecertificate" />
+          <ScalarProperty Name="Nikename" ColumnName="Nikename" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="PhoneNo2" ColumnName="PhoneNo2" />
+          <ScalarProperty Name="IDCardNo" ColumnName="IDCardNo" />
+          <ScalarProperty Name="IsRealName" ColumnName="IsRealName" />
+          <ScalarProperty Name="Img" ColumnName="Img" />
+          <ScalarProperty Name="PhoneAccount" ColumnName="PhoneAccount" />
+          <ScalarProperty Name="UserToken" ColumnName="UserToken" />
+          <ScalarProperty Name="AlipayAccount" ColumnName="AlipayAccount" />
+          <ScalarProperty Name="WeixinAccount" ColumnName="WeixinAccount" />
+          <ScalarProperty Name="WeixinUnionid" ColumnName="WeixinUnionid" />
+          <ScalarProperty Name="LoginAccount" ColumnName="LoginAccount" />
+          <ScalarProperty Name="LoginPwd" ColumnName="LoginPwd" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserInfoView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserInfoView)">
+        <MappingFragment StoreEntitySet="UserInfoView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Img" ColumnName="Img" />
+          <ScalarProperty Name="Nikename" ColumnName="Nikename" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="PhoneNo2" ColumnName="PhoneNo2" />
+          <ScalarProperty Name="IDCardNo" ColumnName="IDCardNo" />
+          <ScalarProperty Name="IsRealName" ColumnName="IsRealName" />
+          <ScalarProperty Name="PhoneAccount" ColumnName="PhoneAccount" />
+          <ScalarProperty Name="UserToken" ColumnName="UserToken" />
+          <ScalarProperty Name="WeixinUnionid" ColumnName="WeixinUnionid" />
+          <ScalarProperty Name="LoginAccount" ColumnName="LoginAccount" />
+          <ScalarProperty Name="LoginPwd" ColumnName="LoginPwd" />
+          <ScalarProperty Name="IDCardImg1" ColumnName="IDCardImg1" />
+          <ScalarProperty Name="IDCardImg2" ColumnName="IDCardImg2" />
+          <ScalarProperty Name="HouseAddress" ColumnName="HouseAddress" />
+          <ScalarProperty Name="Housecertificate" ColumnName="Housecertificate" />
+          <ScalarProperty Name="IsCertification" ColumnName="IsCertification" />
+          <ScalarProperty Name="AlipayAccount" ColumnName="AlipayAccount" />
+          <ScalarProperty Name="WeixinAccount" ColumnName="WeixinAccount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShopCategory">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ShopCategory)">
+        <MappingFragment StoreEntitySet="ShopCategory">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="SortBy" ColumnName="SortBy" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShopInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ShopInfo)">
+        <MappingFragment StoreEntitySet="ShopInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+          <ScalarProperty Name="Locations" ColumnName="Locations" />
+          <ScalarProperty Name="Scores" ColumnName="Scores" />
+          <ScalarProperty Name="StartPrice" ColumnName="StartPrice" />
+          <ScalarProperty Name="ShopType" ColumnName="ShopType" />
+          <ScalarProperty Name="Tags" ColumnName="Tags" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="SpotId" ColumnName="SpotId" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+          <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+          <ScalarProperty Name="SortBy" ColumnName="SortBy" />
+          <ScalarProperty Name="ShopImgs" ColumnName="ShopImgs" />
+          <ScalarProperty Name="ShopTypeName" ColumnName="ShopTypeName" />
+          <ScalarProperty Name="SpotName" ColumnName="SpotName" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="DecorativeStyle" ColumnName="DecorativeStyle" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+          <ScalarProperty Name="IsCheck" ColumnName="IsCheck" />
+          <ScalarProperty Name="About" ColumnName="About" />
+          <ScalarProperty Name="Rules" ColumnName="Rules" />
+          <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShopInfoCertificate">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ShopInfoCertificate)">
+        <MappingFragment StoreEntitySet="ShopInfoCertificate">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+          <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShopInfoCertificateView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ShopInfoCertificateView)">
+        <MappingFragment StoreEntitySet="ShopInfoCertificateView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+          <ScalarProperty Name="Locations" ColumnName="Locations" />
+          <ScalarProperty Name="Scores" ColumnName="Scores" />
+          <ScalarProperty Name="StartPrice" ColumnName="StartPrice" />
+          <ScalarProperty Name="ShopType" ColumnName="ShopType" />
+          <ScalarProperty Name="Tags" ColumnName="Tags" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="SpotId" ColumnName="SpotId" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+          <ScalarProperty Name="SortBy" ColumnName="SortBy" />
+          <ScalarProperty Name="ShopImgs" ColumnName="ShopImgs" />
+          <ScalarProperty Name="ShopTypeName" ColumnName="ShopTypeName" />
+          <ScalarProperty Name="SpotName" ColumnName="SpotName" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="DecorativeStyle" ColumnName="DecorativeStyle" />
+          <ScalarProperty Name="IsCheck" ColumnName="IsCheck" />
+          <ScalarProperty Name="About" ColumnName="About" />
+          <ScalarProperty Name="Rules" ColumnName="Rules" />
+          <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
+          <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseComment">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HouseComment)">
+        <MappingFragment StoreEntitySet="HouseComment">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="HouseInfoId" ColumnName="HouseInfoId" />
+          <ScalarProperty Name="EvaluateId" ColumnName="EvaluateId" />
+          <ScalarProperty Name="ToUserId" ColumnName="ToUserId" />
+          <ScalarProperty Name="ToUserName" ColumnName="ToUserName" />
+          <ScalarProperty Name="FromUserId" ColumnName="FromUserId" />
+          <ScalarProperty Name="FromUserName" ColumnName="FromUserName" />
+          <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HouseEvaluateView">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.HouseEvaluateView)">
+        <MappingFragment StoreEntitySet="HouseEvaluateView">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="HouseInfoID" ColumnName="HouseInfoID" />
+          <ScalarProperty Name="UserInfoID" ColumnName="UserInfoID" />
+          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+          <ScalarProperty Name="CleanScore" ColumnName="CleanScore" />
+          <ScalarProperty Name="LocationScore" ColumnName="LocationScore" />
+          <ScalarProperty Name="EnvironmentScore" ColumnName="EnvironmentScore" />
+          <ScalarProperty Name="ServiceScore" ColumnName="ServiceScore" />
+          <ScalarProperty Name="PerformanceScore" ColumnName="PerformanceScore" />
+          <ScalarProperty Name="AverageScore" ColumnName="AverageScore" />
+          <ScalarProperty Name="EvaluateContent" ColumnName="EvaluateContent" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="UserImg" ColumnName="UserImg" />
+          <ScalarProperty Name="HouseTitle" ColumnName="HouseTitle" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="CountyId" ColumnName="CountyId" />
+          <ScalarProperty Name="DecorativeStyle" ColumnName="DecorativeStyle" />
+          <ScalarProperty Name="LeaseType" ColumnName="LeaseType" />
+          <ScalarProperty Name="BedroomNum" ColumnName="BedroomNum" />
+          <ScalarProperty Name="LivingRoomNum" ColumnName="LivingRoomNum" />
+          <ScalarProperty Name="ToiletNum" ColumnName="ToiletNum" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="IsTrusteeship" ColumnName="IsTrusteeship" />
+          <ScalarProperty Name="IsSell" ColumnName="IsSell" />
+          <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+          <ScalarProperty Name="IsCooking" ColumnName="IsCooking" />
+          <ScalarProperty Name="IsPet" ColumnName="IsPet" />
+          <ScalarProperty Name="StayPersonNum" ColumnName="StayPersonNum" />
+          <ScalarProperty Name="HouseSize" ColumnName="HouseSize" />
+          <ScalarProperty Name="Facilities" ColumnName="Facilities" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="About" ColumnName="About" />
+          <ScalarProperty Name="Rules" ColumnName="Rules" />
+          <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
+          <ScalarProperty Name="BaseInfo" ColumnName="BaseInfo" />
+          <ScalarProperty Name="IsReals" ColumnName="IsReals" />
+          <ScalarProperty Name="BuyNum" ColumnName="BuyNum" />
+          <ScalarProperty Name="EvaluateNum" ColumnName="EvaluateNum" />
+          <ScalarProperty Name="EvaluateAvgScore" ColumnName="EvaluateAvgScore" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+          <ScalarProperty Name="FromUserId" ColumnName="FromUserId" />
+          <ScalarProperty Name="FromUserName" ColumnName="FromUserName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SysLog">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.SysLog)">
+        <MappingFragment StoreEntitySet="SysLog">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ErrorMsg" ColumnName="ErrorMsg" />
+          <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_User">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.User)">
+        <MappingFragment StoreEntitySet="T_User">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserRealName" ColumnName="UserRealName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="GUIID" ColumnName="GUIID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_Role">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.Role)">
+        <MappingFragment StoreEntitySet="T_Role">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="GUID" ColumnName="GUID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_Permission">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.Permission)">
+        <MappingFragment StoreEntitySet="T_Permission">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="PermValue" ColumnName="PermValue" />
+          <ScalarProperty Name="GUID" ColumnName="GUID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_Function">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.Function)">
+        <MappingFragment StoreEntitySet="T_Function">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="MenuLevel" ColumnName="MenuLevel" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_FuncPermission">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.FuncPermission)">
+        <MappingFragment StoreEntitySet="T_FuncPermission">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="FuncId" ColumnName="FuncId" />
+          <ScalarProperty Name="MemberType" ColumnName="MemberType" />
+          <ScalarProperty Name="PermValue" ColumnName="PermValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="T_UserRole">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.UserRole)">
+        <MappingFragment StoreEntitySet="T_UserRole">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="MemberType" ColumnName="MemberType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShopToDayPriceSet">
+      <EntityTypeMapping TypeName="IsTypeOf(HolidaysDBModel.ShopToDayPrice)">
+        <MappingFragment StoreEntitySet="ShopToDayPriceSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ShopId" ColumnName="ShopId" />
+          <ScalarProperty Name="other" ColumnName="other" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="statu" ColumnName="statu" />
+          <ScalarProperty Name="date" ColumnName="date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

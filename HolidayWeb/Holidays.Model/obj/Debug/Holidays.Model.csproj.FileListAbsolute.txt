@@ -1,0 +1,32 @@
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\Holidays.Model.dll.config
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\Holidays.Model.dll
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\Holidays.Model.pdb
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\EntityFramework.dll
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\EntityFramework.SqlServer.dll
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\Newtonsoft.Json.dll
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\EntityFramework.xml
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\EntityFramework.SqlServer.xml
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\Newtonsoft.Json.xml
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\zh-Hans\EntityFramework.resources.dll
+E:\Projects\holidaysweb\Holidays.Model\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+E:\Projects\holidaysweb\Holidays.Model\obj\Debug\Holidays.Model.csproj.CoreCompileInputs.cache
+E:\Projects\holidaysweb\Holidays.Model\obj\Debug\Holidays.Model.csproj.CopyComplete
+E:\Projects\holidaysweb\Holidays.Model\obj\Debug\Holidays.Model.dll
+E:\Projects\holidaysweb\Holidays.Model\obj\Debug\Holidays.Model.pdb
+E:\Projects\holidaysweb\Holidays.Model\obj\Debug\Holidays.Model.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\Holidays.Model.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\Holidays.Model.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\Holidays.Model.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\EntityFramework.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\Newtonsoft.Json.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\EntityFramework.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\Newtonsoft.Json.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\zh-Hans\EntityFramework.resources.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\obj\Debug\Holidays.Model.csproj.CoreCompileInputs.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\obj\Debug\Holidays.Model.csproj.CopyComplete
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\obj\Debug\Holidays.Model.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\obj\Debug\Holidays.Model.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Model\obj\Debug\Holidays.Model.csprojResolveAssemblyReference.cache

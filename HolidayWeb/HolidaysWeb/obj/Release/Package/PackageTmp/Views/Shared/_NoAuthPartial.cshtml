@@ -1,0 +1,10 @@
+﻿<p style="text-align: center;">请先登录。</p>
+<script type="text/javascript">
+    $(function () {
+        var layerIndex = layer.alert("登录失效，请重新登录！", { icon: 2 }, function () {
+            layer.close(layerIndex);
+            $("#lbtnLoginButton").click();
+        });
+    });
+</script>
+

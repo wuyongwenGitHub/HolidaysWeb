@@ -1,0 +1,80 @@
+﻿@model Holidays.Model.Entites.UserInfoExtView
+
+@{
+    ViewBag.Title = "房东信息";
+    Layout = null;
+}
+
+<link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Framework/layui2/layui.all.js"></script>
+
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <form id="form1" lay-filter="form1" class="layui-form" style="margin:10px;">
+                <input type="hidden" name="ID" value="@Model.ID" />
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录账号*</label>
+                    <div class="layui-input-block">
+                        <input id="LoginAccount" class="layui-input" name="LoginAccount" value="@Model.LoginAccount" lay-verify="required"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录密码*</label>
+                    <div class="layui-input-inline">
+                        <input id="LoginPwd" class="layui-input" name="LoginPwd" value="@Model.LoginPwd" lay-verify="required"/>
+                    </div>
+                    <div class="layui-form-mid">
+                        <a href="javascript:;" class="layui-btn layui-btn-normal layui-btn-sm" onclick="userAccount.newPassword()" style="margin-top:-5px;">重新生成密码</a>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <button id="buttonSave" class="layui-btn" lay-submit="" lay-filter="buttonSave" style="display:none;">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var userAccount = function () {
+        var form;
+        var initPage = function () {
+            layui.use('form', function () {
+                form = layui.form;
+                form.render();
+            });
+        };
+        var newPasswordHandle = function () {
+            var num = "";
+            for (var i = 0; i < 6; i++) {
+                num += Math.floor(Math.random() * 10);
+            }
+            $("#LoginPwd").val(num);
+        };
+        var submitHandle = function (ok) {
+            form.on('submit(buttonSave)', function (data) {
+                if (ok) {
+                    ok(data);
+                }
+                return false;
+            });
+            $("#buttonSave").trigger('click');
+        };
+        return {
+            init: function () {
+                initPage();
+            },
+            newPassword: function () {
+                newPasswordHandle();
+            },
+            submit: function (ok) {
+                submitHandle(ok);
+            }
+        }
+    }();
+    $(function () {
+        userAccount.init();
+    });
+</script>

@@ -1,0 +1,465 @@
+﻿@{
+    ViewBag.Title = "房东信息管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>房东信息管理 </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <button onclick="landlordManager.add()" class="btn btn-danger">添加房东</button>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <form id="frmUserInfoQuery" class="form-horizontal form-label-left">
+                <div class="col-md-3"><input id="username" name="username" type="text" class="form-control" placeholder="房东名称" /></div>
+                <div class="col-md-3"><input id="phoneNo" name="phoneNo" type="text" class="form-control" placeholder="联系电话" /></div>
+                <div class="col-md-3"><input id="idcard" name="idcard" type="text" class="form-control" placeholder="身份证号" /></div>
+                <div class="col-md-3"><button onclick="landlordManager.search()" type="button" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="grid1" lay-filter="grid1"></table>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script src="~/Framework/layui2/layui.all.js"></script>
+    <script type="text/javascript">
+        //var userInfoApp = angular.module('userInfoApp', []);
+
+        //userInfoApp.controller('UserInfoListController', function UserInfoListController($scope, $http) {
+        //    $scope.initUserInfoList = function (page) {
+        //        var username = $("input[name=username]").val();
+        //        var phoneNo = $("input[name=phoneNo]").val();
+        //        var idcard = $("input[name=idcard]").val();
+        //        var data = { page: page, username: username, phoneNo: phoneNo, idcard: idcard };
+
+        //        $http({
+        //            method: 'POST',
+        //            url: '/Admin/Landlord/GetUserInfoList',
+        //            data: data
+        //        }).then(function successCallback(response) {
+        //            var data = response.data.Data;
+
+        //            // 格式化时间
+        //            for (var i = 0; i < data.length; i++) {
+        //                data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+        //            }
+
+        //            $scope.userInfoList = data;
+        //            $scope.PageModel = response.data;
+        //        }, function errorCallback(response) {
+        //            layer.alert("系统异常", { icon: 2 });
+        //        });
+        //    }
+
+        //    // 打开查看房东信息窗口
+        //    $scope.openViewUserInfoInfoModal = function (userInfoInfo) {
+        //        $scope.UserInfoInfo = userInfoInfo;
+        //        $("#viewUserInfoInfoModal").modal();
+        //    }
+
+        //    //// 打开添加房东信息窗口
+        //    //$scope.openAddUserInfoModal = function () {
+        //    //    $scope.UserInfoInfo = null;
+        //    //    $("#editUserInfoInfoModal").modal();
+        //    //}
+
+        //    //// 打开编辑房东信息窗口
+        //    //$scope.openEditUserInfoInfoModal = function (id) {
+        //    //    $scope.queryUserInfoInfoByID(id);
+        //    //    $("#editUserInfoInfoModal").modal();
+        //    //}
+
+        //    // 禁用房东账号
+        //    $scope.disenableUserInfo = function (accountID) {
+        //        layer.confirm("确定要禁用该房东账号吗？", {
+        //            btn: ["确定", "取消"],
+        //            btn1: function () {
+        //                $scope.updateState(accountID, 1);
+        //            }
+        //        });
+        //    }
+
+        //    // 启用房东账号
+        //    $scope.enableUserInfo = function (accountID) {
+        //        layer.confirm("确定要启用该房东账号吗？", {
+        //            btn: ["确定", "取消"],
+        //            btn1: function () {
+        //                $scope.updateState(accountID, 0);
+        //            }
+        //        });
+        //    }
+
+        //    // 删除房东信息
+        //    $scope.del = function (accountID) {
+        //        layer.confirm("确定要删除吗？", {
+        //            btn: ["确定", "取消"],
+        //            btn1: function () {
+        //                $scope.updateState(accountID, 2);
+        //            }
+        //        });
+        //    }
+
+        //    // 更新房东账户状态
+        //    $scope.updateState = function (accountID, state) {
+        //        $http({
+        //            method: 'POST',
+        //            url: '/Admin/Landlord/UpdateState',
+        //            data: { accountID: accountID, state: state }
+        //        }).then(function successCallback(response) {
+        //            if (response.data.Status == "ok") {
+        //                layer.alert(response.data.Msg, { icon: 1 }, function () {
+        //                    window.location.reload();
+        //                });
+        //            } else {
+        //                layer.alert(response.data.Msg, { icon: 2 });
+        //            }
+        //        }), function errorCallback(response) {
+        //            layer.alert("系统异常", { icon: 2 });
+        //        };
+        //    }
+
+        //    //// 根据编号查询房东信息
+        //    //$scope.queryUserInfoInfoByID = function (id) {
+        //    //    $http({
+        //    //        method: 'POST',
+        //    //        url: '/Admin/Landlord/QueryUserInfoInfoByID',
+        //    //        data: { id: id }
+        //    //    }).then(function successCallback(response) {
+        //    //        $scope.UserInfoInfo = response.data.Data;
+        //    //    }, function errorCallback(response) {
+        //    //        layer.alert("系统异常", { icon: 2 });
+        //    //    });
+        //    //}
+
+        //    // 保存房东信息
+        //    //$scope.saveUserInfoInfo = function () {
+        //    //    var loadIndex = layer.load();
+        //    //    var data = $("#frmUserInfoInfo").serialize();
+        //    //    $.post("/Admin/Landlord/SaveUserInfoInfo", data, function (result) {
+        //    //        layer.close(loadIndex);
+
+        //    //        if (result.Status == "ok") {
+        //    //            layer.alert(result.Msg, { icon: 1 }, function () {
+        //    //                window.location.reload();
+        //    //            });
+        //    //        } else {
+        //    //            layer.alert(result.Msg, { icon: 2 });
+        //    //        }
+        //    //    });
+        //    //}
+        //});
+
+        var landlordManager = function () {
+            var table, layer;
+            var initPage = function () {
+                layui.use(['table', 'form', 'layer'], function () {
+                    table = layui.table;
+                    layer = layui.layer;
+                    //
+                    table.render({
+                        elem: '#grid1',
+                        loading: true,
+                        id: 'grid1',
+                        url: '/Admin/Landlord/GetLandlordInfoList',
+                        method: 'post',
+                        page: true,
+                        limits: [10],
+                        cols: [[
+                            { field: 'ID', title: '#', width: 60, fixed: 'left', type: 'numbers' },
+                            { field: 'Img', title: '头像', width: 65, templet: function (d) { return '<img src="' + d.Img + '" style="width:32px;height:32px;" />'; } },
+                            { field: 'Username', title: '房东姓名', width: 200, align: 'left' },
+                            {
+                                field: 'Gender', title: '性别', width: 60, align: 'center', templet: function (d) {
+                                    var content = '保密';
+                                    if (d.Gender == 0) {
+                                        content = '男';
+                                    }
+                                    if (d.Gender == 1) {
+                                        content = '女';
+                                    }
+                                    return content;
+                                }
+                            },
+                            { field: 'LoginAccount', title: '登录账号', width: 118, align: 'left' },
+                            { field: 'PhoneNo', title: '手机号', width: 118, align: 'left' },
+                            { field: 'Email', title: '邮箱', width: 186, align: 'left' },
+                            { field: 'IDCardNo', title: '身份证号', width: 180, align: 'left' },
+                            {
+                                field: 'CreateTime', title: '注册时间', width: 160, align: 'left', templet: function (d) {
+                                    return jsonDatetimeFormat(d.CreateTime);
+                                }
+                            },
+                            {
+                                field: 'State', title: '状态', width: 60, align: 'center', templet: function (d) {
+                                    var content = '<div>';
+                                    if (d.State == 0) {
+                                        content += '<span class="green">正常</span>';
+                                    }
+                                    else if (d.State == 1) {
+                                        content += '<span class="yellow">禁用</span>';
+                                    }
+                                    else if (d.State == 2) {
+                                        content += '<span class="red">删除</span>';
+                                    }
+                                    content += '</div>';
+                                    return content;
+                                }
+                            },
+                            {
+                                field: '', title: '操作', width: 340, align: 'center', templet: function (d) {
+                                    var content = '<div>';
+                                    content += '<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs" onclick="landlordManager.detail(\'' + d.ID + '\')">查看</a>';
+                                    content += '<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs" onclick="landlordManager.modify(\''+ d.ID +'\')">编辑</a>';
+                                    if (d.LoginAccount == null || d.LoginAccount == '') {
+                                        content += '<a class="layui-btn  layui-btn-normal layui-btn-xs" onclick="landlordManager.createAccount(\'' + d.ID + '\')">分配账号</a>';
+                                    }
+                                    content += '<a class="layui-btn  layui-btn-normal layui-btn-xs" onclick="landlordManager.reset(\'' + d.ID + '\')">重置密码</a>';
+                                    if (d.State == 0) {
+                                        content += '<a class="layui-btn layui-btn-normal layui-btn-xs" onclick="landlordManager.disenableUserInfo(\'' + d.AccountID + '\')">禁用账号</a>';
+                                    }
+                                    if (d.State == 1) {
+                                        content += '<a class="layui-btn  layui-btn-normal layui-btn-xs" onclick="landlordManager.enableUserInfo(\'' + d.AccountID + '\')">启用账号</a>';
+                                    }
+                                    content += '<a class="layui-btn  layui-btn-danger layui-btn-xs" onclick="landlordManager.del(\'' + d.AccountID + '\')">删除</a>';
+                                    content += '</div>';
+
+                                    return content;
+                                }
+                            }
+                        ]],
+                        text: {
+                            none: '暂无相关数据。'
+                        }
+                    });
+                });
+            };
+            var detailHandle = function (id) {
+                layer.open({
+                    type: 2,
+                    title: '房东信息',
+                    content: '/Admin/Landlord/LandlordInfoView?id=' + id,
+                    area: ['580px', '480px'],
+                    success: function (layero, index) {
+                    },
+                    btn: ['关闭'],
+                    yes: function (index, layero) {
+                        layer.close(index);
+                    }
+                });
+            };
+            var createAccountHandle = function (id) {
+                layer.open({
+                    type: 2,
+                    title: '分配账号',
+                    content: '/Admin/Landlord/CreateAccountView?id=' + id,
+                    area: ['490px', '248px'],
+                    success: function (layero, index) {
+                    },
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.userAccount.submit(function (data) {
+                            var loadIndex = layer.load(1);
+                            $.post('/Admin/Landlord/CreateUserAccount', data.field, function (res) {
+                                layer.close(loadIndex);
+                                layer.alert(res.Msg, function (index1) {
+                                    if (res.Status == "ok") {
+                                        layer.closeAll();
+                                        table.reload('grid1');
+                                    }
+                                });
+
+                            });
+                        });
+                    }
+                });
+            };
+            var resetHandle = function (id) {
+                layer.prompt({
+                    formType: 0,
+                    title: '请输入新密码'
+                }, function (value, index, elem) {
+                    if ($.trim(value) == '') {
+                        layer.msg('密码不能为空！', { icon: 0 });
+                    } else {
+
+                        $.post('/Admin/Landlord/ResetPassword', { id: id, newpass: value }, function (res) {
+                            if (res.Status == "ok") {
+                                layer.close(index);
+                                layer.alert(res.Msg, { icon: 1 }, function (index2) {
+                                    layer.close(index2);
+                                    table.reload('grid1');
+                                });
+                            } else {
+                                layer.msg(res.Msg, { icon: 2 });
+                            }
+                        });
+
+                    }
+                });
+            };
+            var disenableUserInfoHandle = function (accountID) {
+                layer.confirm("确定要禁用该房东账号吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function (index) {
+                        layer.close(index);
+                        updateStateHandle(accountID, 1);
+                    }
+                });
+            };
+            var enableUserInfoHandle = function (accountID) {
+                layer.confirm("确定要启用该房东账号吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function (index) {
+                        layer.close(index);
+                        updateStateHandle(accountID, 0);
+                    }
+                });
+            };
+            var delHandle = function (accountID) {
+                layer.confirm("确定要删除吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function (index) {
+                        layer.close(index);
+                        updateStateHandle(accountID, 2);
+                    }
+                });
+            };
+            var updateStateHandle = function (accountID, state) {
+                $.post('/Admin/Landlord/UpdateState', { accountID: accountID, state: state }, function (res) {
+                    if (res.Status == "ok") {
+                        layer.alert(res.Msg, { icon: 1 }, function (index) {
+                            layer.close(index);
+                            table.reload('grid1');
+                        });
+                    } else {
+                        layer.msg(res.Msg, { icon: 2 });
+                    }
+                });
+            };
+            var searchHandle = function () {
+                var username = $("#username").val();
+                var phoneNo = $("#phoneNo").val();
+                var idcard = $("#idcard").val();
+                table.reload('grid1', {
+                    page: {
+                        curr: 1
+                    },
+                    where: {
+                        username: username,
+                        phoneNo: phoneNo,
+                        idcard: idcard
+                    }
+                });
+            };
+            var addHandle = function () {
+                layer.open({
+                    type: 2,
+                    title: '添加房东信息',
+                    content: '/Admin/Landlord/CreateLandlordView',
+                    area: ['620px', '480px'],
+                    success: function (layero, index) {
+                    },
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.landlordView.submit(function (data) {
+                            var loadIndex = layer.load(1);
+                            $.post('/Admin/Landlord/SaveLandlord', data.field, function (res) {
+                                layer.close(loadIndex);
+                                layer.alert(res.Msg, function (index1) {
+                                    if (res.Status == "ok") {
+                                        layer.closeAll();
+                                        table.reload('grid1');
+                                    } else {
+                                        layer.close(index1);
+                                    }
+                                });
+
+                            });
+                        });
+                    }
+                });
+            };
+            var modifyHandle = function (id) {
+                layer.open({
+                    type: 2,
+                    title: '修改房东信息',
+                    content: '/Admin/Landlord/CreateLandlordView?id=' + id,
+                    area: ['620px', '480px'],
+                    success: function (layero, index) {
+                    },
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.landlordView.submit(function (data) {
+                            var loadIndex = layer.load(1);
+                            $.post('/Admin/Landlord/SaveLandlord', data.field, function (res) {
+                                layer.close(loadIndex);
+                                layer.alert(res.Msg, function (index1) {
+                                    if (res.Status == "ok") {
+                                        layer.closeAll();
+                                        table.reload('grid1');
+                                    } else {
+                                        layer.close(index1);
+                                    }
+                                });
+
+                            });
+                        });
+                    }
+                });
+            };
+            return {
+                init: function () {
+                    initPage();
+                },
+                detail: function (id) {
+                    detailHandle(id);
+                },
+                createAccount: function (id) {
+                    createAccountHandle(id);
+                },
+                reset: function (id) {
+                    resetHandle(id);
+                },
+                disenableUserInfo: function (accountID) {
+                    disenableUserInfoHandle(accountID);
+                },
+                enableUserInfo: function (accountID) {
+                    enableUserInfoHandle(accountID);
+                },
+                del: function (accountID) {
+                    delHandle(accountID);
+                },
+                search: function () {
+                    searchHandle();
+                },
+                add: function () {
+                    addHandle();
+                },
+                modify: function (id) {
+                    modifyHandle(id);
+                }
+            }
+        }();
+        $(function () { landlordManager.init(); });
+    </script>
+}
+
+

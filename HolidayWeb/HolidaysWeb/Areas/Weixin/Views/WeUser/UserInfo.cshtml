@@ -1,0 +1,359 @@
+﻿@model Holidays.Model.Entites.UserInfoExtView
+
+@{
+    ViewBag.Title = "用户信息";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/percenter.css" rel="stylesheet" />
+}
+
+@if (ViewBag.IsLogin)
+{
+    <div class="page-wrap">
+        <form action="#" id="frmEditUserInfo">
+            <div class="percenter-header personinfo-header">
+                <label id="uploadPhoto" class="pceder-icon" for="uphoto">
+                    @*<input type="file" id="uphoto">*@
+                    @if (!String.IsNullOrEmpty(ViewBag.UserInfo.Img))
+                    {
+                    <img id="userImg" src="@ViewBag.UserInfo.Img" class="ml0" alt="photo" />
+                    }
+                    else
+                    {
+                    <img id="userImg" src="/Images/default.jpg" class="ml0" alt="photo" />
+                    }
+                    <input name="Img" type="hidden" id="txtUserImg" value="@ViewBag.UserInfo.Img" />
+                    <span class="pinfo-htitle">修改头像</span>
+                </label>
+            </div>
+            <div class="personinfo-main">
+                <ul>
+                    <li class="pinfo-item nikename-btn">
+                        <div class="pmitem-left">用户名</div>
+                        <div class="pmitem-right" id="divNikename">@ViewBag.UserInfo.Nikename</div>
+                        <input id="txtNikename" name="Nikename" type="hidden" value="@ViewBag.UserInfo.Nikename" />
+                    </li>
+                    <li class="pinfo-item usernmae-btn">
+                        <div class="pmitem-left">真实姓名</div>
+                        <div class="pmitem-right" id="divUsername">@ViewBag.UserInfo.Username</div>
+                        <input id="txtUsername" name="Username" type="hidden" value="@ViewBag.UserInfo.Username" />
+                    </li>
+                    <li class="pinfo-item">
+                        <div class="pmitem-left">性别</div>
+                        <div class="pmitem-right noperate sex-wrap">
+                            <span data-val="1" class="swoman @if (ViewBag.UserInfo.Gender == 1) { @Html.Raw("checked"); }">女</span>
+                            <span data-val="0" class="sman @if (ViewBag.UserInfo.Gender == 0) { @Html.Raw("checked"); }">男</span>
+                            <input type="hidden" id="txtGender" name="Gender" value="@ViewBag.UserInfo.Gender" />
+                        </div>
+                    </li>
+                    <li class="pinfo-item icard-btn">
+                        <div class="pmitem-left">身份证号</div>
+                        <div class="pmitem-right" id="divIDCardNo">@ViewBag.UserInfo.IDCardNo</div>
+                        <input id="txtIDCardNo" name="IDCardNo" type="hidden" value="@ViewBag.UserInfo.IDCardNo">
+                    </li>
+                    <li class="pinfo-item email-btn">
+                        <div class="pmitem-left">邮箱</div>
+                        <div class="pmitem-right" id="divEmail">@ViewBag.UserInfo.Email</div>
+                        <input id="txtEmail" name="Email" type="hidden" value="@ViewBag.UserInfo.Email" />
+                    </li>
+                    <li class="pinfo-item phoneNo1-btn">
+                        <div class="pmitem-left">手机号</div>
+                        <div class="pmitem-right" id="divPhoneNo">@ViewBag.UserInfo.PhoneNo</div>
+                        <input id="txtPhoneNo" name="PhoneNo" type="hidden" value="@ViewBag.UserInfo.PhoneNo" />
+                    </li>
+                    <li class="pinfo-item phoneNo2-btn">
+                        <div class="pmitem-left">备用手机号</div>
+                        <div class="pmitem-right" id="divPhoneNo2">@ViewBag.UserInfo.PhoneNo2</div>
+                        <input id="txtPhoneNo2" name="PhoneNo2" type="hidden" value="@ViewBag.UserInfo.PhoneNo2">
+                    </li>
+
+                    @if (Model != null)
+                    {
+                    <li class="pinfo-item">
+                        <div class="pmitem-left">支付宝账号</div>
+                        <div class="pmitem-right noperate">@Model.AlipayAccount</div>
+                    </li>
+                    <li class="pinfo-item">
+                        <div class="pmitem-left">微信</div>
+                        <div class="pmitem-right noperate">@Model.WeixinAccount</div>
+                    </li>
+                    }
+                    else
+                    {
+                    <li class="pinfo-item">
+                        <div class="pmitem-left">支付宝账号</div>
+                        <div class="pmitem-right noperate">未实名认证</div>
+                    </li>
+                    <li class="pinfo-item">
+                        <div class="pmitem-left">微信</div>
+                        <div class="pmitem-right noperate">未实名认证</div>
+                    </li>
+                    }
+                </ul>
+            </div>
+            <div class="personinfo-footer"> <a href="javascript:;" id="btnSaveUserInfo" class="pinfo-submit">保存</a> </div>
+        </form>
+    </div>
+
+    <!--信息编辑-->
+    <div class="pop-mask"></div>
+
+    <!--用户名-->
+    <div class="poperson-wrap midfy-nikename">
+        <div class="poperson-header">用户名</div>
+        <div class="poperson-main">
+            <input id="txtNikenameMidfy" maxlength="20" type="text" class="input-enter" value="@ViewBag.UserInfo.Nikename" />
+        </div>
+        <div class="poperson-footer">
+            <a href="javascript:;" class="poperson-cancel">取消</a>
+            <a href="javascript:;" id="btnNikenameMidfy" class="poperson-submit">确定</a>
+        </div>
+    </div>
+    <!--/用户名-->
+    <!--真实姓名-->
+    <div class="poperson-wrap midfy-usernmae">
+        <div class="poperson-header">真实姓名</div>
+        <div class="poperson-main">
+            <input id="txtUsernameMidfy" maxlength="20" type="text" class="input-enter" value="@ViewBag.UserInfo.Username" />
+            <p>请务必填写真实姓名，否则影响账户支付</p>
+        </div>
+        <div class="poperson-footer">
+            <a href="javascript:;" class="poperson-cancel">取消</a>
+            <a href="javascript:;" id="btnUsernameMidfy" class="poperson-submit">确定</a>
+        </div>
+    </div>
+    <!--/真实姓名-->
+    <!--身份证号-->
+    <div class="poperson-wrap midfy-icard">
+        <div class="poperson-header">身份证号</div>
+        <div class="poperson-main">
+            <input id="txtIDCardNoMidfy" maxlength="18" type="text" class="input-enter" value="@ViewBag.UserInfo.IDCardNo" />
+        </div>
+        <div class="poperson-footer">
+            <a href="javascript:;" class="poperson-cancel">取消</a>
+            <a href="javascript:;" id="btnIDCardNoMidfy" class="poperson-submit">确定</a>
+        </div>
+    </div>
+    <!--/身份证号-->
+    <!--邮箱-->
+    <div class="poperson-wrap midfy-email">
+        <div class="poperson-header">邮箱</div>
+        <div class="poperson-main">
+            <input id="txtEmailMidfy" maxlength="100" type="text" class="input-enter" value="@ViewBag.UserInfo.Email" />
+        </div>
+        <div class="poperson-footer">
+            <a href="javascript:;" class="poperson-cancel">取消</a>
+            <a href="javascript:;" id="btnEmailMidfy" class="poperson-submit">确定</a>
+        </div>
+    </div>
+    <!--/邮箱-->
+    <!--手机号-->
+    <div class="poperson-wrap midfy-phoneNo1">
+        <div class="poperson-header">手机号</div>
+        <div class="poperson-main">
+            <input id="txtPhoneNoMidfy" maxlength="11" type="text" class="input-enter" value="@ViewBag.UserInfo.PhoneNo" />
+        </div>
+        <div class="poperson-footer">
+            <a href="javascript:;" class="poperson-cancel">取消</a>
+            <a href="javascript:;" id="btnPhoneNoMidfy" class="poperson-submit">确定</a>
+        </div>
+    </div>
+    <!--/手机号-->
+    <!--备用手机号-->
+    <div class="poperson-wrap midfy-phoneNo2">
+        <div class="poperson-header">备用手机号</div>
+        <div class="poperson-main">
+            <input id="txtPhoneNo2Midfy" maxlength="11" type="text" class="input-enter" value="@ViewBag.UserInfo.PhoneNo2" />
+            <p>备用手机号码，以便特殊情况联系到您</p>
+        </div>
+        <div class="poperson-footer">
+            <a href="javascript:;" class="poperson-cancel">取消</a>
+            <a href="javascript:;" id="btnPhoneNo2Midfy" class="poperson-submit">确定</a>
+        </div>
+    </div>
+
+    <!--/备用手机号-->
+    @section footerjs{
+        <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+        <!--/信息编辑-->
+        <script type="text/javascript">
+            $(function () {
+                var gender = "@ViewBag.UserInfo.Gender";
+                var isRealName = "@ViewBag.UserInfo.IsRealName";
+
+                // 图片处理
+                fnWeUploadImage("uploadPhoto", function (url) {
+                    $("#userImg").attr("src", url);
+                    $("#txtUserImg").val(url);
+                });
+
+                //性别
+                $(".sex-wrap span").on("click", function () {
+                    $(this).addClass("checked").siblings().removeClass("checked");
+                    $("#txtGender").val($(this).attr("data-val"));
+                })
+                //弹窗操作
+                var btnIds = ["btnNikenameMidfy", "btnUsernameMidfy", "btnIDCardNoMidfy", "btnEmailMidfy", "btnPhoneNoMidfy", "btnPhoneNo2Midfy"];
+                var txtMidfyIds = ["txtNikenameMidfy", "txtUsernameMidfy", "txtIDCardNoMidfy", "txtEmailMidfy", "txtPhoneNoMidfy", "txtPhoneNo2Midfy"];
+                var divIds = ["divNikename", "divUsername", "divIDCardNo", "divEmail", , "divPhoneNo", "divPhoneNo2"];
+                var txtIds = ["txtNikename", "txtUsername", "txtIDCardNo", "txtEmail", "txtPhoneNo", "txtPhoneNo2"];
+
+                //用户名
+                $(".nikename-btn").on("click", function () {
+                    $(".pop-mask,.midfy-nikename").show();
+                });
+
+                $("#btnNikenameMidfy").on("click", function () {
+                    var value = $("#txtNikenameMidfy").val();
+                    $("#divNikename").html(value);
+                    $("#txtNikename").val(value);
+                    $(".pop-mask,.poperson-wrap").hide();
+                });
+
+                //真实姓名
+                $(".usernmae-btn").on("click", function () {
+                    if (isRealName && isRealName == 1) {
+                        layer.alert("已实名认证，不能修改", { icon: 2 });
+                    } else {
+                        $(".pop-mask,.midfy-usernmae").show();
+                    }
+                });
+
+                $("#btnUsernameMidfy").on("click", function () {
+                    var value = $("#txtUsernameMidfy").val();
+                    $("#divUsername").html(value);
+                    $("#txtUsername").val(value);
+                    $(".pop-mask,.poperson-wrap").hide();
+                });
+
+                //身份证号
+                $(".icard-btn").on("click", function () {
+                    if (isRealName && isRealName == 1) {
+                        layer.alert("已实名认证，不能修改", { icon: 2 });
+                    } else {
+                        $(".pop-mask,.midfy-icard").show();
+                    }
+                });
+
+                $("#btnIDCardNoMidfy").on("click", function () {
+                    var value = $("#txtIDCardNoMidfy").val();
+                    $("#divIDCardNo").html(value);
+                    $("#txtIDCardNo").val(value);
+                    $(".pop-mask,.poperson-wrap").hide();
+                });
+
+                //邮箱
+                $(".email-btn").on("click", function () {
+                    $(".pop-mask,.midfy-email").show();
+                });
+
+                $("#btnEmailMidfy").on("click", function () {
+                    var value = $("#txtEmailMidfy").val();
+                    $("#divEmail").html(value);
+                    $("#txtEmail").val(value);
+                    $(".pop-mask,.poperson-wrap").hide();
+                });
+
+                //手机号
+                $(".phoneNo1-btn").on("click", function () {
+                    $(".pop-mask,.midfy-phoneNo1").show();
+                });
+
+                $("#btnPhoneNoMidfy").on("click", function () {
+                    var value = $("#txtPhoneNoMidfy").val();
+                    $("#divPhoneNo").html(value);
+                    $("#txtPhoneNo").val(value);
+                    $(".pop-mask,.poperson-wrap").hide();
+                });
+
+                //备用手机号
+                $(".phoneNo2-btn").on("click", function () {
+                    $(".pop-mask,.midfy-phoneNo2").show();
+                });
+
+                $("#btnPhoneNo2Midfy").on("click", function () {
+                    var value = $("#txtPhoneNo2Midfy").val();
+                    $("#divPhoneNo2").html(value);
+                    $("#txtPhoneNo2").val(value);
+                    $(".pop-mask,.poperson-wrap").hide();
+                });
+
+                $(".pop-mask,.poperson-cancel").on("click", function () {
+                    $(".pop-mask,.poperson-wrap").hide();
+                });
+
+                $("#btnSaveUserInfo").on("click", function () {
+                    var nikename = $("#txtNikename").val();
+                    var username = $("#txtUsername").val();
+                    var idcard = $("#txtIDCardNo").val();
+                    var email = $("#txtEmail").val();
+                    var phoneNo = $("#txtPhoneNo").val();
+                    var phoneNo2 = $("#txtPhoneNo2").val();
+
+                    // 校验数据
+                    if (!nikename || nikename.length <= 0) {
+                        layermsg("用户名不能为空!");
+                        return;
+                    }
+
+                    if (!username || username.length <= 0) {
+                        layermsg("真实姓名不能为空!");
+                        return;
+                    }
+
+                    if (idcard && !fnCheckIdCard(idcard)) {
+                        layermsg("身份证号格式不正确!");
+                        return;
+                    }
+
+                    if (email && email.length > 0) {
+                        if (!fnCheckEmail(email)) {
+                            layermsg("邮箱地址格式不正确!");
+                            return;
+                        }
+                    }
+
+                    if (!fnCheckPhone(phoneNo)) {
+                        layermsg("请输入正确的手机号码!");
+                        return;
+                    }
+
+                    if (phoneNo2 && phoneNo2.length > 0) {
+                        if (!fnCheckPhone(phoneNo2)) {
+                            layermsg("备用手机号格式不正确!");
+                            return;
+                        }
+                    }
+
+                    var loadIndex = layerload();
+                    $.post("/User/SaveUserInfo", $("#frmEditUserInfo").serialize(), function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            layermsg(result.Msg, function () {
+                                window.location.href = "/weixin/weuser/index";
+                            });
+                        } else {
+                            layermsg(result.Msg);
+                        }
+                    });
+
+                });
+            });
+
+            document.addEventListener('touchmove', function (event) {
+                //判断条件,条件成立才阻止背景页面滚动,其他情况不会再影响到页面滚动
+                if (!$(".pop-mask").is(":hidden")) {
+                    event.preventDefault();
+                };
+            });
+        </script>
+    }
+}
+else
+{
+    <p style="text-align: center; padding: 20px; font-size: 14px;">登录失效，请重新登录！</p>
+}

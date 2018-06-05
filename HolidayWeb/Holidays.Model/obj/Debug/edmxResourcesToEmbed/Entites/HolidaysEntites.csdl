@@ -1,0 +1,860 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HolidaysDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="HolidaysDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AdminUser" EntityType="HolidaysDBModel.AdminUser" />
+    <EntitySet Name="CarInfo" EntityType="HolidaysDBModel.CarInfo" />
+    <EntitySet Name="HomeData" EntityType="HolidaysDBModel.HomeData" />
+    <EntitySet Name="HouseConfigure" EntityType="HolidaysDBModel.HouseConfigure" />
+    <EntitySet Name="HouseEvaluate" EntityType="HolidaysDBModel.HouseEvaluate" />
+    <EntitySet Name="HouseImg" EntityType="HolidaysDBModel.HouseImg" />
+    <EntitySet Name="HouseInfo" EntityType="HolidaysDBModel.HouseInfo" />
+    <EntitySet Name="OrderInfo" EntityType="HolidaysDBModel.OrderInfo" />
+    <EntitySet Name="OrderItem" EntityType="HolidaysDBModel.OrderItem" />
+    <EntitySet Name="ProductCategory" EntityType="HolidaysDBModel.ProductCategory" />
+    <EntitySet Name="ProductInfo" EntityType="HolidaysDBModel.ProductInfo" />
+    <EntitySet Name="Region" EntityType="HolidaysDBModel.Region" />
+    <EntitySet Name="SpotInfo" EntityType="HolidaysDBModel.SpotInfo" />
+    <EntitySet Name="SystemConfig" EntityType="HolidaysDBModel.SystemConfig" />
+    <EntitySet Name="TenantInfo" EntityType="HolidaysDBModel.TenantInfo" />
+    <EntitySet Name="UserAccount" EntityType="HolidaysDBModel.UserAccount" />
+    <EntitySet Name="UserFavorite" EntityType="HolidaysDBModel.UserFavorite" />
+    <EntitySet Name="UserInfo" EntityType="HolidaysDBModel.UserInfo" />
+    <EntitySet Name="UserInfoCertificate" EntityType="HolidaysDBModel.UserInfoCertificate" />
+    <EntitySet Name="UserInfoExt" EntityType="HolidaysDBModel.UserInfoExt" />
+    <EntitySet Name="UserOrderRecord" EntityType="HolidaysDBModel.UserOrderRecord" />
+    <EntitySet Name="HouseInfoView" EntityType="HolidaysDBModel.HouseInfoView" />
+    <EntitySet Name="OrderInfoView" EntityType="HolidaysDBModel.OrderInfoView" />
+    <EntitySet Name="UserFavoriteView" EntityType="HolidaysDBModel.UserFavoriteView" />
+    <EntitySet Name="UserInfoCertificateView" EntityType="HolidaysDBModel.UserInfoCertificateView" />
+    <EntitySet Name="UserInfoExtView" EntityType="HolidaysDBModel.UserInfoExtView" />
+    <EntitySet Name="UserInfoView" EntityType="HolidaysDBModel.UserInfoView" />
+    <EntitySet Name="ShopCategory" EntityType="HolidaysDBModel.ShopCategory" />
+    <EntitySet Name="ShopInfo" EntityType="HolidaysDBModel.ShopInfo" />
+    <EntitySet Name="ShopInfoCertificate" EntityType="HolidaysDBModel.ShopInfoCertificate" />
+    <EntitySet Name="ShopInfoCertificateView" EntityType="HolidaysDBModel.ShopInfoCertificateView" />
+    <EntitySet Name="HouseComment" EntityType="HolidaysDBModel.HouseComment" />
+    <EntitySet Name="HouseEvaluateView" EntityType="HolidaysDBModel.HouseEvaluateView" />
+    <EntitySet Name="SysLog" EntityType="HolidaysDBModel.SysLog" />
+    <EntitySet Name="T_User" EntityType="HolidaysDBModel.User" />
+    <EntitySet Name="T_Role" EntityType="HolidaysDBModel.Role" />
+    <EntitySet Name="T_Permission" EntityType="HolidaysDBModel.Permission" />
+    <EntitySet Name="T_Function" EntityType="HolidaysDBModel.Function" />
+    <EntitySet Name="T_FuncPermission" EntityType="HolidaysDBModel.FuncPermission" />
+    <EntitySet Name="T_UserRole" EntityType="HolidaysDBModel.UserRole" />
+    <EntitySet Name="ShopToDayPriceSet" EntityType="HolidaysDBModel.ShopToDayPrice" />
+  </EntityContainer>
+  <EntityType Name="AdminUser">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LoginAccount" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="LoginPassword" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="CarInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CarName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Linkman" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Phone1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CarImg" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ProvinceId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="HomeData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ImgUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="HouseConfigure">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Icon" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Sort" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="HouseEvaluate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HouseInfoID" Type="Int64" Nullable="false" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="UserPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CleanScore" Type="Int32" Nullable="false" />
+    <Property Name="LocationScore" Type="Int32" Nullable="false" />
+    <Property Name="EnvironmentScore" Type="Int32" Nullable="false" />
+    <Property Name="ServiceScore" Type="Int32" Nullable="false" />
+    <Property Name="PerformanceScore" Type="Int32" Nullable="false" />
+    <Property Name="AverageScore" Type="Double" Nullable="false" />
+    <Property Name="EvaluateContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="HouseTitle" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="UserImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="HouseImg">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HouseInfoID" Type="Int64" Nullable="false" />
+    <Property Name="ImgUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="HouseInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="HouseTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProvinceId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+    <Property Name="CountyId" Type="Int32" />
+    <Property Name="DecorativeStyle" Type="Int32" Nullable="false" />
+    <Property Name="LeaseType" Type="Int32" Nullable="false" />
+    <Property Name="BedroomNum" Type="Int32" Nullable="false" />
+    <Property Name="LivingRoomNum" Type="Int32" Nullable="false" />
+    <Property Name="ToiletNum" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsTrusteeship" Type="Boolean" Nullable="false" />
+    <Property Name="IsSell" Type="Boolean" Nullable="false" />
+    <Property Name="SellPrice" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="IsCooking" Type="Boolean" Nullable="false" />
+    <Property Name="IsPet" Type="Boolean" Nullable="false" />
+    <Property Name="StayPersonNum" Type="Int32" Nullable="false" />
+    <Property Name="HouseSize" Type="Double" Nullable="false" />
+    <Property Name="Facilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="BaseInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsReals" Type="Boolean" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="BuyNum" Type="Int32" Nullable="false" />
+    <Property Name="EvaluateNum" Type="Int32" Nullable="false" />
+    <Property Name="EvaluateAvgScore" Type="Int32" Nullable="false" />
+    <Property Name="ShopId" Type="Int64" />
+    <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IsEmpty" Type="Int32" />
+    <Property Name="IsBack" Type="Int32" />
+    <Property Name="IsCancel" Type="Int32" />
+  </EntityType>
+  <EntityType Name="OrderInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="OtherNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LandlordID" Type="Int64" Nullable="false" />
+    <Property Name="LandlordName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LandlordPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="HouseInfoID" Type="Int64" Nullable="false" />
+    <Property Name="HouseTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BuyCount" Type="Int32" Nullable="false" />
+    <Property Name="DownPayment" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="TotalPrice" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BalancePayment" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PlatformRoyalty" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PayType" Type="Int32" />
+    <Property Name="PersonNum" Type="Int32" Nullable="false" />
+    <Property Name="IsFullPrice" Type="Boolean" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsEvaluate" Type="Boolean" Nullable="false" />
+    <Property Name="CouponCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="OrderItem">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="OtherNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="OrderId" Type="Int64" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BalancePayment" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PayTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="ProductCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Sort" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="ProductInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CategoryID" Type="Int64" Nullable="false" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IsHomeShow" Type="Boolean" Nullable="false" />
+    <Property Name="Sort" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ProductImg" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HomeImg" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ProvinceId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="ShortName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="LevelType" Type="Int32" />
+    <Property Name="CityCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="MergerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Lng" Type="Double" />
+    <Property Name="Lat" Type="Double" />
+    <Property Name="Pinyin" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="SpotInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ScenicSpotName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ScenicSpotDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ScenicSpotImgs" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsHomeShow" Type="Boolean" Nullable="false" />
+    <Property Name="Sort" Type="Int32" Nullable="false" />
+    <Property Name="ProvinceId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LinkSpotId" Type="Int64" />
+    <Property Name="LinkSpotName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Links" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="SystemConfig">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TenantInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderID" Type="Int64" Nullable="false" />
+    <Property Name="CertificateType" Type="Int32" Nullable="false" />
+    <Property Name="CertificateNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Int32" Nullable="false" />
+    <Property Name="Nation" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PhoneAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WeixinUnionid" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UserToken" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="UserFavorite">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="HouseInfoID" Type="Int64" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountID" Type="Int64" Nullable="false" />
+    <Property Name="Img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Nikename" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Int32" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+    <Property Name="IsRealName" Type="Int32" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LoginAccount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LoginPwd" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="UserInfoCertificate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="FailReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="UserInfoExt">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IsCertification" Type="Int32" Nullable="false" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="IDCardImg1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardImg2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HouseAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Housecertificate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="WeixinAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="AlipayAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="UserOrderRecord">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="HouseInfoView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="HouseTitle" />
+      <PropertyRef Name="DecorativeStyle" />
+      <PropertyRef Name="LeaseType" />
+      <PropertyRef Name="BedroomNum" />
+      <PropertyRef Name="LivingRoomNum" />
+      <PropertyRef Name="ToiletNum" />
+      <PropertyRef Name="Price" />
+      <PropertyRef Name="IsTrusteeship" />
+      <PropertyRef Name="IsSell" />
+      <PropertyRef Name="IsCooking" />
+      <PropertyRef Name="IsPet" />
+      <PropertyRef Name="StayPersonNum" />
+      <PropertyRef Name="HouseSize" />
+      <PropertyRef Name="Address" />
+      <PropertyRef Name="IsReals" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="BuyNum" />
+      <PropertyRef Name="EvaluateNum" />
+      <PropertyRef Name="EvaluateAvgScore" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="HouseTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DecorativeStyle" Type="Int32" Nullable="false" />
+    <Property Name="LeaseType" Type="Int32" Nullable="false" />
+    <Property Name="BedroomNum" Type="Int32" Nullable="false" />
+    <Property Name="LivingRoomNum" Type="Int32" Nullable="false" />
+    <Property Name="ToiletNum" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsTrusteeship" Type="Boolean" Nullable="false" />
+    <Property Name="IsSell" Type="Boolean" Nullable="false" />
+    <Property Name="SellPrice" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="IsCooking" Type="Boolean" Nullable="false" />
+    <Property Name="IsPet" Type="Boolean" Nullable="false" />
+    <Property Name="StayPersonNum" Type="Int32" Nullable="false" />
+    <Property Name="HouseSize" Type="Double" Nullable="false" />
+    <Property Name="Facilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="BaseInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsReals" Type="Boolean" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="BuyNum" Type="Int32" Nullable="false" />
+    <Property Name="EvaluateNum" Type="Int32" Nullable="false" />
+    <Property Name="EvaluateAvgScore" Type="Int32" Nullable="false" />
+    <Property Name="AccountID" Type="Int64" Nullable="false" />
+    <Property Name="Img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Nikename" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Int32" />
+    <Property Name="PhoneNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNo2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+    <Property Name="IsRealName" Type="Int32" />
+    <Property Name="ProvinceId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+    <Property Name="CountyId" Type="Int32" />
+    <Property Name="ShopId" Type="Int64" />
+    <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IsEmpty" Type="Int32" />
+    <Property Name="IsBack" Type="Int32" />
+    <Property Name="IsCancel" Type="Int32" />
+  </EntityType>
+  <EntityType Name="OrderInfoView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="OrderNo" />
+      <PropertyRef Name="LandlordID" />
+      <PropertyRef Name="LandlordName" />
+      <PropertyRef Name="LandlordPhone" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="Username" />
+      <PropertyRef Name="UserPhone" />
+      <PropertyRef Name="HouseInfoID" />
+      <PropertyRef Name="HouseTitle" />
+      <PropertyRef Name="Price" />
+      <PropertyRef Name="BuyCount" />
+      <PropertyRef Name="DownPayment" />
+      <PropertyRef Name="TotalPrice" />
+      <PropertyRef Name="BalancePayment" />
+      <PropertyRef Name="PlatformRoyalty" />
+      <PropertyRef Name="PersonNum" />
+      <PropertyRef Name="StartDate" />
+      <PropertyRef Name="EndDate" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="IsEvaluate" />
+    </Key>
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="OtherNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LandlordID" Type="Int64" Nullable="false" />
+    <Property Name="LandlordName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LandlordPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="HouseInfoID" Type="Int64" Nullable="false" />
+    <Property Name="HouseTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BuyCount" Type="Int32" Nullable="false" />
+    <Property Name="DownPayment" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="TotalPrice" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BalancePayment" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PlatformRoyalty" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PayType" Type="Int32" />
+    <Property Name="PersonNum" Type="Int32" Nullable="false" />
+    <Property Name="IsFullPrice" Type="Boolean" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsEvaluate" Type="Boolean" Nullable="false" />
+    <Property Name="ShopId" Type="Int64" />
+    <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="UserFavoriteView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="HouseInfoID" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="HouseTitle" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="HouseInfoID" Type="Int64" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="HouseTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="UserInfoCertificateView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+      <PropertyRef Name="IsCertification" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="FailReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Int32" />
+    <Property Name="PhoneNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AccountID" Type="Int64" Nullable="false" />
+    <Property Name="Nikename" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNo2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+    <Property Name="IsRealName" Type="Int32" />
+    <Property Name="IsCertification" Type="Int32" Nullable="false" />
+    <Property Name="IDCardImg1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardImg2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HouseAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Housecertificate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="WeixinAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="AlipayAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="UserInfoExtView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="IsCertification" />
+    </Key>
+    <Property Name="IDCardImg1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardImg2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HouseAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Housecertificate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="AccountID" Type="Int64" Nullable="false" />
+    <Property Name="Nikename" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Int32" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+    <Property Name="IsRealName" Type="Int32" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="Img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsCertification" Type="Int32" Nullable="false" />
+    <Property Name="UserToken" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="AlipayAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="WeixinAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="WeixinUnionid" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LoginAccount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LoginPwd" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="UserInfoView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="AccountID" Type="Int64" Nullable="false" />
+    <Property Name="Img" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Nikename" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="Int32" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+    <Property Name="IsRealName" Type="Int32" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="PhoneAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserToken" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="WeixinUnionid" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LoginAccount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LoginPwd" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IDCardImg1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IDCardImg2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HouseAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Housecertificate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IsCertification" Type="Int32" />
+    <Property Name="AlipayAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="WeixinAccount" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ShopCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SortBy" Type="Int32" />
+    <Property Name="CreateTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="ShopInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Locations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Scores" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="StartPrice" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="ShopType" Type="Int64" />
+    <Property Name="Tags" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="UserId" Type="Int64" />
+    <Property Name="SpotId" Type="Int64" />
+    <Property Name="CreateBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CreateUserId" Type="Int64" />
+    <Property Name="CreateOn" Type="DateTime" Precision="3" />
+    <Property Name="SortBy" Type="Int64" />
+    <Property Name="ShopImgs" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ShopTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SpotName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DecorativeStyle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="Int32" />
+    <Property Name="IsDel" Type="Int32" />
+    <Property Name="IsCheck" Type="Int32" />
+    <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ShopInfoCertificate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ShopId" Type="Int64" Nullable="false" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="FailReason" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreateOn" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="ShopInfoCertificateView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="ShopId" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="CreateOn" />
+    </Key>
+    <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Locations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Scores" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="StartPrice" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="ShopType" Type="Int64" />
+    <Property Name="Tags" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="UserId" Type="Int64" />
+    <Property Name="SpotId" Type="Int64" />
+    <Property Name="CreateBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CreateUserId" Type="Int64" />
+    <Property Name="SortBy" Type="Int64" />
+    <Property Name="ShopImgs" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ShopTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SpotName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DecorativeStyle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="IsCheck" Type="Int32" />
+    <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="ShopId" Type="Int64" Nullable="false" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="FailReason" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreateOn" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="HouseComment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HouseInfoId" Type="Int64" Nullable="false" />
+    <Property Name="EvaluateId" Type="Int64" Nullable="false" />
+    <Property Name="ToUserId" Type="Int64" Nullable="false" />
+    <Property Name="ToUserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="FromUserId" Type="Int64" Nullable="false" />
+    <Property Name="FromUserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateOn" Type="DateTime" Precision="3" />
+    <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="HouseEvaluateView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="HouseInfoID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="UserPhone" />
+      <PropertyRef Name="CleanScore" />
+      <PropertyRef Name="LocationScore" />
+      <PropertyRef Name="EnvironmentScore" />
+      <PropertyRef Name="ServiceScore" />
+      <PropertyRef Name="PerformanceScore" />
+      <PropertyRef Name="AverageScore" />
+      <PropertyRef Name="EvaluateContent" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" />
+    <Property Name="HouseInfoID" Type="Int64" Nullable="false" />
+    <Property Name="UserInfoID" Type="Int64" Nullable="false" />
+    <Property Name="UserPhone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CleanScore" Type="Int32" Nullable="false" />
+    <Property Name="LocationScore" Type="Int32" Nullable="false" />
+    <Property Name="EnvironmentScore" Type="Int32" Nullable="false" />
+    <Property Name="ServiceScore" Type="Int32" Nullable="false" />
+    <Property Name="PerformanceScore" Type="Int32" Nullable="false" />
+    <Property Name="AverageScore" Type="Double" Nullable="false" />
+    <Property Name="EvaluateContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="State" Type="Int32" Nullable="false" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="UserImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="HouseTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProvinceId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+    <Property Name="CountyId" Type="Int32" />
+    <Property Name="DecorativeStyle" Type="Int32" />
+    <Property Name="LeaseType" Type="Int32" />
+    <Property Name="BedroomNum" Type="Int32" />
+    <Property Name="LivingRoomNum" Type="Int32" />
+    <Property Name="ToiletNum" Type="Int32" />
+    <Property Name="Price" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="IsTrusteeship" Type="Boolean" />
+    <Property Name="IsSell" Type="Boolean" />
+    <Property Name="SellPrice" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="IsCooking" Type="Boolean" />
+    <Property Name="IsPet" Type="Boolean" />
+    <Property Name="StayPersonNum" Type="Int32" />
+    <Property Name="HouseSize" Type="Double" />
+    <Property Name="Facilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="BaseInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsReals" Type="Boolean" />
+    <Property Name="BuyNum" Type="Int32" />
+    <Property Name="EvaluateNum" Type="Int32" />
+    <Property Name="EvaluateAvgScore" Type="Int32" />
+    <Property Name="ShopId" Type="Int64" />
+    <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreateOn" Type="DateTime" Precision="3" />
+    <Property Name="FromUserId" Type="Int64" />
+    <Property Name="FromUserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="SysLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ErrorMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreateOn" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LoginName" Type="String" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" />
+    <Property Name="UserRealName" Type="String" Nullable="true" />
+    <Property Name="Description" Type="String" Nullable="true" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="true" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" DefaultValue="false" />
+    <Property Name="Email" Type="String" Nullable="true" />
+    <Property Name="GUIID" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="true" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="true" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" DefaultValue="false" />
+    <Property Name="GUID" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Permission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" />
+    <Property Name="Type" Type="Int64" Nullable="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+    <Property Name="ParentId" Type="Int64" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="Url" Type="String" Nullable="true" />
+    <Property Name="PermValue" Type="Int32" Nullable="false" />
+    <Property Name="GUID" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Function">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MenuName" Type="String" Nullable="false" />
+    <Property Name="Url" Type="String" Nullable="false" />
+    <Property Name="MenuLevel" Type="String" Nullable="false" />
+    <Property Name="ParentId" Type="Int64" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" DefaultValue="false" />
+  </EntityType>
+  <EntityType Name="FuncPermission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MemberId" Type="Guid" Nullable="false" />
+    <Property Name="FuncId" Type="Guid" Nullable="false" />
+    <Property Name="MemberType" Type="Int32" Nullable="false" />
+    <Property Name="PermValue" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Guid" Nullable="false" />
+    <Property Name="RoleId" Type="Guid" Nullable="false" />
+    <Property Name="MemberType" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ShopToDayPrice">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ShopId" Type="Int32" Nullable="false" />
+    <Property Name="other" Type="String" Nullable="true" />
+    <Property Name="price" Type="Decimal" Nullable="false" />
+    <Property Name="statu" Type="Int32" Nullable="false" DefaultValue="0" />
+    <Property Name="date" Type="String" Nullable="false" />
+  </EntityType>
+</Schema>

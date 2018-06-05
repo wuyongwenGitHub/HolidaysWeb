@@ -1,0 +1,213 @@
+﻿@{
+    ViewBag.Title = "财务管理";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Framework/layui2/layui.all.js"></script>
+    <script src="~/Scripts/Utility.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页<span>&gt;</span> 店铺中心</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="w1080">
+            <ul class="layui-nav layui-bg-blue ">
+                <li class="layui-nav-item"><a href="/User/UserCenter">店铺信息</a></li>
+                <li class="layui-nav-item"><a href="/User/HouseManager">房源管理</a></li>
+                <li class="layui-nav-item"><a href="/User/OrderManager">订单管理</a></li>
+                <li class="layui-nav-item layui-this"><a href="/User/FinanceManager">财务管理</a></li>
+                <li class="layui-nav-item"><a href="/User/CommentManager">评论管理</a></li>
+                <li class="layui-nav-item"><a href="/User/ResetPassword">修改密码</a></li>
+            </ul>
+            <div class="layui-row">
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3>累计交易额</h3>
+                </div>
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3 style="color:#ff0000;">@ViewBag.TotalMoney 元</h3>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3>今日交易额</h3>
+                </div>
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3 style="color:#ff0000;">@ViewBag.TodayTotal 元</h3>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3>最近7日交易额</h3>
+                </div>
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3 style="color:#ff0000;">@ViewBag.SevenDayTotal 元</h3>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3>最近一个月交易额</h3>
+                </div>
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3 style="color:#ff0000;">@ViewBag.MonthTotal 元</h3>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md2 layui-col-sm2 layui-col-xs2 layui-col-lg2" style="margin-top:5px;">
+                    <div class="layui-form ">
+                        <select id="selectOrder">
+                            <option value="" selected>全部</option>
+                            <option value="0">待支付</option>
+                            <option value="1">已付定金</option>
+                            <option value="2">交易完成</option>
+                            <option value="3">取消订单</option>
+                            <option value="-1">删除订单</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;margin-left:5px;">
+                    <input id="keywords" type="text" class="layui-input" placeholder="顾客姓名、电话" />
+                </div>
+                <div class="layui-col-md1 layui-col-sm1 layui-col-xs1 layui-col-lg1 " style="margin-top:5px;">
+                    <a href="javascript:;" class="layui-btn layui-btn-primary" style="margin-left:2px;" onclick="financeManager.search()">查询</a>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 layui-col-lg12">
+                    <table id="grid1"></table>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md1 layui-col-sm1 layui-col-xs1 layui-col-lg1 " style="margin-top:5px;">
+                    <h3>当前页</h3>
+                </div>
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3 id="inputOrderMoney">订单金额合计 ￥ 0.00元</h3>
+                </div>
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <h3 id="inputPayMoney">已付金额合计 ￥ 0.00元</h3>
+                </div>
+            </div>
+            <div class="layui-row">
+
+            </div>
+        </div>
+        @section footerjs{
+            <script type="text/javascript">
+                var table, layer;
+                var financeManager = function () {
+
+                    var initPage = function () {
+                        layui.use(['table', 'element', 'layer', 'form'], function () {
+                            table = layui.table;
+                            layer = layui.layer;
+                            var element = layui.element;
+                            var form = layui.form;
+                            form.render();
+
+                            table.render({
+                                elem: '#grid1',
+                                loading: true,
+                                id: 'grid1',
+                                url: '/WeUser/GetOrderList',
+                                method: 'post',
+                                height: 480,
+                                page: true,
+                                cols: [[
+                                    { field: 'ID', title: '#', width: 60, fixed: 'left', type: 'numbers' },
+                                    {
+                                        field: 'State', title: '订单状态', width: 90, align: 'center', templet: function (d) {
+                                            if (d.State == -1) {
+                                                return '<span style="color:#FF5722;">订单删除</span>';
+                                            } else if (d.State == 0) {
+                                                return '<span style="color:#1E9FFF;">待支付</span>';
+                                            } else if (d.State == 1) {
+                                                return '<span style="color:#1E9FFF;">已付订金</span>';
+                                            } else if (d.State == 2) {
+                                                return '<span style="color:#5FB878;">交易完成</span>';
+                                            } else if (d.State == 3) {
+                                                return '<span style="color:#FFB800;">取消订单</span>';
+                                            }
+                                        }
+                                    },
+                                    { field: 'TotalPrice', title: '订单总额', width: 90, align: 'right' },
+                                    { field: 'Price', title: '已支付', width: 80, align: 'right' },
+                                    { field: 'BalancePayment', title: '还应支付', width: 90, align: 'right' },
+                                    {
+                                        field: 'CreateTime', title: '交易时间', width: 160, align: 'right', templet: function (d) {
+                                            return jsonDatetimeFormat(d.CreateTime);
+                                        }
+                                    },
+                                    { field: 'HouseTitle', title: '房源标题', width: 180, align: 'left' },
+                                    { field: 'Username', title: '顾客姓名', width: 100, align: 'left' },
+                                    { field: 'UserPhone', title: '顾客电话', width: 120, align: 'right' },
+                                    { field: 'PersonNum', title: '入住人数', width: 90, align: 'right' },
+                                    {
+                                        field: 'StartDate', title: '入住时间', width: 160, align: 'right', templet: function (d) {
+                                            return jsonDatetimeFormat(d.StartDate);
+                                        }
+                                    },
+                                    { field: 'BuyCount', title: '入住天数', width: 90, align: 'right' },
+                                    { field: 'OrderNo', title: '商户单号', width: 100, align: 'left' }
+                                ]],
+                                done: function (res, curr, count) {
+                                    if (res.code == "0" && res.data.length > 0) {
+                                        var orderMoney = 0;
+                                        var payMoney = 0;
+                                        for (var i = 0, len = res.data.length; i < len; i++) {
+                                            orderMoney += res.data[i].TotalPrice;
+                                            payMoney += res.data[i].Price;
+                                        }
+                                        $("#inputOrderMoney").text("订单金额合计 ￥ " + orderMoney.toFixed(2) + "元");
+                                        $("#inputPayMoney").text("已付金额合计 ￥ " + payMoney.toFixed(2) + "元");
+                                    }
+                                }
+                            });
+
+                        });
+                    };
+                    var searchHandle = function () {
+                        var keywords = $("#keywords").val();
+                        var state = $("#selectOrder").val();
+                        table.reload('grid1', {
+                            page: {
+                                curr: 1
+                            },
+                            where: {
+                                keywords: keywords,
+                                state: state
+                            }
+                        });
+                    };
+                    return {
+                        init: function () {
+                            initPage();
+                        },
+                        search: function () {
+                            searchHandle();
+                        }
+                    }
+                }();
+                $(function () { financeManager.init(); });
+            </script>
+        }
+    }
+    else
+    {
+        <p style="text-align: center;">对不起，你无此权限，请联系平台管理员。</p>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

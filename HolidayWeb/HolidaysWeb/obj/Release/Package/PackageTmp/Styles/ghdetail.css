@@ -1,0 +1,418 @@
+@charset "utf-8";
+/* goonholiday gohousedetail.html 2016-12-04 rhg */
+
+.ghdetail-nav{
+	height: 43px;
+}
+.ghdetail-header{
+	width: auto;
+	height: 38px;
+}
+.ghdetail-name{
+	float: left;
+	font-size: 18px;
+	color: #333;
+	padding-right: 6px;
+}
+.ghdetail-header .ghouse-status{
+	position:static;
+	float: left;
+	display:block;
+	margin-top: 4px;
+	margin-right: 4px;
+	margin-left: 5px;
+}
+.entrust{
+	background: url(../Images/gh-20.png) no-repeat
+}
+.keepinfo{
+	display: inline-block;
+	height: 20px;
+	margin-top: 2px;
+	margin-left: 4px;
+	padding-left: 27px;
+	font-size: 14px;
+	color: #878686;
+	line-height: 20px;
+	background: url(../Images/gh-21.png) no-repeat left center;
+}
+.keeped{
+	background: url(../Images/gh-22.png) no-repeat left center;
+}
+.ghdemain-left{
+	float: left;
+	width:710px;
+	height: auto;
+}
+.photo-view{
+	width: auto;
+	height: auto;
+	min-height:600px; 
+}
+.photo-view .photo-slider{
+	position: relative;
+	height: 480px;
+}
+.photo-view .photo-slider img {
+	width: 100%;
+	height: 480px;
+}
+.photo-view .photo-carousel{
+	position: relative;
+	height: 83px;
+	margin-top: 14px;
+	overflow: hidden;
+}
+.photo-carousel li{
+	cursor: pointer;
+}
+.photo-carousel .flex-active-slide img{
+	height: 83px;
+	border:1px solid #ff5d51; 
+}
+.photo-carousel .flex-direction-nav{
+	position: absolute;
+	top: 84px;
+	width: 100%;
+	height: 83px;
+}
+.photo-carousel .flex-direction-nav a {
+	top:-84px;
+	width: 29px;
+	height: 83px;
+}
+.photo-carousel  .flex-direction-nav .flex-prev {
+	background:url(../Images/gh-23.png) no-repeat left top;
+}
+.photo-carousel  .flex-direction-nav .flex-next {
+	background:url(../Images/gh-24.png) no-repeat left top;
+}
+.house-intro{
+	width: auto;
+	height: auto;
+	padding-bottom: 16px;
+}
+.hintro-title{
+	font-size: 16px;
+	color: #333;
+	line-height: 32px;
+}
+.house-intro p{
+	font-size: 14px;
+	color: #878686;
+	text-indent: 28px;
+	line-height: 24px;
+}
+.house-intro table{
+	width: 100%;
+}
+.house-intro td{
+	font-size: 14px;
+	color: #878686;
+	text-indent: 28px;
+	line-height: 24px;
+}
+.house-map{
+	width:auto;
+	height: auto;
+	margin-top: 8px;
+	min-height: 280px
+}
+.house-map img{
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+.comment-header{
+	width: auto;
+	height: auto;
+	margin-top: 6px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border: 1px solid #c9c9c9;
+	border-radius: 5px;
+}
+.comment-header table{
+	table-layout: fixed;
+	width: auto;
+	height: auto;
+}
+.comment-header td{
+	line-height: 22px;
+	font-size: 14px;
+	color: #878686;
+}
+.comment-header td img{
+	vertical-align: middle;
+	margin-top: -4px;
+	margin-right: 4px;
+}
+.comment-header span{
+	padding-right: 13px;
+}
+.praise-wrap{
+	width: 115px;
+	font-size: 14px;
+	color: #333;
+	text-align: center;
+}
+.praise-num{
+	width: 115px;
+	font-size: 20px;
+	color: #27933a;
+	text-align: center;	
+	line-height: 28px;
+}
+.comment-main{
+	width: auto;
+	height: auto;
+}
+.comment-main table{
+	table-layout: fixed;
+	width: 100%;
+	height: auto;
+}
+.comment-main td{
+	height:84px;
+	*height: 69px;
+}
+.comment-icon{
+	width: 116px;
+}
+.comicon-wrap{
+	width: 41px;
+	height: 41px;
+	margin-right: auto;
+	margin-left: auto;
+	border-radius: 50%;
+}
+.comicon-wrap img{
+	width: 41px;
+	height: 41px;
+	border-radius: 50%;
+}
+.comment-icon p{
+	padding-top: 6px;
+	font-size: 14px;
+	color: #878686;
+	text-align: center;
+}
+.comment-info{
+	position: relative;
+	padding-top: 15px;
+	border-bottom: 1px solid #c9c9c9;
+}
+.cominfo-view{
+	font-size: 14px;
+	color: #878686;
+	line-height: 16px;
+	padding-bottom:35px;
+}
+.cominfo-time{
+	position: absolute;
+	bottom: 1px;
+	left: 0;
+	font-size: 14px;
+	color: #878686;
+	line-height: 26px;	
+}
+.ghdemain-right{
+	margin-left: 745px;
+	width:auto;
+	height: auto;
+	*margin-left: 0;
+	*float: right;
+	*width: 335px;
+}
+.ghmright-main{
+	width: 100%;
+	height: auto;
+	margin-bottom: 8px;
+	border: 1px solid #d2d2d2;
+}
+.ghmrtmn-header {
+	width: auto;
+	height: 53px;
+	background-color: #eee;
+	border-bottom: 1px solid #b2b2b2;
+}
+.ghmrtmn-header table{
+	width: 100%;
+	height: auto;
+}
+.ghmrtmn-header td{
+	padding-left: 4px;
+	height: 52px;
+	font-size: 14px;
+	color: #656565;
+}
+.ghmrtmn-header td img{
+	vertical-align: middle;
+	margin-top: -4px;
+	margin-right: 4px;
+}
+td.ghmr-money{
+	color: #ff5d51;
+}
+td.ghmr-money span{
+	font-size: 20px;
+}
+.ghmrtmn-contain{
+	width: auto;
+	height: auto;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.ghmrtmn-contain table{
+	width: 100%;
+	height: auto;
+}
+.ghmrtmn-contain td{
+	height: 30px;
+	*height:24px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 14px;
+	color: #878686;
+	line-height: 22px;
+}
+.ff5d51{
+	font-size: 18px;
+	color: #ff5d51;
+}
+.ghtime-parame{
+	width: auto;
+	height: 28px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	font-size: 14px;
+	color: #878686;
+	border:1px solid #d2d2d2; 
+}
+.ghtime-parame .fl{
+	width: 226px;
+	height: 24px;
+	text-indent: 4px;
+	line-height: 24px;
+	border-right:1px solid #d2d2d2; 
+}
+.ghtime-parame .text-input{
+	width:98px;
+	line-height: 24px;
+	padding-right: 0;
+	padding-left: 0;
+	border:0;
+}
+.casenum{
+	margin-left: 230px;
+	width:78px;
+	overflow: hidden;
+	text-align: center;	
+}
+.casenum .select-content{
+	max-width: 78px;
+	*width:70px;
+	height: 26px;
+	line-height: 26px;
+}
+.facility-list{
+	width: auto;
+	height: auto;
+	margin-top: 6px;
+	padding-left: 24px;
+	overflow: hidden;
+}
+.sixpiece{
+	height: 126px;
+}
+.facility-list .fl{
+	width:49%;
+	*width:141px;
+	height: 42px;
+	margin-right: 1%;
+	font-size: 16px;
+	line-height: 42px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow:ellipsis;
+}
+.facility-list .fl img{
+	width:auto;
+	height: auto;
+	max-height: 42px;
+	margin-right: 4px;
+	vertical-align: middle;
+}
+a.facilitymore{
+	font-size: 14px;
+	color: #ff5d51;
+	line-height: 22px;
+	margin-left: 24px;
+}
+.facilitymore img{
+	margin-left: 4px;
+}
+.ghmrtmn-footer{
+	width: auto;
+	height: 70px;
+}
+a.booknow-btn {
+	display: block;
+	width: 313px;
+	height: 34px;
+	margin: 0 auto;
+	margin-top:18px;
+	font-size: 18px;
+	color: #fff ;
+	line-height: 34px;
+	text-align: center;
+	background-color: #fc9f30;
+	border-radius: 2px;
+}
+.ghmright-footer{
+	width: auto;
+	height: 96px;
+	border: 1px solid #d2d2d2;	
+}
+.ghuser-icon{
+	float: left;
+	width: 68px;
+	height: 94px;
+	margin-left: 32px;
+}
+.ghuser-icon img{
+	width: 68px;
+	height: 68px;
+	margin-top: 14px;
+	border-radius: 50%;
+}
+.ghuser-info{
+	margin-left: 122px;
+	width: 190px;
+	height: auto;
+	color: #333;
+}
+.ghuser-name{
+	padding-top: 14px;
+	font-size: 16px;
+	line-height: 28px;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.ghuser-other span{
+	float: left;
+	display: block;
+	height: 35px;
+	font-size: 12px;
+	overflow: hidden;
+	line-height: 42px;
+}
+.ghuser-other span:first-child{
+	padding-right: 24px;
+}
+.ghuser-other img{
+	vertical-align:top;
+	*vertical-align: middle;
+}

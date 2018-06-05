@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "平台提成设置";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>平台提成设置</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form id="frmRoyaltyRate" class="form-horizontal form-label-left" novalidate>
+                    <div class="item form-group">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-12" for="normalRate">
+                            普通租房提成比例 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-2 col-xs-11">
+                            <input value="@ViewBag.NormalRateConfig" id="normalRate" name="normalRate" class="form-control col-md-7 col-xs-12" placeholder="0" type="number" />
+                        </div>
+                        <label class="col-md-1 col-sm-1 col-xs-1">%</label>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-12" for="hostingRate">
+                            托管租房提成比例 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-2 col-xs-11">
+                            <input value="@ViewBag.HostingRateConfig" id="hostingRate" name="hostingRate" class="form-control col-md-7 col-xs-12" placeholder="0" type="number">
+                        </div>
+                        <label class="col-md-1 col-sm-1 col-xs-1">%</label>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-5">
+                            <button id="btnSave" type="button" class="btn btn-success"> 保 存 </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $("#btnSave").on("click", function () {
+            var loadIndex = layer.load();
+            var data = $("#frmRoyaltyRate").serialize();
+            $.post("/Admin/SystemSetting/UpdateRoyaltyRate", data, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layer.alert(result.Msg, { icon: 1 }, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        });
+    </script>
+}

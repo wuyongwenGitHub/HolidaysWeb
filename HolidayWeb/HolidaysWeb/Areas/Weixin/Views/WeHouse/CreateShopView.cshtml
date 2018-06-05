@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "创建店铺";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-info weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">您还未创建店铺哦！</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a href="/Weixin/WeHouse/AddShopView" class="weui-btn weui-btn_primary">立即创建</a>
+                    <a href="/Weixin/WeUser/UserCenter" class="weui-btn weui-btn_default">返回</a>
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">对不起，你无此权限！</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+
+                </p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area">
+            <i class="weui-icon-info weui-icon_msg"></i>
+        </div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">登录失效，请重新登录！</h2>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="/Weixin/WeUser/LoginCenter" class="weui-btn weui-btn_primary">立即登录</a>
+            </p>
+        </div>
+    </div>
+}

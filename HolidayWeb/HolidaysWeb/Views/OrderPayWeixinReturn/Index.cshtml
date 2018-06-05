@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "订单支付结果";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Styles/payorder.css">
+}
+
+<div class="paystatus-wrap w1080">
+    @if (ViewBag.Status == "ok")
+    {
+        <!--支付成功-->
+        <div class="payder-tips">
+            <div class="payder-icon"><img src="/Images/gh-39.png" class="paysuces"></div>
+            <div class="payder-info">
+                <p class="status-info">支付成功！</p>
+                <p class="status-tips">订单可在我的订单里查看，祝入住愉快！<a href="/Order/OrderDetails" class="orderview">查看订单</a></p>
+            </div>
+        </div>
+        <!--支付成功-->
+    }
+    else
+    {
+        <!--支付失败-->
+        <div class="payder-tips w410">
+            <div class="payder-icon"><img src="/Images/gh-50.png" class="payfail"></div>
+            <div class="payder-info">
+                <p class="status-info">抱歉，支付失败！</p>
+                <p class="status-tips">失败原因：@ViewBag.Msg<a href="/Order/OrderDetails" class="orderview">查看订单</a></p>
+            </div>
+        </div>
+        <!--支付失败-->
+        <div class="payder-footer">
+            <a href="/Home/Index" class="backindex">返回首页</a><a href="/User/UserInfo" class="usercenter">进入个人中心</a>
+        </div>
+    }
+</div>

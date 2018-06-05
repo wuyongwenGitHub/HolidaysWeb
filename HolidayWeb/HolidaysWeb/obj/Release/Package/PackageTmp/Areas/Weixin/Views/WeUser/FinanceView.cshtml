@@ -1,0 +1,291 @@
+﻿@{
+    ViewBag.Title = "财务管理";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+
+<div class="header">
+    <h2 class="header-title">财务管理</h2>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label" style="width:155px;">累计交易额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" value="@ViewBag.TotalMoney">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label" style="width:155px;">今日交易额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" value="@ViewBag.TodayTotal">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label" style="width:155px;">最近7日交易额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" value="@ViewBag.SevenDayTotal">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label" style="width:155px;">最近一个月交易额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" value="@ViewBag.MonthTotal">
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd"><label class="weui-label">订单状态</label></div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" id="selectOrder">
+                        <option value="" selected>全部</option>
+                        <option value="0">待支付</option>
+                        <option value="1">已付定金</option>
+                        <option value="2">已支付</option>
+                        <option value="4">交易完成</option>
+                        <option value="3">取消订单</option>
+                        <option value="-1">删除订单</option>
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">起始日期</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="sdate" class="weui-input" type="text" readonly="readonly" value="@DateTime.Now.AddMonths(-1).ToString("yyyy/MM/dd")" />
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">截止日期</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="edate" class="weui-input" type="text" readonly="readonly" value="@DateTime.Now.ToString("yyyy/MM/dd")" />
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <input id="searchbutton" type="button" class="weui-btn weui-btn_primary" value="查询" onclick="financeView.search()" />
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label" style="width:155px;">订单金额合计</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="inputOrderMoney" class="weui-input" type="text" readonly="readonly" value="￥ 0.00">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label" style="width:155px;">已付金额合计</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="inputPayMoney" class="weui-input" type="text" readonly="readonly" value="￥ 0.00">
+                </div>
+            </div>
+        </div>
+        <div id="orderList"></div>
+    }
+    else
+    {
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">对不起，你无此权限！</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                </p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area">
+            <i class="weui-icon-info weui-icon_msg"></i>
+        </div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">登录失效，请重新登录！</h2>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="/Weixin/WeUser/LoginCenter" class="weui-btn weui-btn_primary">立即登录</a>
+            </p>
+        </div>
+    </div>
+}
+
+@section footerjs{
+    <script type="text/javascript">
+        var financeView = function () {
+            var inputOrderMoney = 0;
+            var inputPayMoney = 0;
+            var initPage = function () {
+                $("#sdate").calendar({
+                    maxDate:'@DateTime.Now.ToString("yyyy/MM/dd")'
+                });
+                $("#edate").calendar({
+                    maxDate:'@DateTime.Now.ToString("yyyy/MM/dd")'
+                });
+
+                initOrderList();
+
+            };
+            var initOrderList = function () {
+                var sdate = $("#sdate").val();
+                var edate = $("#edate").val();
+                var orderState = $("#selectOrder").val();
+                $.ajax({
+                    url: '/Weixin/WeUser/GetFinanceOrderList',
+                    type: 'post',
+                    data: { sdate: sdate, edate: edate, state: orderState},
+                    success: function (res) {
+                        var strHtml = '';
+                        if (res.data != null && res.data.length > 0) {
+                            for (var i = 0, len = res.data.length; i < len; i++) {
+                                var order = res.data[i];
+                                var orderState = '';
+                                switch (order.State) {
+                                    case -1:
+                                        orderState = '订单删除';
+                                        break;
+                                    case 0:
+                                        orderState = '待支付';
+                                        break;
+                                    case 1:
+                                        orderState = '已付定金';
+                                        break;
+                                    case 2:
+                                        orderState = '已支付';
+                                        break;
+                                    case 3:
+                                        orderState = '交易完成';
+                                        break;
+                                    case 3:
+                                        orderState = '取消订单';
+                                        break;
+                                }
+                                strHtml += '<div class="weui-form-preview">';
+                                strHtml += '<div class="weui-form-preview__hd">';
+                                strHtml += '<label class="weui-form-preview__label">订单总额</label>';
+                                strHtml += '<em class="weui-form-preview__value">￥ ' + order.TotalPrice + '</em>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__bd">';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">订单状态</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + orderState + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">已支付</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.Price + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">还应支付</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.BalancePayment + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">交易时间</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + jsonDatetimeFormat(order.CreateTime) + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">房源标题</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.HouseTitle + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">顾客姓名</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.Username + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">顾客电话</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.UserPhone + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">入住人数</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.PersonNum + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">入住天数</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.BuyCount + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">入住时间</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + jsonDatetimeFormat(order.StartDate) + '</span>';
+                                strHtml += '</div>';
+                                //strHtml += '<div class="weui-form-preview__item">';
+                                //strHtml += '<label class="weui-form-preview__label">退房时间</label>';
+                                //strHtml += '<span class="weui-form-preview__value">' + jsonDatetimeFormat(order.EndDate) + '</span>';
+                                //strHtml += '</div>';
+                                //strHtml += '<div class="weui-form-preview__item">';
+                                //strHtml += '<label class="weui-form-preview__label">交易单号</label>';
+                                //strHtml += '<span class="weui-form-preview__value">' + order.OtherNo + '</span>';
+                                //strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">商户单号</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.OrderNo + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__ft">';
+                                if (order.State == 0 || order.State == 1) {
+                                    strHtml += '<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" onclick="orderManage.cmpleteOrder(\'' + order.ID + '\')">录入兑换码</a>';
+                                } else {
+                                    strHtml += '<a class="weui-form-preview__btn weui-btn weui-btn_disabled weui-btn_default" href="javascript:">交易已结束</a>';
+                                }
+                                strHtml += '</div>';
+                                strHtml += '</div>';
+                                strHtml += '</div>';
+
+                                //金额合计
+                                inputOrderMoney += order.TotalPrice;
+                                inputPayMoney += order.Price;
+                            }
+                        }
+                        $("#orderList").append(strHtml);
+                        $("#inputOrderMoney").val('￥ ' + inputOrderMoney.toFixed(2));
+                        $("#inputPayMoney").val('￥ ' + inputPayMoney.toFixed(2));
+                        if (res.count == 0) {
+                            $("#orderList").html('<span>暂无相关订单！</span>');
+                            $("#inputOrderMoney").val('￥ 0.00');
+                            $("#inputPayMoney").val('￥ 0.00');
+                        }
+
+                    },
+                    error: function () {
+                        $.toptip('发生错误！', 'error');
+                    }
+                });
+            };
+            var searchHandle = function () {
+                $("#orderList").html('');
+                $("#inputOrderMoney").val('￥ 0.00');
+                $("#inputPayMoney").val('￥ 0.00');
+                inputOrderMoney = 0;
+                inputPayMoney = 0;
+                initOrderList();
+            };
+            return {
+                init: function () {
+                    initPage();
+                },
+                search: function () {
+                    searchHandle();
+                }
+            }
+        }();
+        $(function () { financeView.init(); });
+    </script>
+}

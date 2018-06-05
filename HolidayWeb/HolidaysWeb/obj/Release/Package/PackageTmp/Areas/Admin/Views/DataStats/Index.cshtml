@@ -1,0 +1,346 @@
+﻿@{
+    ViewBag.Title = "数据统计";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Framework/layui/css/layui.css">
+}
+
+<div class="row">
+    <!-- top tiles -->
+    <div class="row tile_count">
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-user"></i> 普通会员总数</span>
+            <div class="count">@ViewBag.NormalUserTotal</div>
+            <span class="count_bottom">今日新增会员：<i class="green">@ViewBag.NormalUserTodayAdd</i></span>
+        </div>
+
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-users"></i> 房东总数</span>
+            <div class="count">@ViewBag.LandlordUserTotal</div>
+            <span class="count_bottom">今日新增房东：<i class="green">@ViewBag.LandlordUserTodayAdd</i></span>
+        </div>
+
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-home"></i> 房源总数</span>
+            <div class="count green">@ViewBag.HouseTotal</div>
+            <span class="count_bottom">今日新增房源：<i class="green">@ViewBag.HouseTodayAdd</i> </span>
+        </div>
+
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-money"></i> 今日交易额</span>
+            <div class="count">@ViewBag.PriceTodayTotal</div>
+            <span class="count_bottom">今日提成额：<i class="red">@ViewBag.PlatformRoyaltyTodayTotal</i></span>
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-cc-paypal"></i> 平台总交易额</span>
+            <div class="count">@ViewBag.PriceTotal</div>
+            <span class="count_bottom">平台总提成额：<i class="red">@ViewBag.PlatformRoyaltyTotal</i></span>
+        </div>
+    </div>
+    <!-- /top tiles -->
+
+    <div ng-app="orderApp" ng-controller="OrderListController" ng-init="initOrderList(1)" class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>平台交易记录 </h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="row">
+                <form id="frmOrderInfoQuery" class="form-horizontal form-label-left">
+                    <div class="col-md-3"><input name="orderNo" type="text" class="form-control" placeholder="订单号" /></div>
+                    <div class="col-md-3"><input name="username" type="text" class="form-control" placeholder="会员名称" /></div>
+                    <div class="col-md-3"><input name="landlordName" type="text" class="form-control" placeholder="房东姓名" /></div>
+                    <div class="col-md-3"><input name="landlordPhone" type="text" class="form-control" placeholder="房东手机" /></div>
+                    <div class="col-md-12"></div>
+                    <div class="col-md-3"><input name="houseTitle" type="text" class="form-control" placeholder="订单商品" /></div>
+                    <div class="col-md-3"><input id="srartTime" name="startTime" type="text" class="form-control" placeholder="交易时间（开始）" /></div>
+                    <div class="col-md-3"><input id="endTime" name="endTime" type="text" class="form-control" placeholder="交易时间（结束）" /></div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="state" name="state">
+                            <option value="" selected="selected">全部</option>
+                            <option value="0">待支付</option>
+                            <option value="1">已付定金</option>
+                            <option value="2">已支付</option>
+                            <option value="4">交易完成</option>
+                            <option value="3">取消订单</option>
+                            <option value="-1">订单删除</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3"><button ng-click="initOrderList(1)" type="button" class="btn btn-default">查询</button></div>
+                </form>
+            </div>
+            <div class="x_content">
+                <table id="datatable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>订单号</th>
+                            <th>会员姓名</th>
+                            <th>房东姓名</th>
+                            <th>房东手机号</th>
+                            <th>订单商品</th>
+                            <th>交易时间</th>
+                            <th>订单总额</th>
+                            <th>已支付</th>
+                            <th>还应支付</th>
+                            <th>平台提成</th>
+                            <th>订单状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="order in orderList">
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ order.OrderNo }}</td>
+                            <td>{{ order.Username }}</td>
+                            <td>{{ order.LandlordName }}</td>
+                            <td>{{ order.LandlordPhone }}</td>
+                            <td>{{ order.HouseTitle }}</td>
+                            <td>{{ order.CreateTime }}</td>
+                            <td>￥{{ order.TotalPrice }}</td>
+                            <td>￥{{ order.Price }}</td>
+                            <td>￥{{ order.BalancePayment }}</td>
+                            <td>￥{{ order.PlatformRoyalty }}</td>
+                            <td>
+                                <span ng-if="order.State == 0" class="yellow">待支付</span>
+                                <span ng-if="order.State == 1" class="yellow">已付定金</span>
+                                <span ng-if="order.State == 2" class="green">已支付</span>
+                                <span ng-if="order.State == 4" class="green">交易完成</span>
+                                <span ng-if="order.State == 3" class="red">取消订单</span>
+                                <span ng-if="order.State == -1" class="red">订单删除</span>
+                            </td>
+                            <td>
+                                <a href="javascript:;" ng-click="openViewOrderInfoModal(order)" title="查看" class="fa fa-eye btn-xs"></a>
+                            </td>
+                        </tr>
+
+                        <tr ng-if="orderList.length != 0">
+                            <td colspan="13" align="center">{{ Total }}</td>
+                        </tr>
+
+                        <tr ng-if="orderList.length == 0">
+                            <td colspan="13" align="center">暂无数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div ng-hide="PageModel.TotalPage == 0" class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div>
+                        <ul class="pagination">
+                            <li class="paginate_button previous"><a ng-click="initOrderList(1)" href="javascript:;">首页</a></li>
+                            <li class="paginate_button"><a ng-click="initOrderList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                            <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                                <a ng-click="initOrderList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                            </li>
+
+                            <li class="paginate_button"><a href="javascript:;" ng-click="initOrderList(PageModel.NextPage)">下一页</a></li>
+                            <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initOrderList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 查看订单信息窗口 -->
+        <div class="modal fade" id="viewOrderInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title">订单信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">订单编号</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.OrderNo }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">会员姓名</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.Username }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">联系电话</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.UserPhone }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">订单商品</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.HouseTitle }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">订单总额</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">￥{{ OrderInfo.TotalPrice }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">已支付</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">￥{{ OrderInfo.Price }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">还应支付</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">￥{{ OrderInfo.BalancePayment }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">平台提成</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">￥{{ OrderInfo.PlatformRoyalty }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">支付方式</label>
+                            <div ng-if="OrderInfo.PayType == 1" class="col-md-6 col-sm-6 col-xs-6">支付宝支付</div>
+                            <div ng-if="OrderInfo.PayType == 2" class="col-md-6 col-sm-6 col-xs-6">微信支付</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">入住人数</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.PersonNum }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">入住天数</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.BuyCount }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">是否全款</label>
+                            <div ng-if="OrderInfo.IsFullPrice == true" class="col-md-6 col-sm-6 col-xs-6">是</div>
+                            <div ng-if="OrderInfo.IsFullPrice == false" class="col-md-6 col-sm-6 col-xs-6">否</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">入住时间</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.StartDate }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">退房时间</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.EndDate }}</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">状态</label>
+                            <div ng-if="OrderInfo.State == 0" class="col-md-6 col-sm-6 col-xs-6 yellow">待支付</div>
+                            <div ng-if="OrderInfo.State == 1" class="col-md-6 col-sm-6 col-xs-6 yellow">已付定金</div>
+                            <div ng-if="OrderInfo.State == 2" class="col-md-6 col-sm-6 col-xs-6 green">已支付</div>
+                            <div ng-if="OrderInfo.State == 4" class="col-md-6 col-sm-6 col-xs-6 green">交易完成</div>
+                            <div ng-if="OrderInfo.State == 3" class="col-md-6 col-sm-6 col-xs-6 red">取消订单</div>
+                            <div ng-if="OrderInfo.State == -1" class="col-md-6 col-sm-6 col-xs-6 red">订单删除</div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-6 text-right">订单时间</label>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{ OrderInfo.CreateTime }}</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 查看订单信息窗口END -->
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Framework/layui/layui.js"></script>
+
+    <script type="text/javascript">
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            var start = {
+                // min: laydate.now(),
+                max: '2099-06-16 23:59:59',
+                istoday: true,
+                choose: function (datas) {
+                    // end.min = datas; //开始日选好后，重置结束日的最小日期
+                    end.start = datas //将结束日的初始值设定为开始日
+                }
+            };
+            var end = {
+                // min: laydate.now(),
+                max: '2099-06-16 23:59:59',
+                istoday: true,
+                choose: function (datas) {
+                    start.max = datas; //结束日选好后，重置开始日的最大日期
+                }
+            };
+            $('#srartTime').on('click', function () {
+                start.elem = this;
+                laydate(start);
+            });
+
+            $('#endTime').on('click', function () {
+                end.elem = this
+                laydate(end);
+            });
+        });
+
+        var orderApp = angular.module('orderApp', []);
+
+        orderApp.controller('OrderListController', function OrderListController($scope, $http) {
+            $scope.initOrderList = function (page) {
+                var orderNo = $("input[name=orderNo]").val();
+                var username = $("input[name=username]").val();
+                var houseTitle = $("input[name=houseTitle]").val();
+                var startTime = $("input[name=startTime]").val();
+                var endTime = $("input[name=endTime]").val();
+                var landlordName = $("input[name=landlordName]").val();
+                var landlordPhone = $("input[name=landlordPhone]").val();
+                var state = $("#state").val();
+                var data = {
+                    page: page, orderNo: orderNo, username: username, houseTitle: houseTitle,
+                    startTime: startTime, endTime: endTime, landlordName: landlordName, landlordPhone: landlordPhone, state: state
+                };
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/DataStats/GetOrderList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data.Data;
+                    var total = response.data.Msg;
+
+                    // 格式化时间
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                        data[i].StartDate = jsonDateFormat(data[i].StartDate, "yyyy-MM-dd");
+                        data[i].EndDate = jsonDateFormat(data[i].EndDate, "yyyy-MM-dd");
+                    }
+
+                    $scope.Total = total;
+                    $scope.orderList = data;
+                    $scope.PageModel = response.data.Data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 打开查看订单信息窗口
+            $scope.openViewOrderInfoModal = function (orderInfo) {
+                $scope.OrderInfo = orderInfo;
+                $("#viewOrderInfoModal").modal();
+            }
+        });
+    </script>
+}
+
+
+
+
+
+

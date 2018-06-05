@@ -1,0 +1,357 @@
+﻿@model IList<Holidays.Model.Entites.OrderInfoView>
+@{
+    ViewBag.Title = "我的订单";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Styles/accountman.css">
+}
+
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页 <span>&gt;</span> 账户管理</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    <div class="accountman-wrap w1080 clearfix">
+        <div class="actman-menu"> <a href="/User/UserInfo" class="acmenu">基本信息</a> <a href="/Order/OrderDetails" class="acmenu actived">订单详情</a> </div>
+        <div class="actman-info">
+            <div class="actinfo-header"><a href="javascript:;" class="actoperate checked">我的订单</a></div>
+            <div class="actinfo-main ordetail-wrap">
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var order in Model)
+                    {
+                        <div class="ordetail-header"><span>订单号：@order.OrderNo</span><span class="pl20">下单时间：@order.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</span><span class="codetail-rihgt fr">房东电话：@order.LandlordPhone</span></div>
+                        <div class="ordetail-main orderlist">
+                            <table cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td>
+                                        <a target="_blank" href="/House/HouseDetails/@order.HouseInfoID">
+                                            <div class="w282 clearfix">
+                                                <div class="ordeta-icon"><img src="@order.FirstImg"></div><div class="ordeta-info">
+                                                    <p class="ordeta-title">@order.HouseTitle</p>
+                                                    <p class="ordeta-address">@order.Address</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td><div class="w136"><p class="mt3">入住时间：<span>@order.StartDate.ToString("yyyy-MM-dd")</span></p><p>退房时间：<span>@order.EndDate.ToString("yyyy-MM-dd")</span></p></div></td>
+                                    <td>
+                                        <div class="w154">
+                                            <p class="mt3">订单总价：<span class="ff5d51">@order.TotalPrice 元</span></p><p>已支付：<span class="ff5d51">@order.Price 元</span></p>
+                                            @if (order.State == 0)
+                                            {
+                                                <p>待支付 @order.BalancePayment 元</p>
+                                            }
+                                            else if (order.State == 1)
+                                            {
+                                                <p>还应支付 @order.BalancePayment 元</p>
+                                            }
+                                            <p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="w116">
+                                            @if (order.State == 0)
+                                            {
+                                                <!-- 未支付 -->
+                                                <p>待支付</p>
+                                                <a href="/Order/OrderPayView?orderNo=@order.OrderNo" target="_blank" class="go-pay">前去支付</a>
+                                                <a href="javascript:;" onclick="fnUpdateOrderState(@order.ID, 3)" class="cancel-order">取消订单</a>
+                                            }
+                                            else if (order.State == 1)
+                                            {
+                                                <p>已付定金</p>
+                                                <a href="javascript:;" onclick="fnCancelOrder(@order.ID)" class="cancel-order">取消订单</a>
+                                                <a href="/Order/OrderPayView?orderNo=@order.OrderNo&isFullPrice=1" target="_blank" class="go-pay">前去支付</a>
+                                            }
+                                            else if (order.State == 2)
+                                            {
+                                                <!-- 支付成功 -->
+                                                <p>待入住</p>
+                                                @*<a target="_blank" href="/House/HouseDetails/@order.HouseInfoID" class="go-pay">再次下单</a>
+                                                if (!order.IsEvaluate)
+                                                {
+                                                    <a href="javascript:fnSetEvaluateData(@order.ID, '@order.HouseTitle', '@order.FirstImg')" class="cancel-order assess">评价</a>
+                                                }*@
+                                            }
+                                            else if(order.State == 4)
+                                            {
+                                               <!-- 支付成功 -->
+                                                <p>交易完成</p>
+                                                <a target="_blank" href="/House/HouseDetails/@order.HouseInfoID" class="go-pay">再次下单</a>
+                                                if (!order.IsEvaluate)
+                                                {
+                                                    <a href="javascript:fnSetEvaluateData(@order.ID, '@order.HouseTitle', '@order.FirstImg')" class="cancel-order assess">评价</a>
+                                                }
+                                            }
+                                            else if (order.State == 3)
+                                            {
+                                                <!-- 订单关闭 -->
+                                                <p>订单关闭</p>
+                                                <a href="javascript:;" class="cancel-order go-pay" onclick="fnUpdateOrderState(@order.ID, -1)">删除订单</a>
+                                            }
+                                            @*<p>尾款：<span class="ff5d51">55元</span></p>*@
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+
+                    <div class="ordetail-main assessinfo">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td>
+                                    <div class="w282 clearfix border0">
+                                        <div class="ordeta-icon">
+                                            <img id="houseImg" src="" />
+                                        </div>
+                                        <div class="ordeta-info">
+                                            <p id="houseTitle" class="ordeta-title">#</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="w388">
+                                        <ul>
+                                            <li>
+                                                <div class="assess-title">整洁卫生</div>
+                                                <div class="assess-star">
+                                                    <a href="javascript:;">
+                                                        <img onclick="fnSetScore(1, 1, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(1, 2, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(1, 3, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(1, 4, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(1, 5, this);" src="/Images/gh-53.png">
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="assess-title">交通位置</div>
+                                                <div class="assess-star">
+                                                    <a href="javascript:;">
+                                                        <img onclick="fnSetScore(2, 1, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(2, 2, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(2, 3, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(2, 4, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(2, 5, this);" src="/Images/gh-53.png">
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="assess-title">设施环境</div>
+                                                <div class="assess-star">
+                                                    <a href="javascript:;">
+                                                        <img onclick="fnSetScore(3, 1, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(3, 2, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(3, 3, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(3, 4, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(3, 5, this);" src="/Images/gh-53.png">
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="assess-title">房东服务</div>
+                                                <div class="assess-star">
+                                                    <a href="javascript:;">
+                                                        <img onclick="fnSetScore(4, 1, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(4, 2, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(4, 3, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(4, 4, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(4, 5, this);" src="/Images/gh-53.png">
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="assess-title">性价比</div>
+                                                <div class="assess-star">
+                                                    <a href="javascript:;">
+                                                        <img onclick="fnSetScore(5, 1, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(5, 2, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(5, 3, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(5, 4, this);" src="/Images/gh-53.png">
+                                                        <img onclick="fnSetScore(5, 5, this);" src="/Images/gh-53.png">
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="textenter-wrap"><textarea id="evaluateContent" maxlength="500" class="text-textarea" placeholder="评价一下吧~"></textarea><p class="enter-tips">500字以内</p></div>
+                        <div class="comment-footer">
+                            <a href="javascript:;" id="lbtnSubmitEvaluate" class="comment-btn">发表评论</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p style="margin: 30px; text-align: center;">无订单信息</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @section footerjs{
+        <script type="text/javascript">
+            $(function () {
+                var bodyH = $("body").height()
+                $(window).resize(function () {
+                    if ($(this).height() > bodyH) {
+                        $(".ghaccount-footer").css({ "position": "absolute" });
+                    } else {
+                        $(".ghaccount-footer").removeAttr("style");
+                    }
+                })
+                $(window).resize();
+            });
+
+            var oid;                  // 订单编号
+            var cleanScore = 0;       // 整洁卫生
+            var locationScore = 0;    // 交通位置
+            var environmentScore = 0; // 设施环境
+            var serviceScore = 0;     // 房东服务
+            var performanceScore = 0; // 性价比
+
+            // 设置评价分数
+            function fnSetScore(type, score, obj) {
+                switch (type) {
+                    case 1:
+                        cleanScore = score;
+                        break;
+                    case 2:
+                        locationScore = score;
+                        break;
+                    case 3:
+                        environmentScore = score;
+                        break;
+                    case 4:
+                        serviceScore = score;
+                        break;
+                    case 5:
+                        performanceScore = score;
+                        break;
+                    default:
+                        break;
+                }
+
+                $(obj).prevAll().attr("src", "/Images/gh-09.png");
+                $(obj).nextAll().attr("src", "/Images/gh-53.png");
+                $(obj).attr("src", "/Images/gh-09.png");
+            }
+
+            // 设置评价数据
+            function fnSetEvaluateData(orderId, houseTitle, houseImg) {
+                $(".assessinfo").show();
+                $(".orderlist,.ordetail-header").hide();
+
+                oid = orderId;
+                $("#houseTitle").html(houseTitle);
+                $("#houseImg").attr("src", houseImg);
+            }
+
+            // 提交评论数据
+            $("#lbtnSubmitEvaluate").on("click", function () {
+                // 校验数据
+                if (!oid || oid <= 0) {
+                    layer.alert("获取订单数据失败！", { icon: 2 });
+                    return;
+                }
+
+                var evaluateContent = $("#evaluateContent").val();
+
+                if (evaluateContent == "" || evaluateContent.length <= 0) {
+                    layer.alert("请输入评价内容！", { icon: 2 });
+                    return;
+                }
+
+                if (evaluateContent.length > 500) {
+                    layer.alert("评价内容不能大于500字！", { icon: 2 });
+                    return;
+                }
+
+                var data = {
+                    orderId: oid,
+                    cleanScore: cleanScore,
+                    locationScore: locationScore,
+                    environmentScore: environmentScore,
+                    serviceScore: serviceScore,
+                    performanceScore: performanceScore,
+                    evaluateContent: evaluateContent
+                };
+
+                var loadIndex = layer.load();
+                $.post("/Order/SubmitEvaluate", data, function (result) {
+                    layer.close(loadIndex);
+                    if (result.Status == "ok") {
+                        layer.alert("评价成功！", { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+
+            });
+
+            function fnCancelOrder(orderId){
+                var strMsg = "确定要取消此订单？";
+
+                layer.confirm(strMsg, {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        var data = { orderId: orderId, state: 3 };
+                        $.post("/Order/UpdateOrderState", data, function (result) {
+                            if (result.Status == "ok") {
+                                layer.alert("操作成功，请联系平台工作人员退款！", { icon: 1 }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                layer.alert("操作失败！", { icon: 2 });
+                            }
+                        });
+                    }
+                });
+            }
+
+            // 更改订单状态
+            function fnUpdateOrderState(orderId, state) {
+                var strMsg;
+                if (state == -1) {
+                    strMsg = "确定要删除此订单？";
+                } else if (state == 3) {
+                    strMsg = "确定要取消此订单？";
+                }
+
+                layer.confirm(strMsg, {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        var data = { orderId: orderId, state: state };
+                        $.post("/Order/UpdateOrderState", data, function (result) {
+                            if (result.Status == "ok") {
+                                layer.alert("操作成功！", { icon: 1 }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                layer.alert("操作失败！", { icon: 2 });
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

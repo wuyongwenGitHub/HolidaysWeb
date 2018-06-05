@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "房源管理";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/percenter.css" rel="stylesheet" />
+    <link href="~/Framework/weui/lib/weui.min.css" rel="stylesheet" />
+    <link href="~/Framework/weui/css/jquery-weui.min.css" rel="stylesheet" />
+    <link href="~/Styles/weui-custom.css" rel="stylesheet" />
+}
+
+<div class="page-wrap">
+    @if (ViewBag.IsLogin)
+    {
+        if (ViewBag.IsPermission)
+        {
+            if (ViewBag.HasShop)
+            {
+                if (ViewBag.IsCheck == 1)
+                {
+                    <div class="percenter-main">
+                        <ul class="landlord-wrap">
+                            <li class="landlord-item"><a href="/weixin/wehouse/addhouseview"><img src="/Images/wechart/mgh_18.png" class="mgh_18" alt="">发布房源</a></li>
+                        </ul>
+                    </div>
+                    <div class="permain-wrap property-wrap">
+                        @if (ViewBag.HouseList != null && ViewBag.HouseList.Count > 0)
+                        {
+
+                            <ul>
+                                @foreach (var house in ViewBag.HouseList)
+                                {
+                                    <li class="perorder-item">
+                                        <div class="perorder-header">
+                                            <div class="perorder-num">
+                                                @if (house.State == 0)
+                                                {
+                                                    <p>正常发布中..</p>
+                                                }
+                                                else if (house.State == 1)
+                                                {
+                                                    <p>已下架</p>
+                                                }
+                                                else
+                                                {
+                                                    <p>已删除</p>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="perorder-contain clearfix">
+                                            <div class="percon-left"><img src="@house.FirstImg"></div>
+                                            <div class="percon-right">
+                                                <div class="pconrt-left">
+                                                    <p class="pconrt-title">@house.HouseTitle</p>
+                                                    <p class="pconrt-landlord">@house.Address</p>
+                                                </div>
+                                                <div class="pconrt-right">
+                                                    @if (!house.IsTrusteeship)
+                                                    {
+                                                        <a onclick="fnSetHouseTrusteeship(@house.ID)" href="javascript:;" class="proper-btn" style="display:none;">托管</a>
+                                                    }
+
+                                                    @if (house.State == 0)
+                                                    {
+                                                        <a onclick="fnUpdateHouseState(@house.ID, 1)" href="javascript:;" class="proper-btn proper-disbtn">下架</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a onclick="fnUpdateHouseState(@house.ID, 0)" href="javascript:;" class="proper-btn proper-disbtn">上架</a>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="perorder-operate">
+                                            <a href="/weixin/wehouse/housedetailsview/@house.ID" class="perorder-btn">查看</a>
+                                            @if (house.IsEmpty == 0)
+                                            {
+                                                <a href="javascript:;" class="perorder-btn" onclick="fnUpdateHouseEmpty(@house.ID)">可订</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="javascript:;" class="perorder-btn" onclick="fnUpdateHouseEmpty(@house.ID)">客满</a>
+                                            }
+
+
+                                            <a href="/weixin/wehouse/addhouseview/@house.ID" class="perorder-btn">修改</a>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p style="text-align: center; padding: 20px; font-size: 14px;">你还未发布房源信息！</p>
+                        }
+                    </div>
+                }
+                else if (ViewBag.IsCheck == 0)
+                {
+                    <div class="weui-msg">
+                        <div class="weui-msg__icon-area">
+                            <i class="weui-icon-info weui-icon_msg"></i>
+                        </div>
+                        <div class="weui-msg__text-area">
+                            <h2 class="weui-msg__title">正在审核店铺信息。</h2>
+                        </div>
+                        <div class="weui-msg__opr-area">
+                            <p class="weui-btn-area">
+                                <a href="/Weixin/WeUser/UserCenter" class="weui-btn weui-btn_default">返回管理中心</a>
+                            </p>
+                        </div>
+                    </div>
+                }
+                else if (ViewBag.IsCheck == 2)
+                {
+                    <div class="weui-msg">
+                        <div class="weui-msg__icon-area">
+                            <i class="weui-icon-warn weui-icon_msg"></i>
+                        </div>
+                        <div class="weui-msg__text-area">
+                            <h2 class="weui-msg__title">店铺审核未通过。</h2>
+                            <p class="weui-msg__desc">@ViewBag.FailReason</p>
+                        </div>
+                        <div class="weui-msg__opr-area">
+                            <p class="weui-btn-area">
+                                <a href="/Weixin/WeUser/UserCenter" class="weui-btn weui-btn_default">返回管理中心</a>
+                            </p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="weui-msg">
+                    <div class="weui-msg__icon-area">
+                        <i class="weui-icon-info weui-icon_msg"></i>
+                    </div>
+                    <div class="weui-msg__text-area">
+                        <h2 class="weui-msg__title">平台审核通过后才能发布房源。</h2>
+                    </div>
+                    <div class="weui-msg__opr-area">
+                        <p class="weui-btn-area">
+                            <a href="/Weixin/WeUser/UserCenter" class="weui-btn weui-btn_default">返回管理中心</a>
+                        </p>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="page-wrap">
+                <div class="releasper-wrap">
+                    <p style="text-align: center; padding: 20px; font-size: 14px;">对不起，你无此权限，请联系平台管理员。</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p style="text-align: center; padding: 20px; font-size: 14px;">登录失效，请重新登录！</p>
+    }
+</div>
+
+@section footerjs{
+    <script src="~/Framework/weui/js/jquery-weui.min.js"></script>
+    <script type="text/javascript">
+        // 设置房屋托管
+        function fnSetHouseTrusteeship(id) {
+            var loadIndex = layerload();
+            $.post("/House/SetHouseTrusteeship", { id: id }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layermsg(result.Msg, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layermsg(result.Msg);
+                }
+            });
+        }
+
+        // 更改房屋状态
+        function fnUpdateHouseState(id, state) {
+            var loadIndex = layerload();
+            $.post("/House/UpdateState", { id: id, state: state }, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layermsg(result.Msg, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layermsg(result.Msg);
+                }
+            });
+        }
+
+        //更改房屋状态
+        function fnUpdateHouseEmpty(id) {
+            var loadIndex = layerload();
+            $.post("/House/UpdateEmptyState", { id: id}, function (result) {
+                layer.close(loadIndex);
+                if (result.Status == "ok") {
+                    layermsg(result.Msg, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layermsg(result.Msg);
+                }
+            });
+        }
+    </script>
+}

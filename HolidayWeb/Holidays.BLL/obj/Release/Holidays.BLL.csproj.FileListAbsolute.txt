@@ -1,0 +1,63 @@
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.BLL.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.BLL.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.DI.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.IBLL.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.IDAL.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.Model.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Spring.Core.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\EntityFramework.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Newtonsoft.Json.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Common.Logging.Core.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Common.Logging.dll
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.DI.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.IBLL.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.IDAL.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.IDAL.dll.config
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.Model.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Holidays.Model.dll.config
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Spring.Core.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Spring.Core.xml
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\EntityFramework.xml
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Newtonsoft.Json.xml
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Common.Logging.Core.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Common.Logging.Core.xml
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Common.Logging.pdb
+E:\Projects\holidaysweb\Holidays.BLL\bin\Release\Common.Logging.xml
+E:\Projects\holidaysweb\Holidays.BLL\obj\Release\Holidays.BLL.csprojResolveAssemblyReference.cache
+E:\Projects\holidaysweb\Holidays.BLL\obj\Release\Holidays.BLL.csproj.CoreCompileInputs.cache
+E:\Projects\holidaysweb\Holidays.BLL\obj\Release\Holidays.BLL.csproj.CopyComplete
+E:\Projects\holidaysweb\Holidays.BLL\obj\Release\Holidays.BLL.dll
+E:\Projects\holidaysweb\Holidays.BLL\obj\Release\Holidays.BLL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.BLL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.BLL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.DI.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.IBLL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.IDAL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.Model.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Spring.Core.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\EntityFramework.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Newtonsoft.Json.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Common.Logging.Core.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Common.Logging.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.DI.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.IBLL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.IDAL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.IDAL.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.Model.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.Model.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Spring.Core.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Spring.Core.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\EntityFramework.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Newtonsoft.Json.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Common.Logging.Core.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Common.Logging.Core.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Common.Logging.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Common.Logging.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\obj\Release\Holidays.BLL.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\obj\Release\Holidays.BLL.csproj.CoreCompileInputs.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\obj\Release\Holidays.BLL.csproj.CopyComplete
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\obj\Release\Holidays.BLL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\obj\Release\Holidays.BLL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.DALMSSQL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.DALMSSQL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.BLL\bin\Release\Holidays.DALMSSQL.dll.config

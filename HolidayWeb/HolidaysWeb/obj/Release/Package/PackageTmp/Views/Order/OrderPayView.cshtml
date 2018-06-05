@@ -1,0 +1,147 @@
+﻿@model Holidays.Model.Entites.OrderInfo
+@{
+    ViewBag.Title = "订单支付";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Styles/payorder.css">
+    <link href="~/Framework/layui/css/layui.css" rel="stylesheet" />
+}
+
+<div class="navigation">
+    <div class="w1080">首页 <span>&gt;</span> 租房搜索 <span>&gt;</span> 房屋详情 <span>&gt;</span> 提交订单 <span>&gt;</span> 支付订单</div>
+</div>
+
+@if (Model != null)
+{
+    <div class="payorder-wrap w1080">
+        <div class="payorder-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td rowspan="2" width="130" class="icon"><img src="/Images/gh-39.png"></td>
+                    <td><span class="fs16">提交订单成功！</span></td>
+                </tr>
+                <tr>
+                    <td>请您继续支付定金，工作日内（9:00-21:00）我们将在30分钟内处理您的订单。<a href="/Order/OrderDetails" class="orderview">查看订单</a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="payorder-main">
+            @*<div class="payorder-tips mt10">线上支付到我要去度假金额<span class="pormoney">￥@Model.TotalPrice</span></div>*@
+            @*<div class="payorder-tips">正在使用即时到账交易<span class="doubt">［？］</span></div>*@
+            <div class="payorder-tips">
+                <span class="order-num">我要去度假订单：@Model.OrderNo</span>
+                <span class="beneficiary">收款方：我要去度假</span>
+                <span class="earnest">定金：<em>￥@Model.DownPayment 元</em></span>
+            </div>
+            <div class="payorder-tips mt10">订单金额：<span class="pormoney">￥@Model.BalancePayment</span></div>
+
+            <div @if(ViewBag.IsFullPrice != null ) { @Html.Raw("style='display:none;'") } class="paymode-name">选择支付方式</div>
+            <div @if (ViewBag.IsFullPrice != null) { @Html.Raw("style='display:none;'")  } class="paymode-list">
+                <div id="totalPricePay" class="paymode-check checked">
+                    <label for="paymone">全款支付</label>
+                </div>
+                @*<div id="downpaymentPay" class="paymode-check">
+                    <label for="paymtwo">支付定金</label>
+                </div>*@
+            </div>
+            <div class="paymode-list mt18">
+                @*<div id="aliPay" class="paymode-check">
+                    <label for="payageone"><img src="/Images/gh-42.png"></label>
+                </div>*@
+                <div id="wechartPay" class="paymode-check checked">
+                    <label for="payagetwo"><img src="/Images/gh-43.png"></label>
+                </div>
+            </div>
+        </div>
+        <div class="payorder-footer">
+            <div style="display: none;" id="payQRCodeDiv" class="payorfer-main">
+                <div class="wechat-pay clearfix">
+                    <div class="wechatpay-left"><img src="/Images/WePayLogo.png"></div>
+                    <div class="wechatpay-right">
+                        <div class="wechatqrcode-wrap"><img id="imgQRCode" src="/Images/gh-12.jpg"></div>
+                        <div class="wechat-tips"><img src="/Images/wechat-tips.png"></div>
+                    </div>
+                </div>
+
+            </div>
+            <p class="payorter-tips">我要去度假 2017 版权所有</p>
+        </div>
+    </div>
+
+    @section footerjs{
+        <script type="text/javascript">
+            $(function () {
+                //$(".paymode-list label").on("click", function () {
+                //    $(this).parent(".paymode-check").addClass("checked");
+                //    $(this).parent(".paymode-check").siblings().removeClass("checked");
+                //});
+                fnDoGetWeixinPayQrCode(2); //默认微信支付 屏蔽支付宝
+            });
+
+            var isFullPrice = 1;
+            $("#totalPricePay").on("click", function () { isFullPrice = 1; });
+            $("#downpaymentPay").on("click", function () { isFullPrice = 0; });
+
+            // 支付宝支付
+            $("#aliPay").on("click", function () {
+                $("#payQRCodeDiv").css("display", "none");
+                var price = isFullPrice == 1 ? "@Model.BalancePayment" : "@Model.DownPayment";
+                layer.confirm("确定使用支付宝支付￥ " + price + " 元？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        fnGoPayView(1);
+                    }
+                });
+            });
+
+            // 微信支付
+            $("#wechartPay").on("click", function () {
+                fnDoGetWeixinPayQrCode(2);
+            });
+
+            var timer;
+
+            // 查询微信订单支付状态
+            function fnQueryWeixinOrder(orderNo) {
+                var data = { orderNo: orderNo };
+                $.post("/Order/QueryWeixinOrder", data, function (result) {
+                    result = JSON.parse(result);
+                    if (result['return_code'] && result['return_code'] == "SUCCESS"
+                        && result['result_code'] && result["result_code"] == "SUCCESS"
+                        && result['trade_state'] && result["trade_state"] == "SUCCESS") {
+                        clearInterval(timer);
+                        layer.alert("支付成功！", { icon: 1 }, function () {
+                            window.location.href = "/OrderPayWeixinReturn?orderNo=" + "@Model.OrderNo";
+                        });
+                    } else {
+                        console.log(result);
+                    }
+                });
+            }
+
+            // 获取微信支付二维码地址
+            function fnDoGetWeixinPayQrCode(payType) {
+                var loadIndex = layer.load();
+                var data = { orderNo: "@Model.OrderNo", isFullPrice: isFullPrice, payType: payType };
+                $.post("/Order/OrderPay", data, function (result) {
+                    layer.closeAll();
+
+                    if (result.Status && result.Status == "ok") {
+                        $("#payQRCodeDiv").css("display", "block");
+                        $("#imgQRCode").attr("src", "/QRCode?data=" + result.Msg);
+                        timer = setInterval(function () { fnQueryWeixinOrder(result.Data) }, 5000);
+                    } else {
+                        layer.alert(result, { icon: 2 });
+                    }
+                });
+            }
+
+            // 跳转到支付页面
+            function fnGoPayView(payType) {
+                window.location.href = "/Order/OrderPay?orderNo=@Model.OrderNo&isFullPrice=" + isFullPrice + "&payType=" + payType;
+            }
+        </script>
+    }
+}

@@ -1,0 +1,1 @@
+lessc --clean-css hotel_list.css hotel_list.min.css

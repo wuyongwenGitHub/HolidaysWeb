@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "登录管理中心";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+
+<div class="header">
+    <h2 class="header-title">登录到管理中心</h2>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">登录账号</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input type="text" class="weui-input" id="input1" name="input1" placeholder="请填写账号" />
+        </div>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label class="weui-label">登录密码</label>
+        </div>
+        <div class="weui-cell__bd">
+            <input type="password" class="weui-input" id="input2" name="input2" placeholder="请填写密码" />
+        </div>
+    </div>
+    <div class="weui-btn-area">
+        <a href="javascript:;" id="submit" class="weui-btn weui-btn_primary" onclick="loginCenter.login()">登录</a>
+    </div>
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        var loginCenter = function () {
+            var submitHandle = function () {
+                var input1 = $.trim($("#input1").val());
+                var input2 = $.trim($("#input2").val());
+                var isValid = validHandle(input1, input2);
+                if (isValid) {
+                    $.showLoading('登录中...');
+                    jQuery.ajax({
+                        url: '/WeLogin/AccountLogin',
+                        type:'POST',
+                        dataType: 'json',
+                        async: false,
+                        data: { input1: input1, input2: input2 },
+                        success: function (res) {
+                            $.hideLoading();
+                            if (res.Status == "ok") {
+                                window.location.href = '/Weixin/WeUser/UserCenter';
+                            } else {
+                                $.toptip(res.Msg, 'error');
+                            }
+                        },
+                        error: function (xhr,status,error) {
+                            $.hideLoading();
+                            $.toptip('网络错误！', 'error');
+                        }
+                    });
+                }
+            };
+            var validHandle = function (input1, input2) {
+                var isValid = true;
+                if (input1 == '') {
+                    $.toptip('登录账号不能为空！', 'error');
+                    isValid = false;
+                }
+                if (isValid && input2 == '') {
+                    $.toptip('登录密码不能为空！', 'error');
+                    isValid = false;
+                }
+                return isValid;
+            };
+            return {
+                login: function () {
+                    submitHandle();
+                }
+            }
+        }();
+
+    </script>
+}

@@ -1,0 +1,39 @@
+@charset "utf-8";
+/* goonholiday ghspecialty.html 2016-12-03 rhg */
+
+/*goods-list*/
+.goods-list{
+	width: auto;
+	height: auto;
+	margin-right: -33px;
+	margin-left: -33px;
+}
+.goods-item{
+	float: left;
+	width: 316px;
+	height: 215px;
+	margin-right: 33px;
+	margin-left: 33px;
+	margin-bottom: 20px;
+}
+.goods-icon{
+	width: 316px;
+	height: 173px;
+}
+.goods-info{
+	height: 42px;
+	font-size: 16px;
+	color: #878686;
+	line-height: 34px;
+	overflow: hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;	
+}
+.goods-info span{
+	font-size: 14px;
+	color: #ff5d51;
+	padding-right: 14px;
+}
+.goods-info em{
+	font-size: 20px;
+}

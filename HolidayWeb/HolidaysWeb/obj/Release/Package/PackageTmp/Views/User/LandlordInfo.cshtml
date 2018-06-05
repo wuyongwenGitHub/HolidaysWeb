@@ -1,0 +1,480 @@
+﻿@model Holidays.Model.Entites.UserInfoExtView
+@{
+    ViewBag.Title = "房东信息";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Styles/accountman.css">
+}
+
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页 <span>&gt;</span> 账户管理</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    <div class="accountman-wrap w1080 clearfix">
+        <div class="actman-menu">
+            <a href="/User/LandlordInfo" class="acmenu actived">基本信息</a>
+            @*<a href="/House/HouseManager" class="acmenu">房屋管理</a>*@
+        </div>
+
+        <div class="actman-info">
+            <div class="actinfo-header"><a href="javascript:;" class="actoperate checked" data-actoperate="1">查看</a><a href="javascript:;" class="actoperate" data-actoperate="2">实名认证</a></div>
+            <div class="actinfo-main">
+                <div class="landlord-view acinfo-contain enter-edit">
+                    <form id="frmEditUserInfo" action="#">
+
+                        <table cellpadding="0" cellspacing="0" border="0" class="table-wrap">
+                            <tr>
+                                <td rowspan="4" class="userphoto">
+                                    <label id="uploadPhoto">
+                                        @if (!String.IsNullOrEmpty(ViewBag.UserInfo.Img))
+                                        {
+                                            <img id="userImg" src="@ViewBag.UserInfo.Img" class="ml0" alt="photo" />
+                                        }
+                                        else
+                                        {
+                                            <img id="userImg" src="/Images/default.jpg" class="ml0" alt="photo" />
+                                        }
+                                        <input id="txtUserImg" name="Img" value="@ViewBag.UserInfo.Img" type="hidden" />
+                                        <span>[修改头像]</span>
+                                    </label>
+                                </td>
+                                <td class="taright" width="108">用 户 名：</td>
+                                <td><input id="txtNikename" name="Nikename" maxlength="20" type="text" class="text-input" value="@ViewBag.UserInfo.Nikename"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">真实姓名：</td>
+                                <td>
+                                    @if (ViewBag.UserInfo.IsRealName != null && ViewBag.UserInfo.IsRealName == 1)
+                                    {
+                                        <input readonly="readonly" id="txtUsername" name="Username" maxlength="20" type="text" class="text-input" value="@ViewBag.UserInfo.Username">
+                                        <p class="entertips">已实名认证，真实姓名不能修改</p>
+                                    }
+                                    else
+                                    {
+                                        <input id="txtUsername" name="Username" maxlength="20" type="text" class="text-input" value="@ViewBag.UserInfo.Username">
+                                        <p class="entertips">请务必使用真实姓名，否则影响账户支付</p>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="taright">性　　别：</td>
+                                <td>
+                                    <select name="Gender">
+                                        <option @if (ViewBag.UserInfo.Gender == 0) { @Html.Raw("selected='selected'")         ; } value="0">男</option>
+                                        <option @if (ViewBag.UserInfo.Gender == 1) { @Html.Raw("selected='selected'")         ; } value="1">女</option>
+                                        <option @if (ViewBag.UserInfo.Gender != 0 && ViewBag.UserInfo.Gender != 1) { @Html.Raw("selected='selected'")         ; } value="2">保密</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="taright">身份证号码：</td>
+                                <td>
+                                    @if (ViewBag.UserInfo.IsRealName != null && ViewBag.UserInfo.IsRealName == 1)
+                                    {
+                                        <input id="txtIDCardNo" readonly="readonly" name="IDCardNo" maxlength="18" type="text" class="text-input" value="@ViewBag.UserInfo.IDCardNo">
+                                        <p class="entertips">已实名认证，身份证号不能修改</p>
+                                    }
+                                    else
+                                    {
+                                        <input id="txtIDCardNo" name="IDCardNo" maxlength="18" type="text" class="text-input" value="@ViewBag.UserInfo.IDCardNo">
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td class="taright">邮　　箱：</td>
+                                <td><input id="txtEmail" name="Email" maxlength="100" type="text" class="text-input" value="@ViewBag.UserInfo.Email"></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td class="taright">手机号码：</td>
+                                <td><input id="txtPhoneNo" name="PhoneNo" maxlength="11" type="text" class="text-input" value="@ViewBag.UserInfo.PhoneNo"></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td class="taright">备用手机号码：</td>
+                                <td>
+                                    <input id="txtPhoneNo2" name="PhoneNo2" maxlength="11" type="text" class="text-input" value="@ViewBag.UserInfo.PhoneNo2">
+                                    <p class="entertips">备用手机号码，以便特殊情况下可及时联系到您</p>
+                                </td>
+                            </tr>
+
+                            @if (Model != null)
+                            {
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="taright">支付宝账号：</td>
+                                    <td><span class="color12">@Model.AlipayAccount</span></td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="taright">微　　信：</td>
+                                    <td><span class="color12">@Model.WeixinAccount</span></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="taright">支付宝账号：</td>
+                                    <td><span class="color12">未实名认证</span></td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="taright">微　　信：</td>
+                                    <td><span class="color12">未实名认证</span></td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <td colspan="3" align="center">提示 <span class="ff5d51">*</span> 房东需严格遵守我要去度假的租房协议。</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">&nbsp;</td>
+                                <td><label for="terms" class="terms-wrap"><input checked="checked" type="checkbox" id="terms">我同意上诉条款</label></td>
+                            </tr>
+                        </table>
+                        <div class="actedit-footer"><a href="javascript:;" id="btnSaveUserInfo" class="actedit-btn">保存</a></div>
+                    </form>
+                </div>
+
+                @if (Model != null && ViewBag.UserInfoCertificate != null && ViewBag.UserInfoCertificate.State != 2)
+                {
+                    // 已提交实名认证信息
+                    <div class="landlord-approve acinfo-contain enter-edit">
+                        <table cellpadding="0" cellspacing="0" border="0" class="table-wrap">
+                            <tr>
+                                <td colspan="3" align="center">
+                                    @if (Model.IsCertification == 1)
+                                    {
+                                        <span class="ff5d51">恭喜你，实名认证已通过</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="ff5d51">实名认证信息已提交，我们会尽快审核！</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="taright" width="215">真实姓名<span class="ff5d51">*</span> </td>
+                                <td><input type="text" readonly="readonly" class="text-input" value="@Model.Username"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">身份证号<span class="ff5d51">*</span> </td>
+                                <td><input type="text" readonly="readonly" class="text-input" value="@Model.IDCardNo"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">身份证件照<span class="ff5d51">*</span> </td>
+                                <td>
+                                    <label class="uphoto-wrap uphotobg01" for="idcard01">
+                                        <img src="@Model.IDCardImg1">
+                                    </label>
+                                    <label class="uphoto-wrap uphotobg02" for="idcard02">
+                                        <img src="@Model.IDCardImg2">
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="taright">支付宝账号<span class="ff5d51">*</span> </td>
+                                <td><input type="text" readonly="readonly" class="text-input" value="@Model.AlipayAccount"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">微信号<span class="ff5d51">*</span> </td>
+                                <td><input type="text" readonly="readonly" class="text-input" value="@Model.WeixinAccount"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">房源地址<span class="ff5d51">*</span> </td>
+                                <td><input type="text" readonly="readonly" class="text-input" value="@Model.HouseAddress"></td>
+                            </tr>
+                            <tr>
+                                <td class="taright">房产证照<span class="ff5d51">*</span> </td>
+                                <td>
+                                    <label class="uphoto-wrap" for="property"><img src="@Model.Housecertificate"></label>
+                                </td>
+                            </tr>
+                        </table>
+                        @*<div class="actedit-footer"><a href="javascript:;" class="actedit-btn">保存</a></div>*@
+                    </div>
+                }
+                else
+                {
+                    //  未实名认证
+                    <div class="landlord-approve acinfo-contain enter-edit">
+                        <form id="frmUserInfoExt" action="#">
+                            <table cellpadding="0" cellspacing="0" border="0" class="table-wrap">
+                                @if (ViewBag.UserInfoCertificate != null && ViewBag.UserInfoCertificate.State == 2)
+                                {
+                                    <tr>
+                                        <td colspan="3" align="center">
+                                            <span class="ff5d51">实名认证失败：@ViewBag.UserInfoCertificate.FailReason</span>
+                                        </td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td class="taright" width="215">真实姓名<span class="ff5d51">*</span> </td>
+                                    <td><input id="txtExtUsername" maxlength="20" name="Username" type="text" class="text-input" value="@ViewBag.UserInfo.Username"></td>
+                                </tr>
+                                <tr>
+                                    <td class="taright">身份证号<span class="ff5d51">*</span> </td>
+                                    <td><input id="txtExtIDCardNo" maxlength="18" name="IDCardNo" type="text" class="text-input" value="@ViewBag.UserInfo.IDCardNo"></td>
+                                </tr>
+                                <tr>
+                                    <td class="taright">身份证件照<span class="ff5d51">*</span> </td>
+                                    <td>
+                                        <label id="lblUploadIDCardImg1" class="uphoto-wrap uphotobg01" for="idcard01">
+                                            <input type="hidden" id="txtIDCardImg1" name="IDCardImg1" />
+                                            <img id="idcardImg1" src="" />
+                                        </label>
+                                        <label id="lblUploadIDCardImg2" class="uphoto-wrap uphotobg02" for="idcard02">
+                                            <input type="hidden" id="txtIDCardImg2" name="IDCardImg2" />
+                                            <img id="idcardImg2" src="" />
+                                        </label>
+                                        <p class="uphoto-tips">图片尽量清晰，以便我们识别</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="taright">支付宝账号<span class="ff5d51">*</span> </td>
+                                    <td><input id="txtAlipayAccount" name="AlipayAccount" type="text" class="text-input" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="taright">微信号<span class="ff5d51">*</span> </td>
+                                    <td><input id="txtWeixinAccount" name="WeixinAccount" type="text" class="text-input" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="taright">房源地址<span class="ff5d51">*</span> </td>
+                                    <td><input id="txtHouseAddress" name="HouseAddress" type="text" class="text-input" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="taright">房产证照<span class="ff5d51">*</span> </td>
+                                    <td>
+                                        <label id="lblUploadHousecertificate" class="uphoto-wrap" for="property">
+                                            <input type="hidden" id="txtHousecertificate" name="Housecertificate" />
+                                            <img id="housecertificateImg" src="" />
+                                        </label>
+                                        <p class="uphoto-tips">图片尽量清晰，以便我们识别</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="actedit-footer"><a href="javascript:;" id="lbtnSaveUserExtInfo" class="actedit-btn">保存</a></div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @section footerjs{
+        <script src="~/Scripts/Utility.js"></script>
+        <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#btnSaveUserInfo").on("click", function () {
+                    var nikename = $("#txtNikename").val();
+                    var username = $("#txtUsername").val();
+                    var idcard = $("#txtIDCardNo").val();
+                    var email = $("#txtEmail").val();
+                    var phoneNo = $("#txtPhoneNo").val();
+                    var phoneNo2 = $("#txtPhoneNo2").val();
+                    var terms = $("#terms").is(":checked");
+
+                    // 校验数据
+                    if (!nikename || nikename.length <= 0) {
+                        layer.alert("用户名不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!username || username.length <= 0) {
+                        layer.alert("真实姓名不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (idcard && !fnCheckIdCard(idcard)) {
+                        layer.alert("身份证号格式不正确！", { icon: 2 });
+                        return;
+                    }
+
+                    if (email && email.length > 0) {
+                        if (!fnCheckEmail(email)) {
+                            layer.alert("邮箱地址格式不正确！", { icon: 2 });
+                            return;
+                        }
+                    }
+
+                    if (!fnCheckPhone(phoneNo)) {
+                        layer.alert("请输入正确的手机号码！", { icon: 2 });
+                        return;
+                    }
+
+                    if (phoneNo2 && phoneNo2.length > 0) {
+                        if (!fnCheckPhone(phoneNo2)) {
+                            layer.alert("备用手机号格式不正确！", { icon: 2 });
+                            return;
+                        }
+                    }
+
+                    if (!terms) {
+                        layer.alert("请同意 [我要去度假] 租房协议！", { icon: 2 });
+                        return;
+                    }
+
+                    var loadIndex = layer.load();
+                    var data = $("#frmEditUserInfo").serialize();
+                    $.post("/User/SaveUserInfo", data, function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            layer.alert(result.Msg, { icon: 1 }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                    });
+                });
+
+                // 实名认证
+                $("#lbtnSaveUserExtInfo").on("click", function () {
+                    var username = $("#txtExtUsername").val();
+                    var idcard = $("#txtExtIDCardNo").val();
+                    var idcardimg1 = $("#txtIDCardImg1").val();
+                    var idcardimg2 = $("#txtIDCardImg2").val();
+                    var alipayAccount = $("#txtAlipayAccount").val();
+                    var weixinAccount = $("#txtWeixinAccount").val();
+                    var houseAddress = $("#txtHouseAddress").val();
+                    var housecertificate = $("#txtHousecertificate").val();
+
+                    // 校验数据
+                    if (!username || username.length <= 0) {
+                        layer.alert("真实姓名不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!fnCheckIdCard(idcard)) {
+                        layer.alert("身份证号格式不正确！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!idcardimg1 || idcardimg1.length <= 0) {
+                        layer.alert("请上传身份证正面照！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!idcardimg2 || idcardimg2.length <= 0) {
+                        layer.alert("请上传身份证背面照！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!alipayAccount || alipayAccount.length <= 0) {
+                        layer.alert("支付宝账号不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!weixinAccount || weixinAccount.length <= 0) {
+                        layer.alert("微信号不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!houseAddress || houseAddress.length <= 0) {
+                        layer.alert("房源地址不能为空！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!housecertificate || housecertificate.length <= 0) {
+                        layer.alert("请上传房产证照！", { icon: 2 });
+                        return;
+                    }
+
+                    var loadIndex = layer.load();
+                    var data = $("#frmUserInfoExt").serialize();
+                    $.post("/User/SaveUserInfoExt", data, function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            layer.alert(result.Msg, { icon: 1 }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                    });
+
+                });
+
+                var bodyH = $("body").height()
+                $(window).resize(function () {
+                    if ($(this).height() > bodyH) {
+                        $(".goholiday-footer").css({ "position": "absolute" });
+                    } else {
+                        $(".goholiday-footer").removeAttr("style");
+                    }
+                })
+                $(window).resize();
+                //ie89 placeholder
+                $("a[href='javascript:;']").on("click", function (event) {
+                    if (document.all) {
+                        event.preventDefault();
+                    }
+                });
+                //actinfo-header 操作
+                $(".actinfo-header .actoperate").on("click", function () {
+                    $(this).addClass("checked").siblings().removeClass("checked");
+                    if ($(this).data("actoperate") == 1) {
+                        $(".landlord-view").show();
+                        $(".landlord-approve").removeAttr("style");
+
+                        fnInitUpload();
+                    } else if ($(this).data("actoperate") == 2) {
+                        $(".landlord-approve").show();
+                        $(".landlord-view").hide();
+
+                        fnInitUpload2();
+                    }
+                });
+
+                function fnInitUpload() {
+                    // 头像图片处理
+                    fnUploadImage("uploadPhoto", function (url) {
+                        $("#userImg").attr("src", url);
+                        $("#txtUserImg").val(url);
+                    });
+                }
+
+                function fnInitUpload2() {
+                    // 身份证正面
+                    fnUploadImage("lblUploadIDCardImg1", function (url) {
+                        $("#idcardImg1").attr("src", url);
+                        $("#txtIDCardImg1").val(url);
+                    });
+
+                    // 身份证反面
+                    fnUploadImage("lblUploadIDCardImg2", function (url) {
+                        $("#idcardImg2").attr("src", url);
+                        $("#txtIDCardImg2").val(url);
+                    });
+
+                    // 房产证照
+                    fnUploadImage("lblUploadHousecertificate", function (url) {
+                        $("#housecertificateImg").attr("src", url);
+                        $("#txtHousecertificate").val(url);
+                    });
+                }
+
+                fnInitUpload();
+            });
+        </script>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

@@ -1,0 +1,253 @@
+﻿@model IList<Holidays.Model.Entites.OrderInfoView>
+
+@{
+    ViewBag.Title = "个人中心";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/percenter.css" rel="stylesheet" />
+}
+
+<div class="page-wrap pb102">
+    @if (ViewBag.IsLogin && ViewBag.UserInfo != null)
+    {
+        <div class="percenter-header">
+            <a href="/Weixin/WeUser/UserInfo">
+                <div class="pceder-icon">
+                    @if (!String.IsNullOrEmpty(ViewBag.UserInfo.Img))
+                    {
+                        <img src="@ViewBag.UserInfo.Img">
+                    }
+                    else
+                    {
+                        <img src="/Images/default.jpg">
+                    }
+                </div>
+                <div class="pceder-info landlord-info">
+                    <p class="pceder-name">
+                        @ViewBag.UserInfo.Nikename
+                        @if (ViewBag.UserInfo.IsRealName != null && ViewBag.UserInfo.IsRealName == 1)
+                        {
+                            <img src="/Images/wechart/mgh_15.png" class="approve-icon">
+                        }
+                        else
+                        {
+                            <img src="/Images/wechart/mgh_16.png" class="approve-icon">
+                        }
+                    </p>
+                    <p class="pceder-other">个人信息</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="percenter-main">
+            <ul class="landlord-wrap">
+                @*隐藏实名认证 *@
+                @*
+                    <li class="landlord-item"><a href="/weixin/wehouse/housemanageview"><img src="/Images/wechart/mgh_17.png" class="mgh_17" alt="">房源管理</a></li>
+                    <li class="landlord-item"><a href="/weixin/wehouse/addhouseview"><img src="/Images/wechart/mgh_18.png" class="mgh_18" alt="">发布房源</a></li>*@
+                @*<li class="landlord-item"><a href="/Weixin/WeUser/NameVerified"><img src="/Images/wechart/mgh_15.png" class="mgh_15" alt="">我要成为房东</a></li>*@
+                @*<li class="landlord-item"><a href="/weixin/weuser/usercenter"><img src="/Images/wechart/mgh_17.png" class="mgh_17" alt="">管理中心</a></li>
+                    <li class="landlord-item"><a href="/weixin/wehouse/shopmanageview"><img src="/Images/wechart/mgh_18.png" class="mgh_18" alt="">店铺管理</a></li>*@
+            </ul>
+        </div>
+
+        <div class="percenter-main">
+            <div class="permain-header">订单详情</div>
+            <div class="permain-wrap">
+
+                @if (Model != null && Model.Count > 0)
+                {
+                    <ul>
+                        @foreach (var order in Model)
+                        {
+
+                            <li class="perorder-item">
+                                <div class="perorder-header">
+                                    <div class="perorder-num">订单号：@order.OrderNo </div>
+
+                                    @if (order.State == 0)
+                                    {
+                                        <!-- 未支付 -->
+                                        <div class="perorder-status">待支付</div>
+                                    }
+                                    else if (order.State == 1)
+                                    {
+                                        <!-- 已付定金 -->
+                                        <div class="perorder-status">已付定金</div>
+                                    }
+                                    else if (order.State == 2)
+                                    {
+                                        <!-- 交易完成 -->
+                                        <div class="perorder-status">待入住</div>
+                                    }
+                                    else if (order.State == 4)
+                                    {
+                                        <!-- 交易完成 -->
+                                        <div class="perorder-status">交易完成</div>
+                                    }
+                                    else if (order.State == 3)
+                                    {
+                                        <!-- 订单关闭 -->
+                                        <div class="perorder-status">订单关闭</div>
+                                    }
+                                </div>
+                                <div class="perorder-contain clearfix">
+                                    <div class="percon-left"><img src="@order.FirstImg"></div>
+                                    <div class="percon-right">
+                                        <div class="pconrt-left">
+                                            <p class="pconrt-title">@order.HouseTitle</p>
+                                            <p class="pconrt-landlord">房东电话：@order.LandlordPhone</p>
+                                            <p class="pconrt-landlord">下单时间：@order.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                                        </div>
+                                        <div class="pconrt-right">￥@order.TotalPrice</div>
+                                    </div>
+                                </div>
+                                <div class="perorder-price">
+                                    <i>入住时间：@order.StartDate.ToString("yyyy-MM-dd")</i>
+                                    <i>退房时间：@order.EndDate.ToString("yyyy-MM-dd")</i>
+                                </div>
+                                <div class="perorder-price">
+                                    <span>待支付：<em>￥@order.BalancePayment</em></span>
+                                    <i>订单总价：￥@order.TotalPrice</i>
+                                    <i>已支付：￥@order.Price</i>
+                                </div>
+                                <div class="perorder-operate">
+                                    @if (order.State == 0)
+                                    {
+                                        <a href="javascript:fnChoicePayType('@order.OrderNo');" class="perorder-btn">前去支付</a>
+                                        <a href="javascript:;" onclick="fnUpdateOrderState(@order.ID, 3)" class="perorder-btn">取消订单</a>
+                                    }
+
+                                    @if (order.State == 1)
+                                    {
+                                        <a href="javascript:;" onclick="fnCancelOrder(@order.ID)" class="perorder-btn">取消订单</a>
+                                        <a href="/weixin/wxpay/OrderPayView?orderNo=@order.OrderNo&isFullPrice=1" class="perorder-btn">前去支付</a>
+                                    }
+
+                                    @if (order.State == 2)
+                                    {
+                                        @*<a href="/weixin/wehouse/housedetailsview/@order.HouseInfoID" class="perorder-btn">再次下单</a>*@
+
+                                    }
+                                    @if (order.State == 4)
+                                    {
+                                        if (order.IsEvaluate)
+                                        {
+                                            <a href="/weixin/weuser/HouseCommentView?Id=@order.ID" class="perorder-btn">查看评价</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/weixin/weuser/HouseScoreView?Id=@order.ID" class="perorder-btn">评价</a>
+                                        }
+                                        <a href="/weixin/wehouse/housedetailsview/@order.HouseInfoID" class="perorder-btn">再次下单</a>
+
+                                    }
+                                    @if (order.State == 3)
+                                    {
+                                        <a href="javascript:;" onclick="fnUpdateOrderState(@order.ID, -1)" class="perorder-btn">删除订单</a>
+                                    }
+
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p style="text-align: center; padding: 20px; font-size: 14px;">暂无订单信息，快去下单吧！</p>
+                }
+            </div>
+        </div>
+        <div class="ghday-footer">
+            <ul>
+                <li>
+                    <a href="/WeiXin/WeMain">
+                        <img src="/Images/wechart/mgh_10.png" class="index-icon">
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li class="checked">
+                    <a href="javascript:;">
+                        <img src="/Images/wechart/mgh_11hover.png" class="person-icon">
+                        <p>个人中心</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
+    else
+    {
+        <p style="text-align: center; padding: 20px; font-size: 14px;">登录失效，请重新登录......！</p>
+    }
+</div>
+
+@section footerjs{
+    <script type="text/javascript">
+        function fnChoicePayType(orderNo) {
+            var payUrl = "/weixin/wxpay/OrderPayView?orderNo=" + orderNo;
+
+            layer.open({
+                content: "请选择支付方式",
+                btn: ['全款支付', '支付定金'],
+                yes: function (index) {
+                    window.location.href = payUrl + "&isFullPrice=1";
+                },
+                no: function (index) {
+                    window.location.href = payUrl + "&isFullPrice=0";
+                }
+            });
+        }
+
+        function fnCancelOrder(orderId) {
+            var strMsg = "确定要取消此订单？";
+
+            layer.open({
+                content: strMsg,
+                btn: ['确定', '取消'],
+                yes: function (index) {
+                    var data = { orderId: orderId, state: 3 };
+                    $.post("/Order/UpdateOrderState", data, function (result) {
+                        layer.close(index);
+                        if (result.Status == "ok") {
+                            layermsg("操作成功，请联系平台工作人员退款！", function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layermsg("操作失败！");
+                        }
+                    });
+                }
+            });
+        }
+
+        // 更改订单状态
+        function fnUpdateOrderState(orderId, state) {
+            var strMsg;
+            if (state == -1) {
+                strMsg = "确定要删除此订单？";
+            } else if (state == 3) {
+                strMsg = "确定要取消此订单？";
+            }
+
+            layer.open({
+                content: strMsg,
+                btn: ['确定', '取消'],
+                yes: function (index) {
+                    var data = { orderId: orderId, state: state };
+                    $.post("/Order/UpdateOrderState", data, function (result) {
+                        layer.close(index);
+                        if (result.Status == "ok") {
+                            layermsg("操作成功！", function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layermsg("操作失败！");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

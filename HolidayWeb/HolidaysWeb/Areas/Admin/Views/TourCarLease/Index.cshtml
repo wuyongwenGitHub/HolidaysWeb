@@ -1,0 +1,383 @@
+﻿@{
+    ViewBag.Title = "旅游车辆租赁管理";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Framework/webuploader-0.1.5/webuploader.css" rel="stylesheet" />
+}
+
+<div ng-app="carApp" ng-controller="CarListController" ng-init="initCarList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>旅游车辆租赁管理 </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <button ng-click="openAddCarModal()" class="btn btn-danger">添加车辆</button>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row">
+            <form id="frmCarQuery" class="form-horizontal form-label-left">
+                <div class="col-md-3"><input name="carName" type="text" class="form-control" placeholder="车辆名称" /></div>
+                <div class="col-md-3"><input name="linkman" type="text" class="form-control" placeholder="联系人" /></div>
+                <div class="col-md-3"><input name="phone1" type="text" class="form-control" placeholder="联系电话" /></div>
+                <div class="col-md-3"><button ng-click="initCarList(1)" type="button" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>车辆名称</th>
+                        <th>联系人</th>
+                        <th>联系电话</th>
+                        <th>备用电话</th>
+                        <th>联系地址</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="car in carList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ car.CarName }}</td>
+                        <td>{{ car.Linkman }}</td>
+                        <td>{{ car.Phone1 }}</td>
+                        <td>{{ car.Phone2 }}</td>
+                        <td>{{ car.Address }}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="openViewCarInfoModal(car)" title="查看" class="fa fa-eye btn-xs"></a>
+                            <a href="javascript:;" ng-click="openEditCarInfoModal(car.ID)" title="编辑" class="fa fa-edit btn-xs"></a>
+                            <a href="javascript:;" ng-click="del(car.ID)" title="删除" class="fa fa-trash btn-xs"></a>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="carList.length == 0">
+                        <td colspan="7" align="center">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initCarList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initCarList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initCarList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initCarList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initCarList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑车辆信息窗口 -->
+    <div class="modal fade" id="editCarInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">编辑车辆信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmCarInfo" class="form-horizontal form-label-left" novalidate>
+                        <input name="ID" type="hidden" value="{{ CarInfo.ID }}" />
+
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CarName">
+                                车辆名称 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="CarInfo.CarName" name="CarName" id="CarName" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Linkman">
+                                联系人 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="CarInfo.Linkman" id="Linkman" name="Linkman" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Phone1">
+                                联系电话 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="CarInfo.Phone1" name="Phone1" id="Phone1" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Phone2">
+                                备用电话
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="CarInfo.Phone2" name="Phone2" id="Phone2" maxlength="20" class="form-control col-md-7 col-xs-12" type="text">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Sort">
+                                所在城市
+                            </label>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <input name="ProvinceId" type="hidden" value="{{ CarInfo.ProvinceId }}" />
+                                <select class="form-control" ng-model="CarInfo.ProvinceId" ng-change="getCityByParentId(CarInfo.ProvinceId)" ng-options="Province.Id as Province.Name for Province in ProvinceList"></select>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <input name="CityId" type="hidden" value="{{ CarInfo.CityId }}" />
+                                <select class="form-control" ng-model="CarInfo.CityId" ng-options="City.Id as City.Name for City in CityList"></select>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Address">
+                                联系地址<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="CarInfo.Address" name="Address" id="Address" maxlength="100" class="form-control col-md-7 col-xs-12" type="text">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Address">
+                                车辆图片<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input id="txtCarImg" value="{{ CarInfo.CarImg }}" name="CarImg" type="hidden">
+
+                                <!--图片预览-->
+                                <img id="carImg" width="220" height="220" src="{{ CarInfo.CarImg }}" alt="车辆图片" />
+                                <br /><br />
+                                <div id="btnUploadImg">选择图片</div>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                请上传分辨率为 220*220 的照片
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" ng-click="saveCarInfo()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑车辆信息窗口END -->
+    <!-- 查看车辆信息窗口 -->
+    <div class="modal fade" id="viewCarInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">车辆信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">车辆名称</label>
+                        <div class="col-md-5 col-sm-5 col-xs-5">{{ CarInfo.CarName }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">联系人</label>
+                        <div class="col-md-5 col-sm-5 col-xs-5">{{ CarInfo.Linkman }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">联系电话</label>
+                        <div class="col-md-5 col-sm-5 col-xs-5">{{ CarInfo.Phone1 }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">备用电话</label>
+                        <div class="col-md-5 col-sm-5 col-xs-5">{{ CarInfo.Phone2 }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">联系地址</label>
+                        <div class="col-md-5 col-sm-5 col-xs-5">{{ CarInfo.Address }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-5 col-sm-5 col-xs-5 text-right">车辆图片</label>
+                        <div class="col-md-5 col-sm-5 col-xs-5">
+                            <img width="270" height="350" src="{{ CarInfo.CarImg }}" alt="车辆图片" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看车辆信息窗口END -->
+</div>
+
+@section scripts{
+    <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+    <script type="text/javascript">
+        var carApp = angular.module('carApp', []);
+
+        carApp.controller('CarListController', function CarListController($scope, $http) {
+            // 图片处理
+            $("#editCarInfoModal").on("shown.bs.modal", function () {
+                fnUploadImage("btnUploadImg", function (url) {
+                    $("#carImg").attr("src", url);
+                    $("input[name='CarImg']").val(url);
+                });
+
+                // 获取城市
+                if ($scope.CarInfo && $scope.CarInfo.ProvinceId > 0) {
+                    $scope.getCityByParentId($scope.CarInfo.ProvinceId);
+                }
+            }).on("hide.bs.modal", fnDestroyUploader);
+
+            // 获取省份
+            $http({
+                method: 'POST',
+                url: '/Admin/Region/GetProvinceList',
+            }).then(function successCallback(response) {
+                $scope.ProvinceList = response.data.Data;
+            }, function errorCallback(response) {
+                layer.alert("系统异常", { icon: 2 });
+            });
+
+            // 获取城市
+            $scope.getCityByParentId = function (parentId) {
+                var data = { parentId: parentId };
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Region/GetCityByParentId',
+                    data: data
+                }).then(function successCallback(response) {
+                    $scope.CityList = response.data.Data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            $scope.initCarList = function (page) {
+                var carName = $("input[name=carName]").val();
+                var linkman = $("input[name=linkman]").val();
+                var phone1 = $("input[name=phone1]").val();
+                var data = { page: page, carName: carName, linkman: linkman, phone1: phone1 };
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/TourCarLease/GetCarList',
+                    data: data
+                }).then(function successCallback(response) {
+                    $scope.PageModel = response.data;
+                    $scope.carList = response.data.Data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 打开查看车辆信息窗口
+            $scope.openViewCarInfoModal = function (carInfo) {
+                $scope.CarInfo = carInfo;
+                $("#viewCarInfoModal").modal();
+            }
+
+            // 打开添加车辆信息窗口
+            $scope.openAddCarModal = function () {
+                $scope.CarInfo = null;
+                $("#editCarInfoModal").modal();
+            }
+
+            // 打开编辑车辆信息窗口
+            $scope.openEditCarInfoModal = function (id) {
+                $scope.queryCarInfoByID(id);
+                $("#editCarInfoModal").modal();
+            }
+
+            // 删除车辆信息
+            $scope.del = function (id) {
+                layer.confirm("确定要删除吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        $http({
+                            method: 'POST',
+                            url: '/Admin/TourCarLease/DelCarByID',
+                            data: { id: id }
+                        }).then(function successCallback(response) {
+                            if (response.data.Status == "ok") {
+                                layer.alert(response.data.Msg, { icon: 1 }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                layer.alert(response.data.Msg, { icon: 2 });
+                            }
+                        }), function errorCallback(response) {
+                            layer.alert("系统异常", { icon: 2 });
+                        };
+                    }
+                });
+            }
+
+            // 根据编号查询车辆信息
+            $scope.queryCarInfoByID = function (id) {
+                $http({
+                    method: 'POST',
+                    url: '/Admin/TourCarLease/QueryCarInfoByID',
+                    data: { id : id }
+                }).then(function successCallback(response) {
+                    $scope.CarInfo = response.data.Data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 保存车辆信息
+            $scope.saveCarInfo = function () {
+                var address = $("#Address").val();
+                var carImg = $("#txtCarImg").val();
+
+                if (address == "" || address.length <= 0) {
+                    layer.alert("联系地址不能为空！", { icon: "2" });
+                    return;
+                }
+
+                if (carImg == "" || carImg.length <= 0) {
+                    layer.alert("请上传车辆图片！", { icon: "2" });
+                    return;
+                }
+
+                var loadIndex = layer.load();
+                var data = $("#frmCarInfo").serialize();
+                $.post("/Admin/TourCarLease/SaveCarInfo", data, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "ok") {
+                        layer.alert(result.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+

@@ -1,0 +1,289 @@
+﻿@{
+    ViewBag.Title = "订单管理";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+<style type="text/css">
+    .weui-prompt-input{
+        height:3em;
+    }
+</style>
+<div class="header">
+    <h2 class="header-title">订单管理</h2>
+</div>
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd"><label class="weui-label">订单状态</label></div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" id="selectOrder">
+                        <option value="" selected>全部</option>
+                        <option value="0">待支付</option>
+                        <option value="1">已付定金</option>
+                        <option value="2">已支付</option>
+                        <option value="4">交易完成</option>
+                        <option value="3">取消订单</option>
+                        <option value="-1">删除订单</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="weui-search-bar" id="searchBar">
+            <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label" id="searchText">
+                    <i class="weui-icon-search"></i>
+                    <span>搜索</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+        </div>
+        <div id="orderList">
+        </div>
+    }
+    else
+    {
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">对不起，你无此权限！</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                </p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area">
+            <i class="weui-icon-info weui-icon_msg"></i>
+        </div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">登录失效，请重新登录！</h2>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="/Weixin/WeUser/LoginCenter" class="weui-btn weui-btn_primary">立即登录</a>
+            </p>
+        </div>
+    </div>
+}
+@*<div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在加载</span>
+    </div>*@
+
+@section footerjs{
+    <script type="text/javascript">
+        var orderManage = function () {
+            var loading = false;
+            var limit = 0;
+            var page = 1
+            var initPage = function () {
+                initOrderList();
+                $(document.body).infinite().on("infinite", function () {
+                    if (loading) {
+                        return;
+                    }
+                    loading = true;
+                    initOrderList();
+                });
+                //
+                $("#selectOrder").change(function () {
+                    searchHandle();
+                });
+                $("#searchInput").keyup(function () {
+                    searchHandle();
+                });
+                $("#searchCancel").click(function () {
+                    $("#searchInput").val('');
+                    searchHandle();
+                });
+            };
+            var initOrderList = function () {
+                loading = false;
+                var keywords = $("#searchInput").val();
+                var orderState = $("#selectOrder").val();
+                $.ajax({
+                    url: '/Weixin/WeUser/GetOrderList',
+                    type: 'post',
+                    data: { keywords: keywords, state: orderState, page: page },
+                    success: function (res) {
+                        var strHtml = '';
+                        if (res.data != null && res.data.length > 0) {
+                            for (var i = 0, len = res.data.length; i < len; i++) {
+                                var order = res.data[i];
+                                var orderState = '';
+                                switch (order.State) {
+                                    case -1:
+                                        orderState = '订单删除';
+                                        break;
+                                    case 0:
+                                        orderState = '待支付';
+                                        break;
+                                    case 1:
+                                        orderState = '已付订金';
+                                        break;
+                                    case 2:
+                                        orderState = '已支付';
+                                        break;
+                                    case 4:
+                                        orderState = '交易完成';
+                                        break;
+                                    case 3:
+                                        orderState = '取消订单';
+                                        break;
+                                }
+                                strHtml += '<div class="weui-form-preview">';
+                                strHtml += '<div class="weui-form-preview__hd">';
+                                strHtml += '<label class="weui-form-preview__label">订单总额</label>';
+                                strHtml += '<em class="weui-form-preview__value">￥ ' + order.TotalPrice + '</em>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__bd">';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">订单状态</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + orderState + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">已支付</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.Price + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">还应支付</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.BalancePayment + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">交易时间</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + jsonDatetimeFormat(order.CreateTime) + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">房源标题</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.HouseTitle + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">顾客姓名</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.Username + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">顾客电话</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.UserPhone + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">入住人数</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.PersonNum + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">入住天数</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.BuyCount + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">入住时间</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + jsonDatetimeFormat(order.StartDate) + '</span>';
+                                strHtml += '</div>';
+                                //strHtml += '<div class="weui-form-preview__item">';
+                                //strHtml += '<label class="weui-form-preview__label">退房时间</label>';
+                                //strHtml += '<span class="weui-form-preview__value">' + jsonDatetimeFormat(order.EndDate) + '</span>';
+                                //strHtml += '</div>';
+                                //strHtml += '<div class="weui-form-preview__item">';
+                                //strHtml += '<label class="weui-form-preview__label">交易单号</label>';
+                                //strHtml += '<span class="weui-form-preview__value">' + order.OtherNo + '</span>';
+                                //strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__item">';
+                                strHtml += '<label class="weui-form-preview__label">商户单号</label>';
+                                strHtml += '<span class="weui-form-preview__value">' + order.OrderNo + '</span>';
+                                strHtml += '</div>';
+                                strHtml += '<div class="weui-form-preview__ft">';
+                                if (order.State == 1 || order.State == 2) {
+                                    strHtml += '<a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" onclick="orderManage.cmpleteOrder(\'' + order.ID + '\')">录入预订码</a>';
+                                } else {
+                                    strHtml += '<a class="weui-form-preview__btn weui-btn weui-btn_disabled weui-btn_default" href="javascript:">交易已结束</a>';
+                                }
+                                strHtml += '</div>';
+                                strHtml += '</div>';
+                                strHtml += '</div>';
+                            }
+                        }
+                        if (limit < res.count) {
+                            limit += res.data.length;
+                            page += 1;
+                            $("#orderList").append(strHtml);
+                        } else {
+                            loading = true;
+                        }
+                        if (res.count == 0) {
+                            $("#orderList").html('<span>暂无相关订单！</span>');
+                        }
+                        // $(document.body).destroyInfinite();
+                    },
+                    error: function () {
+                        loading = false;
+                        $.toptip('发生错误！', 'error');
+                    }
+                });
+            };
+            var searchHandle = function () {
+                limit = 0;
+                page = 1;
+                $("#orderList").html('');
+                initOrderList();
+            };
+            var cmpleteOrderHandle = function (id) {
+                $.prompt({
+                    title: '请输入8位兑换码',
+                    text: '注意：不分大小写。',
+                    input:'',
+                    empty: false,
+                    onOK: function (input) {
+                        verifyHandle(id, input);
+                    },
+                    onCancel: function () {
+
+                    }
+                });
+                FastClick.attach(document.body);
+            };
+            var verifyHandle = function (id, input) {
+                $.showLoading('验证中...');
+                $.ajax({
+                    url: '/Weixin/WeUser/VerifyCouponCode',
+                    type: 'post',
+                    data: { id: id, code: input },
+                    success: function (res) {
+                        $.hideLoading();
+                        if (res.Status == "ok") {
+                            $.toast(res.Msg, function () {
+                                searchHandle();
+                            });
+                        } else {
+                            $.toast(res.Msg, "cancel");
+                        }
+                    },
+                    error: function () {
+                        $.hideLoading();
+                        $.toptip('发生错误！', 'error');
+                    }
+                });
+            };
+            return {
+                init: function () {
+                    initPage();
+                },
+                cmpleteOrder: function (id) {
+                    cmpleteOrderHandle(id);
+                }
+            }
+        }();
+        $(function () { orderManage.init(); });
+    </script>
+}

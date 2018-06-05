@@ -1,0 +1,40 @@
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.DALMSSQL.dll.config
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.DALMSSQL.dll
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.DALMSSQL.pdb
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\EntityFramework.dll
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\EntityFramework.SqlServer.dll
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.IDAL.dll
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.Model.dll
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Newtonsoft.Json.dll
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.IDAL.pdb
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.IDAL.dll.config
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.Model.pdb
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Holidays.Model.dll.config
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\EntityFramework.xml
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\EntityFramework.SqlServer.xml
+E:\Projects\holidaysweb\Holidays.DALMSSQL\bin\Release\Newtonsoft.Json.xml
+E:\Projects\holidaysweb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.csprojResolveAssemblyReference.cache
+E:\Projects\holidaysweb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.csproj.CoreCompileInputs.cache
+E:\Projects\holidaysweb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.csproj.CopyComplete
+E:\Projects\holidaysweb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.dll
+E:\Projects\holidaysweb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.DALMSSQL.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.DALMSSQL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.DALMSSQL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\EntityFramework.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\EntityFramework.SqlServer.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.IDAL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.Model.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Newtonsoft.Json.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.IDAL.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.IDAL.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.Model.pdb
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Holidays.Model.dll.config
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\EntityFramework.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\EntityFramework.SqlServer.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\bin\Release\Newtonsoft.Json.xml
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.csproj.CoreCompileInputs.cache
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.csproj.CopyComplete
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.dll
+D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.DALMSSQL\obj\Release\Holidays.DALMSSQL.pdb

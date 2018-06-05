@@ -1,0 +1,860 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HolidaysDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="HolidaysDBModelStoreContainer">
+    <EntitySet Name="AdminUser" EntityType="HolidaysDBModel.Store.AdminUser" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CarInfo" EntityType="HolidaysDBModel.Store.CarInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HomeData" EntityType="HolidaysDBModel.Store.HomeData" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseConfigure" EntityType="HolidaysDBModel.Store.HouseConfigure" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseEvaluate" EntityType="HolidaysDBModel.Store.HouseEvaluate" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseImg" EntityType="HolidaysDBModel.Store.HouseImg" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseInfo" EntityType="HolidaysDBModel.Store.HouseInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrderInfo" EntityType="HolidaysDBModel.Store.OrderInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrderItem" EntityType="HolidaysDBModel.Store.OrderItem" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductCategory" EntityType="HolidaysDBModel.Store.ProductCategory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductInfo" EntityType="HolidaysDBModel.Store.ProductInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Region" EntityType="HolidaysDBModel.Store.Region" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SpotInfo" EntityType="HolidaysDBModel.Store.SpotInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SystemConfig" EntityType="HolidaysDBModel.Store.SystemConfig" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TenantInfo" EntityType="HolidaysDBModel.Store.TenantInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserAccount" EntityType="HolidaysDBModel.Store.UserAccount" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserFavorite" EntityType="HolidaysDBModel.Store.UserFavorite" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserInfo" EntityType="HolidaysDBModel.Store.UserInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserInfoCertificate" EntityType="HolidaysDBModel.Store.UserInfoCertificate" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserInfoExt" EntityType="HolidaysDBModel.Store.UserInfoExt" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserOrderRecord" EntityType="HolidaysDBModel.Store.UserOrderRecord" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseInfoView" EntityType="HolidaysDBModel.Store.HouseInfoView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrderInfoView" EntityType="HolidaysDBModel.Store.OrderInfoView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserFavoriteView" EntityType="HolidaysDBModel.Store.UserFavoriteView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserInfoCertificateView" EntityType="HolidaysDBModel.Store.UserInfoCertificateView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserInfoExtView" EntityType="HolidaysDBModel.Store.UserInfoExtView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserInfoView" EntityType="HolidaysDBModel.Store.UserInfoView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ShopCategory" EntityType="HolidaysDBModel.Store.ShopCategory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ShopInfo" EntityType="HolidaysDBModel.Store.ShopInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ShopInfoCertificate" EntityType="HolidaysDBModel.Store.ShopInfoCertificate" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ShopInfoCertificateView" EntityType="HolidaysDBModel.Store.ShopInfoCertificateView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseComment" EntityType="HolidaysDBModel.Store.HouseComment" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HouseEvaluateView" EntityType="HolidaysDBModel.Store.HouseEvaluateView" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SysLog" EntityType="HolidaysDBModel.Store.SysLog" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="T_User" EntityType="HolidaysDBModel.Store.T_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="T_Role" EntityType="HolidaysDBModel.Store.T_Role" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="T_Permission" EntityType="HolidaysDBModel.Store.T_Permission" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="T_Function" EntityType="HolidaysDBModel.Store.T_Function" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="T_FuncPermission" EntityType="HolidaysDBModel.Store.T_FuncPermission" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="T_UserRole" EntityType="HolidaysDBModel.Store.T_UserRole" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ShopToDayPriceSet" EntityType="HolidaysDBModel.Store.ShopToDayPriceSet" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="AdminUser">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LoginAccount" Type="varchar" Nullable="false" MaxLength="40" />
+    <Property Name="LoginPassword" Type="varchar" Nullable="false" MaxLength="40" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CarInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CarName" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Linkman" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Phone1" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Phone2" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="CarImg" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="ProvinceId" Type="int" Nullable="true" />
+    <Property Name="CityId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="HomeData">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="Url" Type="nvarchar" Nullable="true" MaxLength="500" />
+    <Property Name="ImgUrl" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="HouseConfigure">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Icon" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="Sort" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HouseEvaluate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HouseInfoID" Type="bigint" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="UserPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="CleanScore" Type="int" Nullable="false" />
+    <Property Name="LocationScore" Type="int" Nullable="false" />
+    <Property Name="EnvironmentScore" Type="int" Nullable="false" />
+    <Property Name="ServiceScore" Type="int" Nullable="false" />
+    <Property Name="PerformanceScore" Type="int" Nullable="false" />
+    <Property Name="AverageScore" Type="float" Nullable="false" />
+    <Property Name="EvaluateContent" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="HouseTitle" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="40" />
+    <Property Name="UserImg" Type="nvarchar" Nullable="true" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="HouseImg">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HouseInfoID" Type="bigint" Nullable="false" />
+    <Property Name="ImgUrl" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HouseInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="HouseTitle" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="ProvinceId" Type="int" Nullable="true" />
+    <Property Name="CityId" Type="int" Nullable="true" />
+    <Property Name="CountyId" Type="int" Nullable="true" />
+    <Property Name="DecorativeStyle" Type="int" Nullable="false" />
+    <Property Name="LeaseType" Type="int" Nullable="false" />
+    <Property Name="BedroomNum" Type="int" Nullable="false" />
+    <Property Name="LivingRoomNum" Type="int" Nullable="false" />
+    <Property Name="ToiletNum" Type="int" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsTrusteeship" Type="bit" Nullable="false" />
+    <Property Name="IsSell" Type="bit" Nullable="false" />
+    <Property Name="SellPrice" Type="decimal" Nullable="true" Precision="12" Scale="2" />
+    <Property Name="IsCooking" Type="bit" Nullable="false" />
+    <Property Name="IsPet" Type="bit" Nullable="false" />
+    <Property Name="StayPersonNum" Type="int" Nullable="false" />
+    <Property Name="HouseSize" Type="float" Nullable="false" />
+    <Property Name="Facilities" Type="varchar(max)" Nullable="true" />
+    <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="About" Type="varchar(max)" Nullable="true" />
+    <Property Name="Rules" Type="varchar(max)" Nullable="true" />
+    <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
+    <Property Name="BaseInfo" Type="varchar(max)" Nullable="true" />
+    <Property Name="IsReals" Type="bit" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="BuyNum" Type="int" Nullable="false" />
+    <Property Name="EvaluateNum" Type="int" Nullable="false" />
+    <Property Name="EvaluateAvgScore" Type="int" Nullable="false" />
+    <Property Name="ShopId" Type="bigint" Nullable="true" />
+    <Property Name="ShopName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IsEmpty" Type="int" Nullable="true" />
+    <Property Name="IsBack" Type="int" Nullable="true" />
+    <Property Name="IsCancel" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="OrderInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderNo" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="OtherNo" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="LandlordID" Type="bigint" Nullable="false" />
+    <Property Name="LandlordName" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="LandlordPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="UserPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="HouseInfoID" Type="bigint" Nullable="false" />
+    <Property Name="HouseTitle" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BuyCount" Type="int" Nullable="false" />
+    <Property Name="DownPayment" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="TotalPrice" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BalancePayment" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PlatformRoyalty" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PayType" Type="int" Nullable="true" />
+    <Property Name="PersonNum" Type="int" Nullable="false" />
+    <Property Name="IsFullPrice" Type="bit" Nullable="true" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="IsEvaluate" Type="bit" Nullable="false" />
+    <Property Name="CouponCode" Type="nvarchar" Nullable="true" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="OrderItem">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderNo" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="OtherNo" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="OrderId" Type="bigint" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BalancePayment" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="PayTime" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ProductCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Sort" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="CategoryID" Type="bigint" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Price" Type="nvarchar" Nullable="false" MaxLength="40" />
+    <Property Name="IsHomeShow" Type="bit" Nullable="false" />
+    <Property Name="Sort" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="ProductImg" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="HomeImg" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="ProvinceId" Type="int" Nullable="true" />
+    <Property Name="CityId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="true" MaxLength="40" />
+    <Property Name="ParentId" Type="int" Nullable="true" />
+    <Property Name="ShortName" Type="nvarchar" Nullable="true" MaxLength="40" />
+    <Property Name="LevelType" Type="int" Nullable="true" />
+    <Property Name="CityCode" Type="varchar" Nullable="true" MaxLength="20" />
+    <Property Name="ZipCode" Type="varchar" Nullable="true" MaxLength="20" />
+    <Property Name="MergerName" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="Lng" Type="float" Nullable="true" />
+    <Property Name="Lat" Type="float" Nullable="true" />
+    <Property Name="Pinyin" Type="varchar" Nullable="true" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="SpotInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ScenicSpotName" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="ScenicSpotDesc" Type="varchar(max)" Nullable="true" />
+    <Property Name="ScenicSpotImgs" Type="varchar(max)" Nullable="false" />
+    <Property Name="IsHomeShow" Type="bit" Nullable="false" />
+    <Property Name="Sort" Type="int" Nullable="false" />
+    <Property Name="ProvinceId" Type="int" Nullable="true" />
+    <Property Name="CityId" Type="int" Nullable="true" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="LinkSpotId" Type="bigint" Nullable="true" />
+    <Property Name="LinkSpotName" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="Links" Type="varchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="SystemConfig">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Value" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TenantInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderID" Type="bigint" Nullable="false" />
+    <Property Name="CertificateType" Type="int" Nullable="false" />
+    <Property Name="CertificateNo" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Gender" Type="int" Nullable="false" />
+    <Property Name="Nation" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PhoneAccount" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="WeixinUnionid" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="UserToken" Type="varchar" Nullable="true" MaxLength="40" />
+  </EntityType>
+  <EntityType Name="UserFavorite">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="HouseInfoID" Type="bigint" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountID" Type="bigint" Nullable="false" />
+    <Property Name="Img" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Nikename" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Username" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Gender" Type="int" Nullable="true" />
+    <Property Name="Email" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="PhoneNo2" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="IDCardNo" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="IsRealName" Type="int" Nullable="true" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="LoginAccount" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="LoginPwd" Type="varchar" Nullable="true" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="UserInfoCertificate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="FailReason" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserInfoExt">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IsCertification" Type="int" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="IDCardImg1" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IDCardImg2" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="HouseAddress" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="Housecertificate" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="WeixinAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+    <Property Name="AlipayAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+  </EntityType>
+  <EntityType Name="UserOrderRecord">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="HouseInfoView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="HouseTitle" />
+      <PropertyRef Name="DecorativeStyle" />
+      <PropertyRef Name="LeaseType" />
+      <PropertyRef Name="BedroomNum" />
+      <PropertyRef Name="LivingRoomNum" />
+      <PropertyRef Name="ToiletNum" />
+      <PropertyRef Name="Price" />
+      <PropertyRef Name="IsTrusteeship" />
+      <PropertyRef Name="IsSell" />
+      <PropertyRef Name="IsCooking" />
+      <PropertyRef Name="IsPet" />
+      <PropertyRef Name="StayPersonNum" />
+      <PropertyRef Name="HouseSize" />
+      <PropertyRef Name="Address" />
+      <PropertyRef Name="IsReals" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="BuyNum" />
+      <PropertyRef Name="EvaluateNum" />
+      <PropertyRef Name="EvaluateAvgScore" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="HouseTitle" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="DecorativeStyle" Type="int" Nullable="false" />
+    <Property Name="LeaseType" Type="int" Nullable="false" />
+    <Property Name="BedroomNum" Type="int" Nullable="false" />
+    <Property Name="LivingRoomNum" Type="int" Nullable="false" />
+    <Property Name="ToiletNum" Type="int" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsTrusteeship" Type="bit" Nullable="false" />
+    <Property Name="IsSell" Type="bit" Nullable="false" />
+    <Property Name="SellPrice" Type="decimal" Nullable="true" Precision="12" Scale="2" />
+    <Property Name="IsCooking" Type="bit" Nullable="false" />
+    <Property Name="IsPet" Type="bit" Nullable="false" />
+    <Property Name="StayPersonNum" Type="int" Nullable="false" />
+    <Property Name="HouseSize" Type="float" Nullable="false" />
+    <Property Name="Facilities" Type="varchar(max)" Nullable="true" />
+    <Property Name="Address" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="About" Type="varchar(max)" Nullable="true" />
+    <Property Name="Rules" Type="varchar(max)" Nullable="true" />
+    <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
+    <Property Name="BaseInfo" Type="varchar(max)" Nullable="true" />
+    <Property Name="IsReals" Type="bit" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="BuyNum" Type="int" Nullable="false" />
+    <Property Name="EvaluateNum" Type="int" Nullable="false" />
+    <Property Name="EvaluateAvgScore" Type="int" Nullable="false" />
+    <Property Name="AccountID" Type="bigint" Nullable="false" />
+    <Property Name="Img" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Nikename" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Username" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Gender" Type="int" Nullable="true" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Email" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="PhoneNo2" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="IDCardNo" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="IsRealName" Type="int" Nullable="true" />
+    <Property Name="ProvinceId" Type="int" Nullable="true" />
+    <Property Name="CityId" Type="int" Nullable="true" />
+    <Property Name="CountyId" Type="int" Nullable="true" />
+    <Property Name="ShopId" Type="bigint" Nullable="true" />
+    <Property Name="ShopName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IsEmpty" Type="int" Nullable="true" />
+    <Property Name="IsBack" Type="int" Nullable="true" />
+    <Property Name="IsCancel" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="OrderInfoView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="OrderNo" />
+      <PropertyRef Name="LandlordID" />
+      <PropertyRef Name="LandlordName" />
+      <PropertyRef Name="LandlordPhone" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="Username" />
+      <PropertyRef Name="UserPhone" />
+      <PropertyRef Name="HouseInfoID" />
+      <PropertyRef Name="HouseTitle" />
+      <PropertyRef Name="Price" />
+      <PropertyRef Name="BuyCount" />
+      <PropertyRef Name="DownPayment" />
+      <PropertyRef Name="TotalPrice" />
+      <PropertyRef Name="BalancePayment" />
+      <PropertyRef Name="PlatformRoyalty" />
+      <PropertyRef Name="PersonNum" />
+      <PropertyRef Name="StartDate" />
+      <PropertyRef Name="EndDate" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="IsEvaluate" />
+    </Key>
+    <Property Name="Address" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="OrderNo" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="OtherNo" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="LandlordID" Type="bigint" Nullable="false" />
+    <Property Name="LandlordName" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="LandlordPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="UserPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="HouseInfoID" Type="bigint" Nullable="false" />
+    <Property Name="HouseTitle" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BuyCount" Type="int" Nullable="false" />
+    <Property Name="DownPayment" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="TotalPrice" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="BalancePayment" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PlatformRoyalty" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="PayType" Type="int" Nullable="true" />
+    <Property Name="PersonNum" Type="int" Nullable="false" />
+    <Property Name="IsFullPrice" Type="bit" Nullable="true" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="IsEvaluate" Type="bit" Nullable="false" />
+    <Property Name="ShopId" Type="bigint" Nullable="true" />
+    <Property Name="ShopName" Type="nvarchar" Nullable="true" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="UserFavoriteView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="HouseInfoID" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="HouseTitle" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="HouseInfoID" Type="bigint" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="HouseTitle" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Username" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="UserInfoCertificateView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+      <PropertyRef Name="IsCertification" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="FailReason" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Gender" Type="int" Nullable="true" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="IDCardNo" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="AccountID" Type="bigint" Nullable="false" />
+    <Property Name="Nikename" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Email" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="PhoneNo2" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="IsRealName" Type="int" Nullable="true" />
+    <Property Name="IsCertification" Type="int" Nullable="false" />
+    <Property Name="IDCardImg1" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IDCardImg2" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="HouseAddress" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="Housecertificate" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Img" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="WeixinAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+    <Property Name="AlipayAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+  </EntityType>
+  <EntityType Name="UserInfoExtView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="IsCertification" />
+    </Key>
+    <Property Name="IDCardImg1" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IDCardImg2" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="HouseAddress" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="Housecertificate" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="AccountID" Type="bigint" Nullable="false" />
+    <Property Name="Nikename" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Username" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Gender" Type="int" Nullable="true" />
+    <Property Name="Email" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="PhoneNo2" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="IDCardNo" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="IsRealName" Type="int" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="Img" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="PhoneAccount" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="IsCertification" Type="int" Nullable="false" />
+    <Property Name="UserToken" Type="varchar" Nullable="true" MaxLength="40" />
+    <Property Name="AlipayAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+    <Property Name="WeixinAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+    <Property Name="WeixinUnionid" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="LoginAccount" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="LoginPwd" Type="varchar" Nullable="true" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="UserInfoView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="AccountID" />
+      <PropertyRef Name="UserType" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="AccountID" Type="bigint" Nullable="false" />
+    <Property Name="Img" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Nikename" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Username" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="Gender" Type="int" Nullable="true" />
+    <Property Name="Email" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="PhoneNo2" Type="nvarchar" Nullable="true" MaxLength="20" />
+    <Property Name="IDCardNo" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="IsRealName" Type="int" Nullable="true" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="PhoneAccount" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="UserToken" Type="varchar" Nullable="true" MaxLength="40" />
+    <Property Name="WeixinUnionid" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="LoginAccount" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="LoginPwd" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="IDCardImg1" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IDCardImg2" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="HouseAddress" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="Housecertificate" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IsCertification" Type="int" Nullable="true" />
+    <Property Name="AlipayAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+    <Property Name="WeixinAccount" Type="nvarchar" Nullable="true" MaxLength="40" />
+  </EntityType>
+  <EntityType Name="ShopCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="SortBy" Type="int" Nullable="true" />
+    <Property Name="CreateTime" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ShopInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShopName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Locations" Type="nvarchar" Nullable="true" MaxLength="500" />
+    <Property Name="Scores" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="StartPrice" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="ShopType" Type="bigint" Nullable="true" />
+    <Property Name="Tags" Type="varchar(max)" Nullable="true" />
+    <Property Name="UserId" Type="bigint" Nullable="true" />
+    <Property Name="SpotId" Type="bigint" Nullable="true" />
+    <Property Name="CreateBy" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="CreateUserId" Type="bigint" Nullable="true" />
+    <Property Name="CreateOn" Type="datetime" Nullable="true" />
+    <Property Name="SortBy" Type="bigint" Nullable="true" />
+    <Property Name="ShopImgs" Type="varchar(max)" Nullable="true" />
+    <Property Name="ShopTypeName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="SpotName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="UserName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="DecorativeStyle" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="State" Type="int" Nullable="true" />
+    <Property Name="IsDel" Type="int" Nullable="true" />
+    <Property Name="IsCheck" Type="int" Nullable="true" />
+    <Property Name="About" Type="varchar(max)" Nullable="true" />
+    <Property Name="Rules" Type="varchar(max)" Nullable="true" />
+    <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ShopInfoCertificate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShopId" Type="bigint" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="FailReason" Type="varchar" Nullable="true" MaxLength="500" />
+    <Property Name="CreateOn" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ShopInfoCertificateView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="ShopId" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="CreateOn" />
+    </Key>
+    <Property Name="ShopName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Locations" Type="nvarchar" Nullable="true" MaxLength="500" />
+    <Property Name="Scores" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="StartPrice" Type="decimal" Nullable="true" Precision="18" Scale="0" />
+    <Property Name="ShopType" Type="bigint" Nullable="true" />
+    <Property Name="Tags" Type="varchar(max)" Nullable="true" />
+    <Property Name="UserId" Type="bigint" Nullable="true" />
+    <Property Name="SpotId" Type="bigint" Nullable="true" />
+    <Property Name="CreateBy" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="CreateUserId" Type="bigint" Nullable="true" />
+    <Property Name="SortBy" Type="bigint" Nullable="true" />
+    <Property Name="ShopImgs" Type="varchar(max)" Nullable="true" />
+    <Property Name="ShopTypeName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="SpotName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="PhoneNo" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="UserName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="DecorativeStyle" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="IsCheck" Type="int" Nullable="true" />
+    <Property Name="About" Type="varchar(max)" Nullable="true" />
+    <Property Name="Rules" Type="varchar(max)" Nullable="true" />
+    <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="ShopId" Type="bigint" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="FailReason" Type="varchar" Nullable="true" MaxLength="500" />
+    <Property Name="CreateOn" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HouseComment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HouseInfoId" Type="bigint" Nullable="false" />
+    <Property Name="EvaluateId" Type="bigint" Nullable="false" />
+    <Property Name="ToUserId" Type="bigint" Nullable="false" />
+    <Property Name="ToUserName" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="FromUserId" Type="bigint" Nullable="false" />
+    <Property Name="FromUserName" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="CreateOn" Type="datetime" Nullable="true" />
+    <Property Name="Comments" Type="varchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="HouseEvaluateView">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="HouseInfoID" />
+      <PropertyRef Name="UserInfoID" />
+      <PropertyRef Name="UserPhone" />
+      <PropertyRef Name="CleanScore" />
+      <PropertyRef Name="LocationScore" />
+      <PropertyRef Name="EnvironmentScore" />
+      <PropertyRef Name="ServiceScore" />
+      <PropertyRef Name="PerformanceScore" />
+      <PropertyRef Name="AverageScore" />
+      <PropertyRef Name="EvaluateContent" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="HouseInfoID" Type="bigint" Nullable="false" />
+    <Property Name="UserInfoID" Type="bigint" Nullable="false" />
+    <Property Name="UserPhone" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="CleanScore" Type="int" Nullable="false" />
+    <Property Name="LocationScore" Type="int" Nullable="false" />
+    <Property Name="EnvironmentScore" Type="int" Nullable="false" />
+    <Property Name="ServiceScore" Type="int" Nullable="false" />
+    <Property Name="PerformanceScore" Type="int" Nullable="false" />
+    <Property Name="AverageScore" Type="float" Nullable="false" />
+    <Property Name="EvaluateContent" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="State" Type="int" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="40" />
+    <Property Name="UserImg" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="HouseTitle" Type="nvarchar" Nullable="true" MaxLength="100" />
+    <Property Name="ProvinceId" Type="int" Nullable="true" />
+    <Property Name="CityId" Type="int" Nullable="true" />
+    <Property Name="CountyId" Type="int" Nullable="true" />
+    <Property Name="DecorativeStyle" Type="int" Nullable="true" />
+    <Property Name="LeaseType" Type="int" Nullable="true" />
+    <Property Name="BedroomNum" Type="int" Nullable="true" />
+    <Property Name="LivingRoomNum" Type="int" Nullable="true" />
+    <Property Name="ToiletNum" Type="int" Nullable="true" />
+    <Property Name="Price" Type="decimal" Nullable="true" Precision="12" Scale="2" />
+    <Property Name="IsTrusteeship" Type="bit" Nullable="true" />
+    <Property Name="IsSell" Type="bit" Nullable="true" />
+    <Property Name="SellPrice" Type="decimal" Nullable="true" Precision="12" Scale="2" />
+    <Property Name="IsCooking" Type="bit" Nullable="true" />
+    <Property Name="IsPet" Type="bit" Nullable="true" />
+    <Property Name="StayPersonNum" Type="int" Nullable="true" />
+    <Property Name="HouseSize" Type="float" Nullable="true" />
+    <Property Name="Facilities" Type="varchar(max)" Nullable="true" />
+    <Property Name="Address" Type="nvarchar" Nullable="true" MaxLength="200" />
+    <Property Name="About" Type="varchar(max)" Nullable="true" />
+    <Property Name="Rules" Type="varchar(max)" Nullable="true" />
+    <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
+    <Property Name="BaseInfo" Type="varchar(max)" Nullable="true" />
+    <Property Name="IsReals" Type="bit" Nullable="true" />
+    <Property Name="BuyNum" Type="int" Nullable="true" />
+    <Property Name="EvaluateNum" Type="int" Nullable="true" />
+    <Property Name="EvaluateAvgScore" Type="int" Nullable="true" />
+    <Property Name="ShopId" Type="bigint" Nullable="true" />
+    <Property Name="ShopName" Type="nvarchar" Nullable="true" MaxLength="255" />
+    <Property Name="Comments" Type="varchar(max)" Nullable="true" />
+    <Property Name="CreateOn" Type="datetime" Nullable="true" />
+    <Property Name="FromUserId" Type="bigint" Nullable="true" />
+    <Property Name="FromUserName" Type="nvarchar" Nullable="true" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="SysLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ErrorMsg" Type="varchar(max)" Nullable="true" />
+    <Property Name="CreateOn" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="T_User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LoginName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserRealName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreateTime" Type="datetime" Nullable="true" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="GUIID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="T_Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreateTime" Type="datetime" Nullable="true" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="GUID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="T_Permission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Type" Type="bigint" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="ParentId" Type="bigint" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PermValue" Type="int" Nullable="false" />
+    <Property Name="GUID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="T_Function">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MenuName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MenuLevel" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ParentId" Type="bigint" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
+  </EntityType>
+  <EntityType Name="T_FuncPermission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MemberId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FuncId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="MemberType" Type="int" Nullable="false" />
+    <Property Name="PermValue" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="T_UserRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="MemberType" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ShopToDayPriceSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShopId" Type="int" Nullable="false" />
+    <Property Name="other" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="price" Type="decimal" Nullable="false" />
+    <Property Name="statu" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="date" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+</Schema>

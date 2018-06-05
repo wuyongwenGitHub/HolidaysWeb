@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=0">
+    <title>我要去度假 | @ViewBag.Title</title>
+
+    <link href="~/Framework/weui/lib/weui.min.css" rel="stylesheet" />
+    <link href="~/Framework/weui/css/jquery-weui.min.css" rel="stylesheet" />
+    <link href="~/Styles/weui-custom.css" rel="stylesheet" />
+    @RenderSection("styles", false)
+
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Framework/weui/js/jquery-weui.min.js"></script>
+    <script src="~/Framework/weui/js/swiper.min.js"></script>
+    <script src="~/Framework/weui/lib/fastclick.js"></script>
+    <script src="~/Scripts/weui-uploader.js"></script>
+
+    @RenderSection("scripts", false)
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(function () {
+            FastClick.attach(document.body);
+        });
+    </script>
+    @RenderBody()
+    @RenderSection("footerjs", false)
+</body>
+</html>

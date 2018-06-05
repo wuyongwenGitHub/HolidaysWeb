@@ -1,0 +1,600 @@
+﻿@model Holidays.Model.Entites.HouseInfo
+
+@{
+    ViewBag.Title = "AddHouseView";
+    Layout = "~/Views/Shared/_WechartLayout.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/wechart/percenter.css" rel="stylesheet" />
+}
+@if (ViewBag.IsLogin)
+{
+    if (!ViewBag.IsRequireRealName)
+    {
+        if (ViewBag.IsPermission)
+        {
+            <form id="frmHouseInfo">
+                <input type="hidden" name="ID" value="@Model.ID" />
+                <div class="page-wrap">
+                    <div class="releasper-wrap">
+                        <ul>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">房屋标题</div>
+                                <div class="naverfy-right ">
+                                    <input id="txtHouseTitle" name="HouseTitle" value="@Model.HouseTitle" maxlength="100" type="text" class="input-enter w366">
+                                </div>
+                            </li>
+                            <li class="naverfy-item" style="display:none;">
+                                <div class="naverfy-left">装修风格</div>
+                                <div class="naverfy-right tal">
+                                    <span onclick="fnChangeCheck(1, 'txtDecorativeStyle')" class="proper-radio @if (Model.DecorativeStyle != 2 && Model.DecorativeStyle != 3) {@Html.Raw("checked")} ">普通住宅</span>
+                                    <span onclick="fnChangeCheck(2, 'txtDecorativeStyle')" class="proper-radio @if (Model.DecorativeStyle == 2) {@Html.Raw("checked")}">欧式小洋楼</span>
+                                    <span onclick="fnChangeCheck(3, 'txtDecorativeStyle')" class="proper-radio @if (Model.DecorativeStyle == 3) {@Html.Raw("checked")}">民宿</span>
+
+                                    @if (Model.DecorativeStyle == 0)
+                                    {
+                                    <input id="txtDecorativeStyle" type="hidden" name="DecorativeStyle" value="1" />
+                                    }
+                                    else
+                                    {
+                                    <input id="txtDecorativeStyle" type="hidden" name="DecorativeStyle" value="@Model.DecorativeStyle" />
+                                    }
+                                </div>
+                            </li>
+                            <li class="naverfy-item" style="display:none;">
+                                <div class="naverfy-left">出租类型</div>
+                                <div class="naverfy-right tal rentaltype">
+                                    <span onclick="fnChangeCheck(1, 'txtLeaseType')" class="proper-radio @if (Model.LeaseType != 2 && Model.LeaseType != 3) { @Html.Raw("checked")  } ">整套出租</span>
+                                    <span onclick="fnChangeCheck(2, 'txtLeaseType')" class="proper-radio @if (Model.LeaseType == 2) { @Html.Raw("checked")  }">主卧出租</span>
+                                    <span onclick="fnChangeCheck(3, 'txtLeaseType')" class="proper-radio @if (Model.LeaseType == 3) { @Html.Raw("checked")  }">单间配套</span>
+
+                                    @if (Model.LeaseType == 0)
+                                    {
+                                    <input id="txtLeaseType" type="hidden" name="LeaseType" value="1" />
+                                    }
+                                    else
+                                    {
+                                    <input id="txtLeaseType" type="hidden" name="LeaseType" value="@Model.LeaseType" />
+                                    }
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">房屋户型</div>
+                                <div class="naverfy-right houseunits">
+                                    <input id="txtBedroomNum" name="BedroomNum" type="number" value="@Model.BedroomNum" min="0" class="input-enter w95">
+                                    <span>室</span>
+                                    <input id="txtLivingRoomNum" name="LivingRoomNum" type="number" value="@Model.LivingRoomNum" min="0" class="input-enter w128 pl20">
+                                    <span>厅</span>
+                                    <input id="txtToiletNum" name="ToiletNum" type="number" value="@Model.ToiletNum" min="0" class="input-enter w128 pl20">
+                                    <span>卫</span>
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">出租价格</div>
+                                <div class="naverfy-right ">
+                                    <input id="txtPrice" name="Price" type="number" class="input-enter w366" min="0" value="@Model.Price">
+                                    元/天
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">是否可退</div>
+                                <div class="naverfy-right">
+                                    <select class="w50" name="IsBack">
+                                        <option @if (Model.IsBack == 1) { @Html.Raw("selected='selected'") } value="1">不可退</option>
+                                        <option @if (Model.IsBack == 0) { @Html.Raw("selected='selected'") } value="0">入住当天18点前24小时内不可退</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">是否托管</div>
+                                <div class="naverfy-right">
+                                    <span onclick="fnChangeCheck(true, 'txtIsTrusteeship')" class="proper-radio @if (Model.IsTrusteeship) { @Html.Raw("checked")}">是</span>
+                                    <span onclick="fnChangeCheck(false, 'txtIsTrusteeship')" class="proper-radio @if (!Model.IsTrusteeship) { @Html.Raw("checked")}">否</span>
+
+                                    @if (Model.IsTrusteeship)
+                                    {
+                                    <input id="txtIsTrusteeship" type="hidden" name="IsTrusteeship" value="true" />
+                                    }
+                                    else
+                                    {
+                                    <input id="txtIsTrusteeship" type="hidden" name="IsTrusteeship" value="@Model.IsTrusteeship" />
+                                    }
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">是否出售</div>
+                                <div class="naverfy-right">
+                                    <span onclick="fnChangeCheck(true, 'txtIsSell'); $('#liSellPrice').show();" class="proper-radio @if (Model.IsSell) { @Html.Raw("checked")}">是</span>
+                                    <span onclick="fnChangeCheck(false, 'txtIsSell'); $('#liSellPrice').hide();" class="proper-radio @if (!Model.IsSell) { @Html.Raw("checked")}">否</span>
+
+                                    @if (Model.IsSell)
+                                    {
+                                    <input id="txtIsSell" type="hidden" name="IsSell" value="true" />
+                                    }
+                                    else
+                                    {
+                                    <input id="txtIsSell" type="hidden" name="IsSell" value="@Model.IsSell" />
+                                    }
+                                </div>
+                            </li>
+                            <li id="liSellPrice" @if (!Model.IsSell) { @Html.Raw("style='display: none;'")          } class="naverfy-item">
+                                <div class="naverfy-left">出售价格</div>
+                                <div class="naverfy-right ">
+                                    <input id="txtSellPrice" name="SellPrice" type="number" class="input-enter w366" min="0" value="@Model.SellPrice">
+                                    万
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">做饭</div>
+                                <div class="naverfy-right">
+                                    <span onclick="fnChangeCheck(true, 'txtIsCooking');" class="proper-radio @if (Model.IsCooking) { @Html.Raw("checked")}">是</span>
+                                    <span onclick="fnChangeCheck(false, 'txtIsCooking');" class="proper-radio @if (!Model.IsCooking) { @Html.Raw("checked")}">否</span>
+
+                                    @if (Model.IsCooking)
+                                    {
+                                    <input id="txtIsCooking" type="hidden" name="IsCooking" value="true" />
+                                    }
+                                    else
+                                    {
+                                    <input id="txtIsCooking" type="hidden" name="IsCooking" value="@Model.IsCooking" />
+                                    }
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">携带宠物</div>
+                                <div class="naverfy-right ">
+                                    <span onclick="fnChangeCheck(true, 'txtIsPet');" class="proper-radio @if (Model.IsPet) { @Html.Raw("checked")} ">是</span>
+                                    <span onclick="fnChangeCheck(false, 'txtIsPet');" class="proper-radio @if (!Model.IsPet) { @Html.Raw("checked")}">否</span>
+
+                                    @if (Model.IsPet)
+                                    {
+                                    <input id="txtIsPet" type="hidden" name="IsPet" value="true" />
+                                    }
+                                    else
+                                    {
+                                    <input id="txtIsPet" type="hidden" name="IsPet" value="@Model.IsPet" />
+                                    }
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">可住人数</div>
+                                <div class="naverfy-right ">
+                                    <input id="txtStayPersonNum" name="StayPersonNum" type="number" min="1" class="input-enter w366" value="@Model.StayPersonNum">
+                                    人
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">面积</div>
+                                <div class="naverfy-right">
+                                    <input id="txtHouseSize" value="@Model.HouseSize" name="HouseSize" type="number" min="1" class="input-enter w366">
+                                    平米
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">配套设备</div>
+                                <div class="naverfy-right grouped">
+                                    <input type="text" class="input-enter" readonly>
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">所在城市</div>
+                                <div class="naverfy-right ">
+                                    <select onchange="fnProvinceChange()" name="ProvinceId" id="sltProvince" class="w50" style="width : 80px;"></select>
+                                    <select onchange="fnCityChnage()" name="CityId" id="sltCity" class="w50" style="width : 80px;"></select>
+                                    <select name="CountyId" id="sltCounty" class="w50" style="width : 80px;"></select>
+                                </div>
+                            </li>
+                            <li class="naverfy-item" style="display:none;">
+                                <div class="naverfy-left">位置</div>
+                                <div class="naverfy-right ">
+                                    <input id="txtAddress" value="@Model.Address" name="Address" maxlength="200" type="text" class="input-enter w100">
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">上传照片</div>
+                                <div class="naverfy-right clearfix reuphoto">
+                                    <label id="lblUploadImg" class="naverfy-upfile">
+                                        <input type="hidden" name="JsonHouseImgList" value="@Model.JsonHouseImgList" id="txtImages" />
+                                    </label>
+                                    <div id="houseImgs"></div>
+                                    <p class="naverfy-uptips tal">图片尽量清晰，最多上传6张</p>
+                                </div>
+                            </li>
+                            <li class="naverfy-item">
+                                <div class="naverfy-left">照片类型</div>
+                                <div class="naverfy-right ">
+                                    <span onclick="fnChangeCheck(true, 'txtIsReals');" class="proper-radio @if (Model.IsReals) { @Html.Raw("checked")}">实拍</span>
+                                    <span onclick="fnChangeCheck(false, 'txtIsReals');" class="proper-radio @if (!Model.IsReals) { @Html.Raw("checked")}">效果图</span>
+
+                                    @if (Model.IsReals)
+                                    {
+                                    <input id="txtIsReals" type="hidden" name="IsReals" value="true" />
+                                    }
+                                    else
+                                    {
+                                    <input id="txtIsReals" type="hidden" name="IsReals" value="@Model.IsReals" />
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="relproper-item mt18" style="display:none;">
+                        <div class="relproper-title">房源介绍：</div>
+                        <textarea name="About" class="textarea-enter">@Model.About</textarea>
+                    </div>
+                    <div class="relproper-item" style="display:none;">
+                        <div class="relproper-title">房客守则：</div>
+                        <textarea name="Rules" class="textarea-enter">@Model.Rules</textarea>
+                    </div>
+                    <div class="relproper-item" style="display:none;">
+                        <div class="relproper-title">收费说明：</div>
+                        <textarea name="ChargesNotes" class="textarea-enter">@Model.ChargesNotes</textarea>
+                    </div>
+                    <div class="relproper-item" style="display:none;">
+                        <div class="relproper-title">基本信息：</div>
+                        <textarea name="BaseInfo" class="textarea-enter">@Model.BaseInfo</textarea>
+                    </div>
+
+                    <input type="hidden" id="txtFacilities" name="Facilities" />
+
+                    <div class="personinfo-footer pl22pr26"> <a id="lbtnSaveHouseInfo" href="javascript:;" class="canorder-submit">保存</a> </div>
+                </div>
+            </form>
+
+    <!--弹窗-->
+            <div class="pop-mask"></div>
+    <!--配套设备-->
+            <div class="poperson-wrap grouped-wrap">
+                <div class="poperson-header">配套设备</div>
+                <div class="poperson-main tac">
+                    @if (ViewBag.HouseConfigureList != null)
+                    {
+                        foreach (var houseConfigure in ViewBag.HouseConfigureList)
+                        {
+                    <span class="spanFacilities proper-radio" fid="@houseConfigure.ID" fname="@houseConfigure.Name" ficon="@houseConfigure.Icon" fsort="@houseConfigure.Sort" id="facility_@houseConfigure.ID">@houseConfigure.Name</span>
+                        }
+                    }
+                </div>
+                <div class="poperson-footer">
+                    @*<a href="javascript:;" class="poperson-cancel">取消</a>*@
+                    <a href="javascript:;" class="poperson-submit">确定</a>
+                </div>
+            </div>
+    <!--/配套设备-->
+            @section footerjs{
+                <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+                <!--弹窗-->
+                <script type="text/javascript">
+                    var imgArray = [];
+
+                    // 添加图片
+                    function fnAddImg(src) {
+                        if (imgArray.length == 6) {
+                            layermsg("最多只能上传6张图片");
+                            return;
+                        }
+                        var imgObj = new Object();
+                        imgObj.ImgUrl = src;
+
+                        imgArray.push(imgObj);
+                        fnUpdateImg();
+                    }
+
+                    // 初始化图片
+                    var jsonHouseImgs = '@Html.Raw(Model.JsonHouseImgList)';
+                    if (jsonHouseImgs) {
+                        var objHouseImgs = JSON.parse(jsonHouseImgs);
+
+                        if (objHouseImgs && objHouseImgs.length > 0) {
+                            for (var i = 0; i < objHouseImgs.length; i++) {
+                                fnAddImg(objHouseImgs[i].ImgUrl);
+                            }
+                        }
+                    }
+
+                    // 删除图片
+                    function fnDelImgByIndex(index) {
+                        imgArray.splice(index, 1);
+                        fnUpdateImg();
+                    }
+
+                    // 更新显示图片
+                    function fnUpdateImg() {
+                        var strImgsHtml = "";
+                        if (imgArray) {
+                            for (var i = 0; i < imgArray.length; i++) {
+                                strImgsHtml += "<label class='naverfy-upfile'><img src='" + imgArray[i].ImgUrl + "'><a onclick='fnDelImgByIndex(" + i + ")' href='javascript:;' class='upfile-delete'><img src='/Images/wechart/mgh_21.png'></a></label>";
+                            }
+                        }
+
+                        $("#txtImages").val(JSON.stringify(imgArray));
+                        $("#houseImgs").html(strImgsHtml);
+                    }
+
+                    // 初始化上传组件
+                    function fnInitUpload() {
+                        fnWeUploadImage("lblUploadImg", function (url) {
+                            fnAddImg(url);
+                        });
+                    }
+
+                    // 配套设施
+                    var facilities = [];
+                    var isInit = true;
+
+                    $(".spanFacilities").on("click", function () {
+                        var isChecked = $(this).hasClass("checked");
+                        var tempObj = new Object();
+                        tempObj.ID = $(this).attr("fid");
+                        tempObj.Name = $(this).attr("fname");
+                        tempObj.Icon = $(this).attr("ficon");
+                        tempObj.Sort = $(this).attr("fsort");
+
+                        if (!isChecked || isInit) {
+                            facilities.push(tempObj);
+                        } else {
+                            for (var i = 0; i < facilities.length; i++) {
+                                if (facilities[i].ID == tempObj.ID) {
+                                    facilities.splice(i, 1);
+                                    break;
+                                }
+                            }
+                        }
+
+                        $("#txtFacilities").val(JSON.stringify(facilities));
+                    });
+
+                    var jsonFacilities = '@Html.Raw(Model.Facilities)';
+                    if (jsonFacilities) {
+                        var facilitiesObjs = JSON.parse(jsonFacilities);
+
+                        if (facilitiesObjs && facilitiesObjs.length > 0) {
+                            for (var i = 0; i < facilitiesObjs.length; i++) {
+                                var id = facilitiesObjs[i].ID;
+                                $("#facility_" + id).addClass("checked");
+                                $("#facility_" + id).click();
+                            }
+                        }
+                    }
+
+                    isInit = false;
+
+                    // 省份
+                    function fnGetProvinceList() {
+                        $.post("/Home/GetProvinceList", function (result) {
+                            if (result.Status == "ok") {
+                                var provinceList = result.Data;
+
+                                if (provinceList && provinceList.length > 0) {
+                                    var provinceHtml = "";
+                                    var provinceId = "@Model.ProvinceId";
+                                    for (var i = 0; i < provinceList.length; i++) {
+                                        if (provinceList[i].Id == provinceId) {
+                                            provinceHtml += "<option selected='selected' value='" + provinceList[i].Id + "'>" + provinceList[i].Name + "</option>";
+                                        } else {
+                                            provinceHtml += "<option value='" + provinceList[i].Id + "'>" + provinceList[i].Name + "</option>";
+                                        }
+                                    }
+
+                                    $("#sltProvince").html(provinceHtml);
+
+                                    fnProvinceChange();
+                                }
+                            } else {
+                                layer.alert(result.Msg, { icon: 2 });
+                            }
+                        });
+                    }
+
+                    // 省份改变事件
+                    function fnProvinceChange() {
+                        var provinceId = $("#sltProvince option:selected").val();
+
+                        if (!provinceId) {
+                            provinceId = $("#sltProvince option:first").val();
+                            $("#sltCity").html("");
+                            return;
+                        }
+
+                        if (!provinceId) {
+                            return;
+                        }
+
+                        fnGetCityList(provinceId, "sltCity", true);
+                    }
+
+                    // 城市改变事件
+                    function fnCityChnage() {
+                        var cityId = $("#sltCity option:selected").val();
+
+                        if (!cityId) {
+                            cityId = $("#sltCity option:first").val();
+                            $("#sltCounty").html("");
+                            return;
+                        }
+
+                        fnGetCityList(cityId, "sltCounty");
+                    }
+
+                    // 获取城市
+                    function fnGetCityList(parentId, sltId, isRefreshCounty) {
+                        var data = { parentId: parentId };
+
+                        $.post("/Home/GetCityByParentId", data, function (result) {
+                            if (result.Status == "ok") {
+                                var cityList = result.Data;
+
+                                if (cityList && cityList.length > 0) {
+                                    var cityHtml = "";
+                                    var cityId = "@Model.CityId";
+                                    for (var i = 0; i < cityList.length; i++) {
+                                        if (cityList[i].Id == cityId) {
+                                            cityHtml += "<option selected='selected' value='" + cityList[i].Id + " '>" + cityList[i].Name + "</option>";
+                                        } else {
+                                            cityHtml += "<option value='" + cityList[i].Id + "'>" + cityList[i].Name + "</option>";
+                                        }
+                                    }
+
+                                    $("#" + sltId).html(cityHtml);
+
+                                    if (isRefreshCounty) {
+                                        fnCityChnage();
+                                    }
+                                } else {
+                                    $("#" + sltId).html("");
+                                }
+                            } else {
+                                layer.alert(result.Msg, { icon: 2 });
+                            }
+                        });
+                    }
+
+                    function fnChangeCheck(val, inputId) {
+                        $("#" + inputId).val(val);
+                    }
+
+                    $(function () {
+                        fnInitUpload();
+
+                        // 初始化省份、城市
+                        fnGetProvinceList();
+
+                        // 保存房源数据
+                        $("#lbtnSaveHouseInfo").on("click", function () {
+                            var houseTitle = $("#txtHouseTitle").val();
+                            var bedroomNum = $("#txtBedroomNum").val();
+                            var livingRoomNum = $("#txtLivingRoomNum").val();
+                            var toiletNum = $("#txtToiletNum").val();
+                            var price = $("#txtPrice").val();
+                            var isSell = $("#txtIsSell").val();
+                            var sellPrice = $("#txtSellPrice").val();
+                            var stayPersonNum = $("#txtStayPersonNum").val();
+                            var houseSize = $("#txtHouseSize").val();
+                            var address = $("#txtAddress").val();
+                            var images = $("#txtImages").val();
+                            var provinceId = $("#sltProvince option:selected").val();
+                            var cityId = $("#sltCity option:selected").val();
+
+                            // 校验数据
+                            if (houseTitle == "" || houseTitle.length <= 0) {
+                                layermsg("房屋标题不能为空！");
+                                return;
+                            }
+
+                            if (bedroomNum == "" || bedroomNum < 0 || livingRoomNum == "" || livingRoomNum < 0 || toiletNum == "" || toiletNum < 0 ||
+                                (bedroomNum == 0 && livingRoomNum == 0 && toiletNum == 0)) {
+                                layermsg("房屋户型填写错误！");
+                                return;
+                            }
+
+                            if (price == "" || price <= 1) {
+                                layermsg("出租价格不能小于1");
+                                return;
+                            }
+
+                            if (isSell == "true" && (sellPrice == "" || sellPrice <= 1)) {
+                                layermsg("出售价格不能小于1");
+                                return;
+                            }
+
+                            if (stayPersonNum == "" || stayPersonNum <= 0) {
+                                layermsg("可住人数填写错误！");
+                                return;
+                            }
+
+                            if (houseSize == "" || houseSize <= 0) {
+                                layermsg("房屋面积填写错误！");
+                                return;
+                            }
+
+                            //if (address == "") {
+                            //    layermsg("房屋位置不能为空！");
+                            //    return;
+                            //}
+
+                            if (images == "") {
+                                layermsg("请至少上传一张照片！");
+                                return;
+                            }
+
+                            if (!provinceId || !cityId) {
+                                layermsg("请选择所在城市！");
+                                return;
+                            }
+
+                            var loadIndex = layerload();
+                            var data = $("#frmHouseInfo").serialize();
+                            $.post("/House/SaveHouseInfo", data, function (result) {
+                                layer.close(loadIndex);
+
+                                if (result.Status == "ok") {
+                                    layermsg(result.Msg, function () {
+                                        window.location.href = "/weixin/weuser/index";
+                                    });
+                                } else {
+                                    layermsg(result.Msg);
+                                }
+                            });
+                        });
+
+                        //单选
+                        $(".naverfy-right .proper-radio").on("click", function () {
+                            $(this).addClass("checked").siblings().removeClass("checked");
+                        })
+                        //弹窗操作
+
+                        //用户名
+                        $(".grouped").on("click", function () {
+                            $(".pop-mask,.grouped-wrap").show();
+                        });
+                        $(".poperson-main .proper-radio").on("click", function () {
+                            $(this).toggleClass("checked");
+                        })
+                        $(".pop-mask,.poperson-cancel,.poperson-submit").on("click", function () {
+                            $(".pop-mask,.grouped-wrap").hide();
+                        });
+
+                    });
+                    document.addEventListener('touchmove', function (event) {
+                        //判断条件,条件成立才阻止背景页面滚动,其他情况不会再影响到页面滚动
+                        if (!$(".pop-mask").is(":hidden")) {
+                            event.preventDefault();
+                        };
+                    });
+                </script>
+            }
+        }
+        else
+        {
+            <div class="page-wrap">
+                <div class="releasper-wrap">
+                    <p style="text-align: center; padding: 20px; font-size: 14px;">对不起，你无此权限，请联系平台管理员。</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="page-wrap">
+            <div class="releasper-wrap">
+                <p style="text-align: center; padding: 20px; font-size: 14px;">使用该功能需要实名认证，请先实名认证。</p>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            layermsg("使用该功能需要实名认证，请先实名认证！", function () {
+                window.location.href = "/weixin/weuser/nameverified";
+            });
+        </script>
+    }
+}
+else
+{
+    <div class="page-wrap">
+        <div class="releasper-wrap">
+            <p style="text-align: center; padding: 20px; font-size: 14px;">登录失效，请重新登录！</p>
+        </div>
+    </div>
+}

@@ -1,0 +1,667 @@
+﻿@model Holidays.Model.Entites.HouseInfoView
+
+@{
+    var title = "房屋详情";
+
+    if (Model != null)
+    {
+        title = Model.HouseTitle;
+    }
+
+    ViewBag.Title = title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="/Styles/flexslider.css">
+    <link rel="stylesheet" type="text/css" href="/Styles/ghdetail.css">
+    <link href="~/Framework/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .btn-disabled:hover, .btn-disabled:focus {
+            text-decoration-line: none;
+            color: #fff;
+        }
+    </style>
+}
+
+@section scripts{
+    <script src="~/Framework/gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Framework/angular-1.6.0-rc.2/angular.min.js"></script>
+
+    <script src="~/Framework/layui/layui.js"></script>
+    <script src="~/Scripts/jquery.flexslider-min.js"></script>
+    <script src="~/Scripts/placeholders.min.js"></script>
+}
+
+<div class="navigation ghdetail-nav"><div class="w1080">首页 <span>&gt;</span> 租房搜索 <span>&gt;</span> 房屋详情</div></div>
+
+@if (Model != null)
+{
+    <!--ghdetail-wrap-->
+    <div class="ghdetail-wrap w1080">
+        <div class="ghdetail-header clearfix">
+            <div class="ghdetail-name">@Model.HouseTitle</div>
+            @if (Model.IsReals)
+            {
+                <span class="ghouse-status">实拍</span>
+            }
+
+            @if (Model.IsCooking)
+            {
+                <span class="ghouse-status">可做饭</span>
+            }
+
+            @if (Model.IsTrusteeship)
+            {
+                <span class="ghouse-status">托管</span>
+            }
+
+            @if (ViewBag.IsFavorite != null && ViewBag.IsFavorite)
+            {
+                <a id="lbtnCancelFavorite" href="javascript:;" class="keepinfo keeped">已收藏</a>
+            }
+            else
+            {
+                <a id="lbtnAddFavorite" href="javascript:;" class="keepinfo">收藏</a>
+            }
+        </div>
+        <div class="ghdetail-main clearfix">
+            <div class="ghdemain-left">
+                <div class="photo-view">
+                    <div class="photo-slider">
+                        <div class="flexslider" id="slider">
+                            <ul class="slides">
+                                @if (Model.HouseImgList != null && Model.HouseImgList.Count > 0)
+                                {
+                                    foreach (var houseImg in Model.HouseImgList)
+                                    {
+                                        <li><img src="@houseImg.ImgUrl"></li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="photo-carousel">
+                        <div class="flexslider" id="carousel">
+                            <ul class="slides">
+                                @if (Model.HouseImgList != null && Model.HouseImgList.Count > 0)
+                                {
+                                    foreach (var houseImg in Model.HouseImgList)
+                                    {
+                                        <li><img src="@houseImg.ImgUrl"></li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @if (!String.IsNullOrWhiteSpace(Model.About))
+                {
+                    <div class="house-intro">
+                        <div class="hintro-title">房源介绍</div>
+                        <p>@Model.About</p>
+                    </div>
+                }
+
+                @if (!String.IsNullOrWhiteSpace(Model.Rules))
+                {
+                    <div class="house-intro">
+                        <div class="hintro-title">房客守则</div>
+                        <p>@Model.Rules</p>
+                    </div>
+                }
+
+                @if (!String.IsNullOrWhiteSpace(Model.ChargesNotes))
+                {
+                    <div class="house-intro">
+                        <div class="hintro-title">收费说明</div>
+                        <p>@Model.ChargesNotes</p>
+                    </div>
+                }
+
+                @if (!String.IsNullOrWhiteSpace(Model.BaseInfo))
+                {
+                    <div class="house-intro">
+                        <div class="hintro-title">基本信息</div>
+                        <p>@Model.BaseInfo</p>
+                    </div>
+                }
+
+                @*<div class="house-intro">
+                        <div class="hintro-title">本房源地图</div>
+                        <div class="house-map"><img src="/Images/cancel/gohday-45.jpg"></div>
+                    </div>*@
+
+                @if (Model.EvaluateNum != null && Model.EvaluateNum > 0)
+                {
+                    <div class="ghcomment-intro">
+                        <div class="hintro-title">本房源评价(@Model.EvaluateNum)</div>
+                        <div class="comment-wrap">
+                            <div class="comment-header">
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                        <td rowspan="3" width="115">
+                                            <p class="praise-wrap">房源好评率</p>
+                                            @{ double temp = Model.EvaluateAvgScore / 25.0 * 100; }
+                                            <p class="praise-num">@temp%</p>
+                                        </td>
+                                        <td width="196">
+                                            <span>整洁卫生</span>
+                                            @if (ViewBag.CleanScore != null)
+                                            {
+                                                for (int i = 0; i < ViewBag.CleanScore; i++)
+                                                {
+                                                    <img src="/Images/gh-09.png">
+                                                }
+
+                                                for (int i = ViewBag.CleanScore; i < 5; i++)
+                                                {
+                                                    <img src="/Images/gh-53.png">
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            <span>交通位置</span>
+                                            @if (ViewBag.LocationScore != null)
+                                            {
+                                                for (int i = 0; i < ViewBag.LocationScore; i++)
+                                                {
+                                                    <img src="/Images/gh-09.png">
+                                                }
+
+                                                for (int i = ViewBag.LocationScore; i < 5; i++)
+                                                {
+                                                    <img src="/Images/gh-53.png">
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>设施环境</span>
+                                            @if (ViewBag.EnvironmentScore != null)
+                                            {
+                                                for (int i = 0; i < ViewBag.EnvironmentScore; i++)
+                                                {
+                                                    <img src="/Images/gh-09.png">
+                                                }
+
+                                                for (int i = ViewBag.EnvironmentScore; i < 5; i++)
+                                                {
+                                                    <img src="/Images/gh-53.png">
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            <span>房东服务</span>
+                                            @if (ViewBag.ServiceScore != null)
+                                            {
+                                                for (int i = 0; i < ViewBag.ServiceScore; i++)
+                                                {
+                                                    <img src="/Images/gh-09.png">
+                                                }
+
+                                                for (int i = ViewBag.ServiceScore; i < 5; i++)
+                                                {
+                                                    <img src="/Images/gh-53.png">
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>性价比　</span>
+                                            @if (ViewBag.PerformanceScore != null)
+                                            {
+                                                for (int i = 0; i < ViewBag.PerformanceScore; i++)
+                                                {
+                                                    <img src="/Images/gh-09.png">
+                                                }
+
+                                                for (int i = ViewBag.PerformanceScore; i < 5; i++)
+                                                {
+                                                    <img src="/Images/gh-53.png">
+                                                }
+                                            }
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div ng-app="evaluateApp" ng-controller="EvaluateAppController" ng-init="initHouseEvaluateList(1)" class="comment-main clearfix">
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <tr ng-repeat="evaluate in HouseEvaluateList">
+                                        <td class="comment-icon">
+                                            <div class="comicon-wrap">
+                                                <img ng-if="evaluate.UserImg == null" src="/Images/default.jpg">
+                                                <img ng-if="evaluate.UserImg != null" src="{{ evaluate.UserImg }}">
+                                            </div>
+                                            <p>{{ evaluate.UserPhone }}</p>
+                                        </td>
+                                        <td class="comment-info">
+                                            <p class="cominfo-view">
+                                                {{ evaluate.EvaluateContent }}
+                                            </p>
+                                            <p class="cominfo-time">{{ evaluate.CreateTime }}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!--page-wrap-->
+                                <div id="page-wrap" ng-hide="PageModel.TotalPage <= 1" class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div>
+                                            <ul class="pagination">
+                                                <li class="paginate_button previous"><a ng-click="initHouseEvaluateList(1)" href="javascript:;">首页</a></li>
+                                                <li class="paginate_button"><a ng-click="initHouseEvaluateList(PageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+
+                                                <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage ==  pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                                                    <a ng-click="initHouseEvaluateList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                                                </li>
+
+                                                <li class="paginate_button"><a href="javascript:;" ng-click="initHouseEvaluateList(PageModel.NextPage)">下一页</a></li>
+                                                <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initHouseEvaluateList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--page-wrap-->
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="ghdemain-right">
+                <div class="ghmright-main">
+                    <div class="ghmrtmn-header">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td class="ghmr-money">￥<span>@Model.Price</span>/晚</td>
+                                <td>
+                                    <img src="/Images/gh-25.png">
+                                    @if (Model.LeaseType == 1)
+                                    {
+                                        <span>整套出租</span>
+                                    }
+                                    else if (Model.LeaseType == 2)
+                                    {
+                                        <span>主卧出租</span>
+                                    }
+                                    else if (Model.LeaseType == 3)
+                                    {
+                                        <span>单间配套</span>
+                                    }
+                                </td>
+                                <td><img src="/Images/gh-26.png">可住 @Model.StayPersonNum 人</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="ghmrtmn-contain">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td>
+                                    <div class="ghtime-parame">
+                                        <div class="fl">
+                                            <input type="text" id="srartTime" placeholder="入住时间" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="text-input laydate-icon">
+                                            至
+                                            <input type="text" placeholder="退房时间" id="endTime" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" class="text-input laydate-icon">
+                                        </div>
+                                        <div class="casenum"><span id="count" class="select-content">1</span>晚</div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            @if (ViewBag.HouseOrderList != null && ViewBag.HouseOrderList.Count > 0)
+                            {
+                                <tr><td style="color:red;">注意：以下时间不可预订</td></tr>
+                                <tr>
+                                    <td>
+                                        <div style="height: auto; max-height: 110px; overflow-y: auto;">
+                                            @foreach (var order in ViewBag.HouseOrderList)
+                                            {
+                                                if (@order.StartDate.AddDays(1).CompareTo(order.EndDate) == 0)
+                                                {
+                                                    <span>@order.StartDate.ToString("yyyy-MM-dd")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@order.StartDate.ToString("yyyy-MM-dd")</span>
+                                                    <span>至</span>
+                                                    <span>@order.EndDate.AddDays(-1).ToString("yyyy-MM-dd")</span>
+                                                }
+                                                <br />
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            @if (Model.IsBack == 1)
+                            {
+                                <tr>
+                                    <td style="color:red;">
+                                        不可退
+                                    </td>
+                                </tr>
+                            }
+                            @if (Model.IsBack == 0)
+                            {
+                                <tr>
+                                    <td style="color:red;">
+                                        入住当天18点前24小时内不可退
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td>
+                                    面积：@Model.HouseSize 平 &nbsp;&nbsp;&nbsp;&nbsp;
+                                    @if (Model.BedroomNum > 0)
+                                    {
+                                        <span>@Model.BedroomNum 室</span>
+                                    }
+
+                                    @if (Model.LivingRoomNum > 0)
+                                    {
+                                        <span>@Model.LivingRoomNum 厅</span>
+                                    }
+
+                                    @if (Model.ToiletNum > 0)
+                                    {
+                                        <span>@Model.ToiletNum 卫</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr style="display:none;">
+                                <td>
+                                    装修风格：<span>@ViewBag.ShopTypeName</span>
+                                    @*@if (Model.DecorativeStyle == 1)
+                                        {
+                                            <span>普通住宅</span>
+                                        }
+                                        else if (Model.DecorativeStyle == 2)
+                                        {
+                                            <span>欧式小洋楼</span>
+                                        }
+                                        else if (Model.DecorativeStyle == 3)
+                                        {
+                                            <span>民宿</span>
+                                        }*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+
+                                    @if (Model.HouseConfigureList != null && Model.HouseConfigureList.Count > 0)
+                                    {
+                                        <span>配套设施：</span>
+                                        <div class="facility-list clearfix">
+                                            <!--超过6个时添加 sixpiece 出现 facilitymore 反之则取消sixpiece 隐藏facilitymore-->
+                                            @foreach (var item in Model.HouseConfigureList)
+                                            {
+                                                <div class="fl"><img src="@item.Icon">@item.Name</div>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span>配套设施：无配套设施</span>
+                                    }
+
+                                    @*<a href="javascript:;" class="facilitymore">更多<img src="/Images/gh-34.png"></a>*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>状态：@(Model.IsEmpty == 0 ? "可订" : "已满")</td>
+                            </tr>
+                            <tr>
+                                <td>位置：@ViewBag.City</td>
+                            </tr>
+                            <tr>
+                                <td>@Model.Address </td>
+                            </tr>
+                            <tr>
+                                <td>商家：<span class="ff5d51">@Model.PhoneNo</span></td>
+                            </tr>
+                            <tr>
+                                <td>客服：<span class="ff5d51">023-48266667</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    @if (Model.IsEmpty == 0)
+                    {
+                        <div class="ghmrtmn-footer"><a id="lbtnGoOrderView" href="javascript:;" class="booknow-btn">立即预订</a></div>
+                    }
+                    else
+                    {
+                        <div class="ghmrtmn-footer"><a href="javascript:;" class="booknow-btn btn-disabled" style="background-color:#ddd;">暂停预订</a></div>
+                    }
+                </div>
+                <div class="ghmright-footer clearfix">
+                    <div class="ghuser-icon">
+                        @if (!String.IsNullOrEmpty(Model.Img))
+                        {
+                            <img src="@Model.Img">
+                        }
+                        else
+                        {
+                            <img src="/Images/default.jpg" />
+                        }
+                    </div>
+                    <div class="ghuser-info">
+                        <p class="ghuser-name">@Model.Nikename</p>
+                        <p class="ghuser-other"><span><img src="/Images/gh-35.png">身份验证</span><span><img src="/Images/gh-35.png">手机验证</span></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--ghdetail-wrap-->
+    @section footerjs{
+        <script src="~/Scripts/Utility.js"></script>
+        <script type="text/javascript">
+            var evaluateApp = angular.module('evaluateApp', []);
+
+            evaluateApp.controller('EvaluateAppController', function EvaluateAppController($scope, $http) {
+                // 初始化数据
+                $scope.initHouseEvaluateList = function (page) {
+                    var data = { page: page, houseId: "@Model.ID" };
+
+                    $http({
+                        method: 'POST',
+                        url: '/House/GetHouseEvaluateList',
+                        data: data
+                    }).then(function successCallback(response) {
+                        var data = response.data.Data;
+
+                        for (var i = 0; i < data.length; i++) {
+                            data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
+                        }
+
+                        $scope.HouseEvaluateList = data;
+                        $scope.PageModel = response.data;
+                    }, function errorCallback(response) {
+                        layer.alert("系统异常", { icon: 2 });
+                    });
+                }
+            });
+
+            // 取消收藏
+            $("#lbtnCancelFavorite").on("click", function () {
+                var isLogin = "@ViewBag.IsLogin";
+
+                if (isLogin == "true" || isLogin == "True") {
+                    var id = "@Model.ID";
+                    var loadIndex = layer.load();
+
+                    $.post("/House/CancelFavorite", { id: id }, function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            layer.alert(result.Msg, { icon: 1 }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                    });
+                } else {
+                    $("#lbtnLoginButton").click();
+                }
+            });
+
+            $("#lbtnGoOrderView").on("click", function () {
+                var isLogin = "@ViewBag.IsLogin";
+
+                if (isLogin == "true" || isLogin == "True") {
+                    var s = $("#srartTime").val();
+                    var e = $("#endTime").val();
+
+                    if (!s) {
+                        layer.alert("请选择入住时间！", { icon: 2 });
+                        return;
+                    }
+
+                    if (!e) {
+                        layer.alert("请选择退房时间！", { icon: 2 });
+                        return;
+                    }
+
+                    if (fnDiffDate(s, e) <= 0) {
+                        layer.alert("退房时间必须大于入住时间！", { icon: 2 });
+                        return;
+                    }
+
+                    localStorage.setItem("startTime", s);
+                    localStorage.setItem("endTime", e);
+
+                    // 判断时间段是否预定
+                    var loadIndex = layer.load();
+                    $.post("/House/IsReservation", { houseId: "@Model.ID", startTime: s, endTime: e }, function (result) {
+                        layer.close(loadIndex);
+
+                      //  if (result.Status == "ok") {
+                            window.location.href = "/Order/SubmitOrderView/@Model.ID";
+                       // } else {
+                       //     layer.alert(result.Msg, { icon: 2 });
+                       // }
+                    });
+                } else {
+                    $("#lbtnLoginButton").click();
+                }
+            });
+
+            // 添加收藏
+            $("#lbtnAddFavorite").on("click", function () {
+                var isLogin = "@ViewBag.IsLogin";
+
+                if (isLogin == "true" || isLogin == "True") {
+                    var id = "@Model.ID";
+                    var loadIndex = layer.load();
+
+                    $.post("/House/AddFavorite", { id: id }, function (result) {
+                        layer.close(loadIndex);
+
+                        if (result.Status == "ok") {
+                            layer.alert(result.Msg, { icon: 1 }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            layer.alert(result.Msg, { icon: 2 });
+                        }
+                    });
+                } else {
+                    $("#lbtnLoginButton").click();
+                }
+            });
+
+            $(function () {
+                //banner幻灯片
+                $('#carousel').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    slideshow: false,
+                    itemWidth: 130,
+                    itemMargin: 15,
+                    asNavFor: '#slider'
+                });
+                //banner幻灯片
+                $('#slider').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    animationLoop: false,
+                    slideshow: false,
+                    directionNav: false,
+                    sync: "#carousel",
+                    start: function (slider) {
+                        $('body').removeClass('loading');
+                    }
+                });
+                ////更多配套设施
+                //$(".facilitymore").on("click", function () {
+                //    $(".facility-list").toggleClass("sixpiece");
+                //});
+            });
+
+            layui.use('laydate', function () {
+                var laydate = layui.laydate;
+                var start = {
+                    min: laydate.now(),
+                    max: '2099-06-16 23:59:59',
+                    istoday: false,
+                    choose: function (datas) {
+                        end.min = datas; //开始日选好后，重置结束日的最小日期
+                        end.start = datas //将结束日的初始值设定为开始日
+
+                        var s = $("#srartTime").val();
+                        var e = $("#endTime").val();
+                        $("#count").html(fnDiffDate(s, e));
+
+                        localStorage.setItem("startTime", s);
+                    }
+                };
+                var end = {
+                    min: laydate.now(),
+                    max: '2099-06-16 23:59:59',
+                    istoday: false,
+                    choose: function (datas) {
+                        start.max = datas; //结束日选好后，重置开始日的最大日期
+
+                        var s = $("#srartTime").val();
+                        var e = $("#endTime").val();
+                        $("#count").html(fnDiffDate(s, e));
+
+                        localStorage.setItem("endTime", e);
+                    }
+                };
+                document.getElementById('srartTime').onclick = function () {
+                    start.elem = this;
+                    laydate(start);
+                }
+                document.getElementById('endTime').onclick = function () {
+                    end.elem = this
+                    laydate(end);
+                }
+            });
+
+            // 计算日期差（天）
+            function fnDiffDate(startDate, endDate) {
+                if (startDate && endDate) {
+                    var s = Date.parse(startDate);
+                    var e = Date.parse(endDate);
+
+                    return parseInt((e - s) / 1000 / 3600 / 24);
+                }
+
+                return 0;
+            }
+        </script>
+    }
+}
+else
+{
+    <div class="ghdetail-wrap w1080">
+        <p style="text-align: center; margin-bottom: 200px;">
+            未查询到该房源信息！
+        </p>
+    </div>
+}

@@ -1,0 +1,165 @@
+﻿@model Holidays.Model.Entites.ShopInfo
+
+@{
+    ViewBag.Title = "店铺信息";
+    // Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Framework/layui2/layui.all.js"></script>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <form id="form1" lay-filter="form1" class="layui-form" style="margin:10px;">
+                <input type="hidden" name="ID" value="@Model.ID" />
+                <div class="layui-form-item">
+                    <label class="layui-form-label">店铺名称*</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ShopName" value="@Model.ShopName" lay-verify="required" autocomplete="off" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在景区*</label>
+                    <div class="layui-input-block">
+                        <select name="SpotId" lay-verify="required">
+                            @if (ViewBag.SpotList != null)
+                            {
+                                foreach (var item in ViewBag.SpotList)
+                                {
+                                    if (item.ID == Model.SpotId)
+                                    {
+                                        <option value="@item.ID" selected>@item.ScenicSpotName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.ScenicSpotName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">风格*</label>
+                    <div class="layui-input-block">
+                        <select name="ShopType">
+                            @if (ViewBag.ShopCategoryList != null)
+                            {
+                                foreach (var item in ViewBag.ShopCategoryList)
+                                {
+                                    if (item.ID == Model.ShopType)
+                                    {
+                                        <option value="@item.ID" selected>@item.CategoryName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.CategoryName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">起订价格*</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="StartPrice" value="@Model.StartPrice" lay-verify="required" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址*</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="Locations" lay-verify="required">@Model.Locations</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">店铺图片</label>
+                    <div class="layui-input-block">
+                        <div class="layui-upload-drag" id="shopImage">
+                            <i class="layui-icon"></i>
+                            <p>点击上传，或将文件拖拽到此处</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">图片预览</label>
+                    <div class="layui-input-block">
+                        <input id="ShopImgs" type="hidden" name="ShopImgs" value="@Model.ShopImgs" />
+                        <img class="layui-upload-img" src="@Model.ShopImgs" style="width:130px; height:130px; margin:0 10px 10px 0;" />
+                    </div>
+                    @*<div class="layui-form-mid layui-word-aux">请上传130*130分辨率的图片</div>*@
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房源介绍</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="About">@Model.About</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">访客守则</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="Rules">@Model.Rules</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收费说明</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="ChargesNotes">@Model.ChargesNotes</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <button id="buttonSave" class="layui-btn" lay-submit="" lay-filter="buttonSave" style="display:none;">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var form, upload;
+    var shopView = function () {
+        var initPage = function () {
+            layui.use(['form', 'upload'], function () {
+                upload = layui.upload;
+                form = layui.form;
+                //var layer = layui.layer;
+                form.render();
+                //form.verify({
+                //    StartPrice: [/^ [1 - 9]\d *\.\d *| 0\.\d * [1 - 9]\d * $/,'输入的起订价格不符合要求']
+                //});
+
+                //拖拽上传
+                upload.render({
+                    elem: '#shopImage',
+                    url: '/Upload/UploadImage',
+                    done: function (res) {
+                        if (res.state == "0"){
+                            var imgSrc = "/Images/Upload/" + res.url;
+                            $('.layui-upload-img').attr('src', imgSrc);
+                            $("#ShopImgs").val(imgSrc);
+                        }else{
+                            parent.layer.msg(res.state);
+                        }
+                    }
+                });
+            });
+        };
+        var submitHandle = function (ok) {
+            form.on('submit(buttonSave)', function (data) {
+                if (ok) {
+                    ok(data);
+                }
+                return false;
+            });
+            $("#buttonSave").trigger('click');
+        }
+        return {
+            init: function () {
+                initPage();
+            },
+            submit: function (ok) {
+                submitHandle(ok);
+            }
+        }
+    }();
+    $(function () { shopView.init(); });
+</script>

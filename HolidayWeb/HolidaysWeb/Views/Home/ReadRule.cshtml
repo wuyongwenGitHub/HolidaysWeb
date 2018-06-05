@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "ReadRule";
+}
+
+<div class="navigation ghdetail-nav">
+    <div class="w1080">首页 <span>&gt;</span>@ViewBag.Nav</div>
+</div>
+<div class="ghdetail-wrap w1080">
+    <div class="ghdetail-main clearfix">
+        @switch ((int)ViewBag.Rule)
+        {
+            case 1:
+                @RenderPage("~/Views/Rules/1.cshtml");
+                break;
+            case 2:
+                @RenderPage("~/Views/Rules/2.cshtml");
+                break;
+            case 3:
+                @RenderPage("~/Views/Rules/3.cshtml");
+                break;
+            case 4:
+                @RenderPage("~/Views/Rules/4.cshtml");
+                break;
+        }
+   </div>
+</div>
+

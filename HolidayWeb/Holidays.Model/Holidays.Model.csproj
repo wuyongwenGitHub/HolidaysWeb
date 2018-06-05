@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C490F3A9-33B0-4EB3-8AE0-2D8884ACA3D8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Holidays.Model</RootNamespace>
+    <AssemblyName>Holidays.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net40\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entites\AdminUser.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\CarInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ExtensionEntites\HouseInfo.cs" />
+    <Compile Include="Entites\ExtensionEntites\HouseInfoView.cs" />
+    <Compile Include="Entites\ExtensionEntites\OrderInfo.cs" />
+    <Compile Include="Entites\ExtensionEntites\ShopInfo.cs" />
+    <Compile Include="Entites\HolidaysEntites.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HolidaysEntites.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HolidaysEntites.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HolidaysEntites.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HolidaysEntites.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HomeData.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HouseComment.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HouseConfigure.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HouseEvaluate.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HouseEvaluateView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HouseImg.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HouseInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\HouseInfoView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\OrderInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\OrderInfoView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\OrderItem.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\Permission.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ProductCategory.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ProductInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\Region.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\Role.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ShopCategory.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ShopInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ShopInfoCertificate.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ShopInfoCertificateView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\ShopToDayPrice.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\SpotInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\SysLog.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\SystemConfig.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\TenantInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\User.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserAccount.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserFavorite.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserFavoriteView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserInfo.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserInfoCertificate.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserInfoCertificateView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserInfoExt.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserInfoExtView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserInfoView.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entites\UserOrderRecord.cs">
+      <DependentUpon>HolidaysEntites.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FormatModel\AccessToken.cs" />
+    <Compile Include="FormatModel\AjaxMsgModel.cs" />
+    <Compile Include="FormatModel\JsApiTicket.cs" />
+    <Compile Include="FormatModel\PageModel.cs" />
+    <Compile Include="FormatModel\PhoneSmsCode.cs" />
+    <Compile Include="FormatModel\ResponseData.cs" />
+    <Compile Include="FormatModel\TodayPrice.cs" />
+    <Compile Include="FormatModel\WeixinUserInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="Entites\HolidaysEntites.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>HolidaysEntites.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entites\HolidaysEntites.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HolidaysEntites.edmx</DependentUpon>
+      <LastGenOutput>HolidaysEntites.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Entites\HolidaysEntites.edmx.diagram">
+      <DependentUpon>HolidaysEntites.edmx</DependentUpon>
+    </None>
+    <None Include="Entites\HolidaysEntites.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HolidaysEntites.edmx</DependentUpon>
+      <LastGenOutput>HolidaysEntites.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ConstModel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entites\HolidaysEntites.edmx.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

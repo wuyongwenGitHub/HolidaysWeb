@@ -1,0 +1,325 @@
+﻿@{
+    ViewBag.Title = "首页数据设置";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Framework/webuploader-0.1.5/webuploader.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>首页广告设置 </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table id="datatable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>广告标题</th>
+                            <th>广告链接</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            @if (ViewBag.AD != null)
+                            {
+                                <td>#</td>
+                                <td>@ViewBag.AD.Title</td>
+                                <td><a href="@ViewBag.AD.Url" target="_blank">@ViewBag.AD.Url</a></td>
+                                <td>
+                                    <a target="_blank" href="@ViewBag.AD.ImgUrl" class="fa fa-eye btn btn-info btn-xs"> 查看图片 </a>
+                                    <button class="fa fa-edit btn btn-primary btn-xs" data-toggle="modal" data-target="#adModal"> 修改 </button>
+                                </td>
+                            }
+                            else
+                            {
+                                <td colspan="4" align="center">未初始化广告数据，请先在数据库中初始化广告数据！</td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- 修改首页广告窗口 -->
+                <div class="modal fade" id="adModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title">修改首页广告</h4>
+                            </div>
+                            <div class="modal-body">
+                                @if (ViewBag.AD != null)
+                                {
+                                    <form id="frmAD" class="form-horizontal form-label-left" novalidate>
+                                        <input name="ID" type="hidden" value="@ViewBag.AD.ID" />
+                                        <input name="Type" type="hidden" value="@ViewBag.AD.Type" />
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name">
+                                                广告标题 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <input value="@ViewBag.AD.Title" name="Title" class="form-control col-md-7 col-xs-12" maxlength="200" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name">
+                                                广告链接
+                                            </label>
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <input value="@ViewBag.AD.Url" name="Url" maxlength="500" class="form-control col-md-7 col-xs-12" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name">
+                                                广告图片 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <input value="@ViewBag.AD.ImgUrl" name="ImgUrl" id="txtAdImage" type="hidden" />
+
+                                                <!--图片预览-->
+                                                <img id="adImg" width="270" height="80" src="@ViewBag.AD.ImgUrl" onerror="" alt="广告图片" />
+                                                <br /><br />
+                                                <div id="btnUploadADImg">选择图片</div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" id="btnSaveAD" class="btn btn-primary">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 修改首页广告窗口END -->
+            </div>
+        </div>
+    </div>
+
+    <div ng-app="bannerApp" ng-controller="BannerListController" class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>首页Banner图设置 </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button ng-click="openAddModal()" class="btn btn-danger">添加Banner图</button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Banner标题</th>
+                            <th>链接地址</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="banner in bannerList">
+                            <td scope="row">{{ $index + 1 }}</td>
+                            <td>{{ banner.Title }}</td>
+                            <td>{{ banner.Url }}</td>
+                            <td>
+                                <a target="_blank" href="{{ banner.ImgUrl }}" class="fa fa-eye btn btn-info btn-xs"> 查看图片 </a>
+                                <button ng-click="openEditModal(banner.ID)" class="fa fa-edit btn btn-primary btn-xs"> 修改 </button>
+                                <button ng-click="del(banner.ID)" class="fa fa-trash btn btn-warning btn-xs"> 删除 </button>
+                            </td>
+                        </tr>
+
+                        <tr ng-if="bannerList.length == 0">
+                            <td colspan="4" align="center">暂无数据！</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 设置Banner图窗口 -->
+        <div class="modal fade" id="bannerModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title">Banner图设置</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmBanner" class="form-horizontal form-label-left" novalidate>
+                            <input name="ID" type="hidden" value="{{ BannerInfo.ID }}" />
+                            <input name="Type" type="hidden" value="{{ BannerInfo.Type }}" />
+
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name">
+                                    Banner标题 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input ng-model="BannerInfo.Title" name="Title" maxlength="200" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name">
+                                    Banner链接
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input ng-model="BannerInfo.Url" name="Url" maxlength="500" class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name">
+                                    Banner图片 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input value="{{ BannerInfo.ImgUrl }}" name="ImgUrl" id="txtBannerImage" type="hidden" />
+
+                                    <!--图片预览-->
+                                    <img id="bannerImg" width="270" height="80" src="{{ BannerInfo.ImgUrl }}" onerror="" alt="Banner图片" />
+                                    <br /><br />
+                                    <div id="btnUploadBannerImg">选择图片</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" ng-click="saveBanner()" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 设置Banner图窗口END -->
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+
+    <script type="text/javascript">
+        /* --------------------------------首页广告设置----------------------------------- */
+        // 广告图片处理
+        $("#adModal").on("shown.bs.modal", function () {
+            fnUploadImage("btnUploadADImg", function (url) {
+                $("#adImg").attr("src", url);
+                $("#txtAdImage").val(url);
+            });
+        }).on("hide.bs.modal", fnDestroyUploader);
+
+        // 修改广告
+        $("#btnSaveAD").on("click", function () {
+            var loadIndex = layer.load();
+            var data = $("#frmAD").serialize();
+            $.post("/Admin/HomeDataSetting/UpdateAD", data, function (result) {
+                layer.close(loadIndex);
+
+                if (result.Status == "ok") {
+                    layer.alert(result.Msg, { icon: 1 }, function () {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.alert(result.Msg, { icon: 2 });
+                }
+            });
+        });
+
+        /* --------------------------------首页Banner图设置----------------------------------- */
+        // Banner图片处理
+        $("#bannerModal").on("shown.bs.modal", function () {
+            fnUploadImage("btnUploadBannerImg", function (url) {
+                $("#bannerImg").attr("src", url);
+                $("#txtBannerImage").val(url);
+            });
+        }).on("hide.bs.modal", fnDestroyUploader);
+
+        var bannerApp = angular.module('bannerApp', []);
+
+        bannerApp.controller('BannerListController', function BannerListController($scope, $http) {
+            // 加载时默认初始化数据
+            $http({
+                method: 'POST',
+                url: '/Admin/HomeDataSetting/GetBannerList'
+            }).then(function successCallback(response) {
+                $scope.bannerList = response.data.Data;
+            }, function errorCallback(response) {
+                layer.alert("系统异常", { icon: 2 });
+            });
+
+            // 打开添加Bannner图窗口
+            $scope.openAddModal = function () {
+                $scope.BannerInfo = null;
+                $('#bannerModal').modal();
+            }
+
+            // 打开修改Banner图窗口
+            $scope.openEditModal = function (id) {
+                $scope.queryBannerByID(id);
+                $('#bannerModal').modal();
+            }
+
+            // 保存Banner图数据
+            $scope.saveBanner = function () {
+                var loadIndex = layer.load();
+                var data = $("#frmBanner").serialize();
+                $.post("/Admin/HomeDataSetting/SaveBanner", data, function (result) {
+                    layer.close(loadIndex);
+
+                    if (result.Status == "ok") {
+                        layer.alert(result.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            }
+
+            // 根据编号查询banner图
+            $scope.queryBannerByID = function (id) {
+                $http({
+                    method: 'POST',
+                    url: '/Admin/HomeDataSetting/QueryBannerByID',
+                    data: { id: id }
+                }).then(function successCallback(response) {
+                    $scope.BannerInfo = response.data.Data;
+                }, function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
+                });
+            }
+
+            // 删除Banner图
+            $scope.del = function (id) {
+                layer.confirm("确定要删除吗？", {
+                    btn: ["确定", "取消"],
+                    btn1: function () {
+                        $http({
+                            method: 'POST',
+                            url: '/Admin/HomeDataSetting/DelBannerByID',
+                            data: { id: id }
+                        }).then(function successCallback(response) {
+                            if (response.data.Status == "ok") {
+                                layer.alert(response.data.Msg, { icon: 1 }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                layer.alert(response.data.Msg, { icon: 2 });
+                            }
+                        }), function errorCallback(response) {
+                            layer.alert("系统异常", { icon: 2 });
+                        };
+                    }
+                });
+            }
+        });
+    </script>
+}

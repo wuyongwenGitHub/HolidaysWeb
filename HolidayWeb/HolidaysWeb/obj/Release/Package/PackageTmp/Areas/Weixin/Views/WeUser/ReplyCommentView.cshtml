@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "评论管理";
+    Layout = "~/Views/Shared/_WeixinLayout.cshtml";
+}
+
+<div class="header">
+    <h2 class="header-title">评论管理</h2>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="weui-search-bar" id="searchBar">
+            <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+                <label class="weui-search-bar__label" id="searchText">
+                    <i class="weui-icon-search"></i>
+                    <span>搜索</span>
+                </label>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+        </div>
+        <div id="commentList">
+        </div>
+    }
+    else
+    {
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">对不起，你无此权限！</h2>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                </p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area">
+            <i class="weui-icon-info weui-icon_msg"></i>
+        </div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">登录失效，请重新登录！</h2>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="/Weixin/WeUser/LoginCenter" class="weui-btn weui-btn_primary">立即登录</a>
+            </p>
+        </div>
+    </div>
+}
+
+@section footerjs{
+    <script type="text/javascript">
+        var commentView = function () {
+            var loading = false;
+            var limit = 0;
+            var page = 1
+
+            var initPage = function () {
+                initCommentList();
+                $(document.body).infinite().on("infinite", function () {
+                    if (loading) {
+                        return;
+                    }
+                    loading = true;
+                    initCommentList();
+                });
+                //
+                $("#selectOrder").change(function () {
+                    searchHandle();
+                });
+                $("#searchInput").keyup(function () {
+                    searchHandle();
+                });
+                $("#searchCancel").click(function () {
+                    $("#searchInput").val('');
+                    searchHandle();
+                });
+            };
+            var initCommentList = function () {
+                loading = false;
+                var keywords = $("#searchInput").val();
+                $.ajax({
+                    url: '/Weixin/WeUser/GetCommentList',
+                    type: 'post',
+                    data: { keywords: keywords, page: page },
+                    success: function (res) {
+                        var strHtml = '';
+                        if (res.data != null && res.data.length > 0) {
+                            for (var i = 0, len = res.data.length; i < len; i++) {
+                                var comment = res.data[i];
+                                strHtml += '<div class="weui-panel">';
+                                strHtml += '<div class="weui-panel__bd">';
+                                strHtml += '<div class="weui-media-box weui-media-box_text">';
+                                strHtml += '<h4 class="weui-media-box__title">' + comment.HouseTitle + '</h4>';
+                                strHtml += '<p class="weui-media-box__desc">' + comment.EvaluateContent + '</p>';
+                                strHtml += '<ul class="weui-media-box__info">';
+                                strHtml += '<li class="weui-media-box__info__meta">' + comment.Username + '</li>';
+                                strHtml += '<li class="weui-media-box__info__meta weui-media-box__info__meta_extra">' + jsonDatetimeFormat(comment.CreateTime) + '</li>';
+                                strHtml += '</ul>';
+                                strHtml += '</div>';
+                                strHtml += '</div>';
+                                strHtml += '</div>';
+                                if (comment.Comments != null && comment.Comments != "") {
+                                    strHtml += '<div class="weui-cells__title">回复评论</div>';
+                                    strHtml += ' <div class="weui-cells weui-cells_form">';
+                                    strHtml += ' <div class="weui-cells weui-cells_form">';
+                                    strHtml += ' <div class="weui-cell">';
+                                    strHtml += '<div class="weui-cell__bd">';
+                                    strHtml += '<textarea id="inputComments" class="weui-textarea" rows="3">' + comment.Comments + '</textarea>';
+                                    strHtml += '</div>';
+                                    strHtml += '</div>';
+                                    strHtml += '</div>';
+                                    strHtml += '</div>';
+                                    strHtml += '<div class="weui-btn-area">';
+                                    strHtml += '<a href="/Weixin/WeUser/ReplyView/' + comment.ID + '" class="weui-btn weui-btn_default">修改</a>';
+                                    strHtml += '</div>';
+                                } else
+                                {
+                                    strHtml += '<div class="weui-btn-area">';
+                                    strHtml += '<a href="/Weixin/WeUser/ReplyView/' + comment.ID + '" class="weui-btn weui-btn_default">回复</a>';
+                                    strHtml += '</div>';
+                                }
+                            }
+                        }
+                        if (limit < res.count) {
+                            limit += res.data.length;
+                            page += 1;
+                            $("#commentList").append(strHtml);
+                        } else {
+                            loading = true;
+                        }
+                        if (res.count == 0) {
+                            $("#commentList").html('<span>暂无相关评论！</span>');
+                        }
+                    },
+                    error: function () {
+                        loading = false;
+                        $.toptip('发生错误！', 'error');
+                    }
+                });
+            };
+            var searchHandle = function () {
+                limit = 0;
+                page = 1;
+                $("#commentList").html('');
+                initCommentList();
+            };
+            return {
+                init: function () {
+                    initPage();
+                }
+            }
+        }();
+        $(function () { commentView.init(); });
+    </script>
+}

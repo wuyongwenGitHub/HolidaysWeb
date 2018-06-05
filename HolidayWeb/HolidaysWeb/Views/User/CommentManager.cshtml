@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "评论管理";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section styles{
+    <link href="~/Styles/accountman.css" rel="stylesheet" />
+    <link href="~/Framework/layui2/css/layui.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/placeholders.min.js"></script>
+    <script src="~/Framework/layui2/layui.all.js"></script>
+    <script src="~/Scripts/Utility.js"></script>
+}
+
+<div class="navigation">
+    <div class="w1080">首页<span>&gt;</span> 店铺中心</div>
+</div>
+
+@if (ViewBag.IsLogin)
+{
+    if (ViewBag.IsPermission)
+    {
+        <div class="w1080">
+            <ul class="layui-nav layui-bg-blue ">
+                <li class="layui-nav-item"><a href="/User/UserCenter">店铺信息</a></li>
+                <li class="layui-nav-item"><a href="/User/HouseManager">房源管理</a></li>
+                <li class="layui-nav-item"><a href="/User/OrderManager">订单管理</a></li>
+                <li class="layui-nav-item"><a href="/User/FinanceManager">财务管理</a></li>
+                <li class="layui-nav-item layui-this"><a href="/User/CommentManager">评论管理</a></li>
+                <li class="layui-nav-item"><a href="/User/ResetPassword">修改密码</a></li>
+            </ul>
+            <div class="layui-row">
+                <div class="layui-col-md3 layui-col-sm3 layui-col-xs3 layui-col-lg3 " style="margin-top:5px;">
+                    <input id="keywords" type="text" class="layui-input" placeholder="房源" />
+                </div>
+                <div class="layui-col-md1 layui-col-sm1 layui-col-xs1 layui-col-lg1 " style="margin-top:5px;">
+                    <a href="javascript:;" class="layui-btn layui-btn-primary" style="margin-left:2px;" onclick="commentManager.search()">查询</a>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md12 layui-col-sm12 layui-col-xs12 layui-col-lg12">
+                    <table id="grid1"></table>
+                </div>
+            </div>
+        </div>
+        @section footerjs{
+            <script type="text/javascript">
+
+                var table, layer;
+                var commentManager = function () {
+
+                    var initPage = function () {
+                        layui.use(['table', 'element', 'layer'], function () {
+                            table = layui.table;
+                            layer = layui.layer;
+                            var element = layui.element;
+
+                            table.render({
+                                elem: '#grid1',
+                                loading: true,
+                                id: 'grid1',
+                                url: '/WeUser/GetCommentList',
+                                method: 'post',
+                                height: 480,
+                                page: true,
+                                cols: [[
+                                    { field: 'ID', title: '#', width: 60, fixed: 'center', type: 'numbers' },
+                                    { field: 'HouseTitle', title: '房源标题', width: 180, align: 'left' },
+                                    { field: 'Username', title: '评价人', width: 100, align: 'center' },
+                                    {
+                                        field: 'CreateTime', title: '评价时间', width: 160, align: 'center', templet: function (d) {
+                                            return jsonDatetimeFormat(d.CreateTime);
+                                        }
+                                    },
+                                    { field: 'CleanScore', title: '整洁卫生分数', width: 120, align: 'right' },
+                                    { field: 'LocationScore', title: '交通位置分数', width: 120, align: 'right' },
+                                    { field: 'EnvironmentScore', title: '设施环境分数', width: 120, align: 'right' },
+                                    { field: 'ServiceScore', title: '房东服务', width: 120, align: 'right' },
+                                    { field: 'PerformanceScore', title: '性价比分数', width: 120, align: 'right' },
+                                    { field: 'EvaluateContent', title: '评价内容', width: 200, align: 'left' },
+                                    { field: 'Comments', title: '回复内容', width: 120, align: 'left' },
+                                    {
+                                        field: '', title: '回复', width: 100, align: 'center', templet: function (d) {
+                                            if (d.Comments == null || d.Comments == "") {
+                                                return '<a href="/User/ReplyView/' + d.ID + '" class="layui-btn layui-btn-primary layui-btn-xs">回复</a>';
+                                            } else {
+                                                return '<a href="/User/ReplyView/' + d.ID + '" class="layui-btn layui-btn-primary layui-btn-xs">修改</a>';
+                                            }
+                                        }
+                                    }
+                                ]]
+                            });
+
+                        });
+                    };
+                    var searchHandle = function () {
+                        var keywords = $("#keywords").val();
+                        table.reload('grid1', {
+                            page: {
+                                curr: 1
+                            },
+                            where: {
+                                keywords: keywords
+                            }
+                        });
+                    };
+                    return {
+                        init: function () {
+                            initPage();
+                        },
+                        search: function () {
+                            searchHandle();
+                        }
+                    }
+                }();
+                $(function () { commentManager.init(); });
+            </script>
+        }
+    }
+    else
+    {
+        <p style="text-align: center;">对不起，你无此权限，请联系平台管理员。</p>
+    }
+}
+else
+{
+    Html.RenderPartial("_NoAuthPartial");
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "Styles/hotel_list.min.css",
+    "inputFiles": [
+      "Styles/hotel_list.css"
+    ]
+  },
+  {
+    "outputFileName": "Framework/flexImages/jquery.flex-images.min.js",
+    "inputFiles": [
+      "Framework/flexImages/jquery.flex-images.js"
+    ]
+  }
+]

@@ -1,0 +1,228 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>我要去度假 | @ViewBag.Title</title>
+    <!-- Bootstrap -->
+    <link href="~/Framework/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/Framework/gentelella-master/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    @RenderSection("styles", false)
+
+    <!-- Custom Theme Style -->
+    <link href="~/Framework/gentelella-master/build/css/custom.min.css" rel="stylesheet" />
+    
+</head>
+<body class="nav-md">
+    @RenderSection("modal", false)
+
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="/Admin/Main" class="site_title"><img width="50" height="50" src="~/Images/Admin/logo.png" />  <span>我要去度假</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- menu profile quick info -->
+                    <div class="profile">
+                        <div class="profile_pic">
+                            <img src="/images/admin/img.png" class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>欢迎登录,</span>
+                            <h2>后台管理系统</h2>
+                        </div>
+                    </div>
+                    <!-- /menu profile quick info -->
+                    <br />
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>系统管理员</h3>
+                            <ul class="nav side-menu">
+                               
+
+                                <li>
+                                        <a href="/Admin/Main"><i class="fa fa-dashboard"></i> 后台管理首页 </a>
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-user"></i>权限管理<span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/Admin/PermissionManager/UserManagerView">用户管理</a></li>
+                                            <li><a href="/Admin/PermissionManager/RoleManagerView">角色管理</a></li>
+                                            <li><a href="/Admin/PermissionManager/PermManagerView">菜单权限管理</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/HomeDataSetting"><i class="fa fa-edit"></i> 首页数据设置 </a>
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-home"></i> 房源管理 <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/Admin/HouseResource/HouseListView">房源信息管理</a></li>
+                                            <li><a href="/Admin/HouseResource/HouseEvaluateListView">房源评价管理</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/ScenicSpot"><i class="fa fa-umbrella"></i> 旅游景点管理 </a>
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-shopping-bag"></i> 店铺管理 <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/Admin/Shop/Index">店铺管理首页</a></li>
+                                            <li><a href="/Admin/Shop/ShopCheckManageView">店铺审核</a></li>
+                                            <li><a href="/Admin/Shop/ShopCategoryView">店铺风格管理</a></li>
+
+                                        </ul>
+
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-table"></i> 旅游商品管理 <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/Admin/TourismProduct/ProductManageView">商品管理</a></li>
+                                            <li><a href="/Admin/TourismProduct/CategoryManageView">商品分类管理</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-user"></i> 会员管理 <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/Admin/NormalUser/UserlistView">会员信息管理</a></li>
+                                            <li><a href="/Admin/NormalUser/UserFavoriteListView">会员收藏管理</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-users"></i> 房东管理 <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/Admin/Landlord/LandlordManageView">房东信息管理</a></li>
+                                            <li><a href="/Admin/Landlord/LandlordCertificationView">实名认证审核</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/TourCarLease"><i class="fa fa-car"></i> 旅游车辆租赁管理 </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/DataStats"><i class="fa fa-bar-chart-o"></i> 数据统计 </a>
+                                    </li>
+                                    <li>
+                                        <a><i class="fa fa-cogs"></i> 系统设置 <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/Admin/SystemSetting/RoyaltyRateSettingView">平台提成设置</a>
+                                            <li><a href="/Admin/SystemSetting/UpdatePasswordView">修改密码</a>
+                                            <li><a href="/Admin/Login/Logout">退出系统</a>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a href="/Admin/SystemSetting/UpdatePasswordView" data-toggle="tooltip" data-placement="top" title="修改密码">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a href="/Admin/Landlord/LandlordCertificationView" data-toggle="tooltip" data-placement="top" title="房东实名认证审核">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        </a>
+                        <a target="_blank" href="/Home/Index" data-toggle="tooltip" data-placement="top" title="预览网站首页">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        </a>
+                        <a href="/Admin/Login/Logout" data-toggle="tooltip" data-placement="top" title="注销">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-gear"></i>
+                                    <span>快捷菜单</span>
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a target="_blank" href="/Home/Index"> 预览首页</a></li>
+                                    <li><a href="/Admin/SystemSetting/UpdatePasswordView"> 修改密码</a></li>
+                                    <li><a href="/Admin/Login/Logout"><i class="fa fa-sign-out pull-right"></i> 退出系统</a></li>
+                                </ul>
+                            </li>
+
+                            <li role="presentation" class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">@ViewBag.CertificateTotal</span>
+                                </a>
+                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                    <li>
+                                        <a href="/Admin/Landlord/LandlordCertificationView">
+                                            <span class="image"><img src="/Images/Admin/certification.png" alt="Profile Image" /></span>
+                                            <span>
+                                                @if (ViewBag.CertificateTotal != null && ViewBag.CertificateTotal > 0)
+                                                {
+                                                    <span>你有新的房东实名认证审核</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>暂无待办信息</span>
+                                                }
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                @RenderBody()
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    © Copyright 2016 <a href="/Home/Index" target="_blank">我要去度假</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="~/Framework/gentelella-master/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/Framework/gentelella-master/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="~/Framework/angular-1.6.0-rc.2/angular.min.js"></script>
+
+    <script src="~/Framework/layer/layer.js"></script>
+
+    <script src="~/Scripts/Utility.js"></script>
+
+    @RenderSection("scripts", false)
+
+    <!-- Custom Theme Scripts -->
+    <script src="~/Framework/gentelella-master/build/js/custom.min.js"></script>
+   
+</body>
+</html>
