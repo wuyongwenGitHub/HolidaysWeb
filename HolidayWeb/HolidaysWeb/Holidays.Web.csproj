@@ -145,6 +145,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Admin\AccountHelper.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DataStatsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeDataSettingController.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Areas\Admin\Controllers\LandlordController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NoPermissionController.cs" />
     <Compile Include="Areas\Admin\Controllers\NormalUserController.cs" />
     <Compile Include="Areas\Admin\Controllers\PermissionManagerController.cs" />
     <Compile Include="Areas\Admin\Controllers\RegionController.cs" />
@@ -160,8 +162,15 @@
     <Compile Include="Areas\Admin\Controllers\SystemSettingController.cs" />
     <Compile Include="Areas\Admin\Controllers\TourCarLeaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\TourismProductController.cs" />
+    <Compile Include="Areas\Admin\Models\AddRoleViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\MenuFuncViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PermissionModel.cs" />
+    <Compile Include="Areas\Admin\Models\QueryUserByIdViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RoleModel.cs" />
+    <Compile Include="Areas\Admin\Models\RolePermViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RoleWithSelectedViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserModel.cs" />
+    <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
     <Compile Include="Areas\Weixin\Controllers\AuthorizeController.cs" />
     <Compile Include="Areas\Weixin\Controllers\WeCarController.cs" />
     <Compile Include="Areas\Weixin\Controllers\WeHouseController.cs" />
@@ -206,6 +215,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HolidaysWebConst\HolidaysWebConst.cs" />
+    <Compile Include="MemberEnum\MemberEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
