@@ -38,7 +38,7 @@
                 if (isValid) {
                     $.showLoading('登录中...');
                     jQuery.ajax({
-                        url: '/WeLogin/AccountLogin',
+                        url: '/Home/AccountLogin?input1=' + input1 + '&input2=' + input2,
                         type:'POST',
                         dataType: 'json',
                         async: false,
