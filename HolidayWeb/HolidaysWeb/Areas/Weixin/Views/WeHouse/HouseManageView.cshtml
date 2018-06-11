@@ -8,7 +8,10 @@
     <link href="~/Framework/weui/lib/weui.min.css" rel="stylesheet" />
     <link href="~/Framework/weui/css/jquery-weui.min.css" rel="stylesheet" />
     <link href="~/Styles/weui-custom.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Framework/PriceCalendarp/css/calendar-price-jquery.min.css" />
+    <link href="~/Framework/layer/skin/default/layer.css" rel="stylesheet" />
 }
+
 
 <div class="page-wrap">
     @if (ViewBag.IsLogin)
@@ -69,7 +72,7 @@
                                                     {
                                                         <a onclick="fnUpdateHouseState(@house.ID, 0)" href="javascript:;" class="proper-btn proper-disbtn">上架</a>
                                                     }
-
+                                                    <a onclick="openPriceCalendarModal(@house.ID, 0)" href="javascript:;" style="background:green" class="proper-btn proper-disbtn">价格日历</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -162,8 +165,84 @@
         <p style="text-align: center; padding: 20px; font-size: 14px;">登录失效，请重新登录！</p>
     }
 </div>
+<!--价格日历窗口窗口-->
+<div class="Price_calendar">
+    <div class="containers"></div>
+    <div class="capricorncd-date-detailed-settings" style="z-index:999999999;display:none">
+        <div class="cddsw-container">
+            <div class="cddsw-head-wrapper">
+                <div class="cddsw-title">
+                    0000-00-00
+                </div>
+                <a class="cddsw-close"><i></i></a>
+            </div>
+            <ul class="cddsw-form-wrapper clearfix">
+                @*<li> <label>最多购买数</label> <input name="buyNumMax" type="text" /></li>
+                    <li> <label>最少购买数</label> <input name="buyNumMin" type="text" /></li>*@
+                <li> <label>当天售价</label> <input name="price" type="text" /></li>
+                @*<li> <label>景区挂牌价</label> <input name="priceMarket" type="text" /></li>
+                    <li> <label>分销结算价</label> <input name="priceSettlement" type="text" /></li>
+                    <li> <label>建议零售价</label> <input name="priceRetail" type="text" /></li>
+                    <li> <label>返现</label> <input name="cashback" type="text" /></li>
+                    <li> <label>当天库存</label> <input name="stock" type="text" /></li>*@
+            </ul>
+            <fieldset class="cddsw-batch-settings clearfix">
+                <legend class="bs-title"><b>批量设置</b></legend>
+                <div class="bs-content">
+                    <lable class="bs-lable">
+                        日期范围
+                    </lable>
+                    <div class="bs-options-wrapper">
+                        <input class="itext" name="startDay" type="text" />
+                        <span class="white-space">-</span>
+                        <input class="itext" name="endDay" type="text" />
+                        <label class="drw-enable"><input name="enableDateRange" type="checkbox" /> 启用</label>
+                    </div>
+                </div>
+                <div class="bs-content bs-week-chekbox">
+                    <lable class="bs-lable">
+                        设置星期
+                    </lable>
+                    <div class="bs-options-wrapper">
+                        <label><input name="setWeek" type="checkbox" value="1" /> 周一</label>
+                        <label><input name="setWeek" type="checkbox" value="2" /> 周二</label>
+                        <label><input name="setWeek" type="checkbox" value="3" /> 周三</label>
+                        <label><input name="setWeek" type="checkbox" value="4" /> 周四</label>
+                        <label><input name="setWeek" type="checkbox" value="5" /> 周五</label>
+                        <label><input name="setWeek" type="checkbox" value="6" /> 周六</label>
+                        <label><input name="setWeek" type="checkbox" value="0" /> 周日</label>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="cddsw-foot-wrapper">
+                <button class="btn-confirm">启用本设置</button>
+                <button class="btn-cancel">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .Price_calendar {
+        background: #eeeeee;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        z-index: 99;
+    }
+    .capricorncd-calendar-container .calendar-table-wrapper table td b {
+        padding-right: 10px;
+    }
+</style>
+
 
 @section footerjs{
+    <!--日历相关-->
+    <script src="~/Framework/PriceCalendarp/js/mock-data.js"></script>
+    <script src="~/Framework/PriceCalendarp/js/calendar-price-jquery.js"></script>
+    <!--日历相关over-->
+    <script src="~/Framework/layer/layer.js"></script>
     <script src="~/Framework/weui/js/jquery-weui.min.js"></script>
     <script type="text/javascript">
         // 设置房屋托管
@@ -201,7 +280,7 @@
         //更改房屋状态
         function fnUpdateHouseEmpty(id) {
             var loadIndex = layerload();
-            $.post("/House/UpdateEmptyState", { id: id}, function (result) {
+            $.post("/House/UpdateEmptyState", { id: id }, function (result) {
                 layer.close(loadIndex);
                 if (result.Status == "ok") {
                     layermsg(result.Msg, function () {
@@ -212,5 +291,250 @@
                 }
             });
         }
+        var $scope = {};
+        //打开价格日历窗口
+        function openPriceCalendarModal(id) {
+            $scope.id = id;
+            //$("#PriceCalendarpModal").modal();
+            PriceSetShow($scope);
+        };
+        $scope.openeveryPriceModal = function (shop) {
+            //$scope.Shop = shop;
+
+            //$("#everyPriceModal").modal();
+        };
+        //保存价格日历
+        $scope.savePriceAuto = function (data) {
+            var index = layer.load();
+            if (!data || data == []) {
+                return layer.alert("无改动", { icon: 1 });
+            }
+            var jsonSdata = JSON.stringify(data)
+            $.post({
+                method: 'POST',
+                url: '/House/SavePriceAuto',
+                data: { PriceAutos: jsonSdata }
+            }).then(function successCallback(response) {
+                layer.close(index);
+                updata = [];
+                if (response.Status == "ok") {
+                    $(".Price_calendar").slideUp();
+                    layer.alert(response.Msg, { icon: 1 });
+                } else {
+                    layer.alert(response.Msg, { icon: 2 });
+                }
+            }), function errorCallback(response) {
+                layer.alert("系统异常", { icon: 2 });
+            }
+
+        }
+        //根据店铺id查询价格日历信息
+        $scope.getPriceAutoByShopID = function ($scope) {
+            var index = layer.load();
+            $.post({
+                method: 'post',
+                url: '/House/GetPriceAutoByShopID',
+                data: { ShopId: $scope.id }
+            }).then(function successCallback(response) {
+                layer.close(index);
+                var MOCK_DATA = response.Data;
+                Calebuild($scope, MOCK_DATA);
+                // $scope.ImgArray = $scope.Shop.ShopImgs.split(',');
+                // $scope.fnUpdateImgInput();
+            }, function errorCallback(response) {
+                layer.alert('系统异常', { icon: 2 });
+            });
+        }
+        var updata = [];
+        //价格日历相关代码
+
+        function PriceSetShow($scope) {
+            // 生成模拟数据(请求数据)
+            $scope.getPriceAutoByShopID($scope); //createMockData()
+        }
+        //日历对象
+        var zxCalendar = {};
+        function Calebuild($scope, MOCK_DATA) {
+            debugger;
+            $(".Price_calendar").slideDown();
+            if (zxCalendar && zxCalendar.calendar) {
+                zxCalendar.update(MOCK_DATA);
+                return zxCalendar.calendar.show();
+            }
+            //$("#ShopName").text($scope.Shop.ShopName);
+            //$("#HouseTitle").text($scope.Shop.HouseTitle);
+            zxCalendar = $.CalendarPrice({
+                el: '.containers',
+                // startDate: '2017-08-02',
+                endDate: '2018-12-20',
+                data: MOCK_DATA,
+                newData: updata,
+                ShopId: $scope.id,
+                // 配置需要设置的字段名称
+                config: [
+                    //{
+                    //    key: 'buyNumMax',
+                    //    name: '最多购买数'
+                    //},
+                    //{
+                    //    key: 'buyNumMin',
+                    //    name: '最少购买数'
+                    //},
+                    {
+                        key: 'price',
+                        name: '今日售价'
+                    },
+                    //{
+                    //    key: 'priceMarket',
+                    //    name: '景区挂牌价'
+                    //},
+                    //{
+                    //    key: 'priceSettlement',
+                    //    name: '分销结算价'
+                    //},
+                    //{
+                    //    key: 'priceRetail',
+                    //    name: '建议零售价'
+                    //},
+                    //{
+                    //    key: 'cashback',
+                    //    name: '返现'
+                    //},
+                    //{
+                    //    key: 'stock',
+                    //    name: '当天库存'
+                    //}
+                ],
+                // 配置在日历中要显示的字段
+                show: [
+                    {
+                        key: 'price',
+                        name: '当天价格:￥'
+                    },
+                    //{
+                    //    key: 'priceSettlement',
+                    //    name: '采:￥'
+                    //},
+                    //{
+                    //    key: 'stock',
+                    //    name: '库:'
+                    //}
+                ],
+                callback: function (data) {
+                    $scope.savePriceAuto(data);
+                    //log('callback ....');
+                    //log(data);
+                },
+                updateDate: function (data) {
+                },
+                isRealNum: function (key) {
+                    if (!key) {
+                        layer.alert('价格格式有误', { icon: 2 });
+                        return false;
+                    }
+                    return true;
+                },
+                cancel: function () {
+                    log('取消设置 ....');
+                    // 取消设置
+                    // 这里可以触发关闭设置窗口
+                    // ...
+                },
+                monthChange: function (month) {
+                    log('monthChange: ')
+                    log(month)
+                    //        var newData = createMockData()
+                    //        zxCalendar.update(newData)
+                },
+                reset: function () {
+                    log('数据重置成功！');
+                },
+                cancel: function (e) {
+                    $(".Price_calendar").slideUp() 
+                },
+                everyday: function (data) {
+                    $scope.openeveryPriceModal();
+                    //var settingWindow = $(".capricorncd-date-detailed-settings");
+
+                    //// 初始化input[value]
+                    //settingWindow.find('.cddsw-form-wrapper [type="text"]').val('');
+                    //settingWindow.find('[name="enableDateRange"]').prop('checked', false);
+                    //settingWindow.find('[name="setWeek"]').prop('checked', false);
+
+                    //// 用户传入字段
+                    //$.each(data, function (key, val) {
+                    //    settingWindow.find('[name="' + key + '"]').val(val);
+                    //});
+
+                    //// 栏目标题
+                    //settingWindow.find('.cddsw-title').html(data["thisDate"]);
+                    //settingWindow.find('[name="startDay"], [name="endDay"]').val(data["thisDate"]);
+
+                    //settingWindow.show();
+                },
+                error: function (err) {
+                    console.error(err.msg);
+                    alert(err.msg);
+                },
+                // 自定义颜色
+                style: {
+                    // 头部背景色
+                    headerBgColor: 'green',
+                    // 头部文字颜色
+                    headerTextColor: '#fff',
+                    // 周一至周日背景色，及文字颜色
+                    weekBgColor: 'green',
+                    weekTextColor: '#fff',
+                    // 周末背景色，及文字颜色
+                    weekendBgColor: 'green',
+                    weekendTextColor: '#fff',
+                    // 有效日期颜色
+                    validDateTextColor: '#333',
+                    validDateBgColor: '#fff',
+                    validDateBorderColor: '#eee',
+                    // Hover
+                    validDateHoverBgColor: 'green',
+                    validDateHoverTextColor: '#fff',
+                    // 无效日期颜色
+                    invalidDateTextColor: '#ccc',
+                    invalidDateBgColor: '#fff',
+                    invalidDateBorderColor: '#eee',
+                    // 底部背景颜色
+                    footerBgColor: 'green',
+                    // 重置按钮颜色
+                    resetBtnBgColor: '#77c351',
+                    resetBtnTextColor: '#fff',
+                    resetBtnHoverBgColor: '#55b526',
+                    resetBtnHoverTextColor: '#fff',
+                    // 确定按钮
+                    confirmBtnBgColor: '#66b3ff',
+                    confirmBtnTextColor: '#fff',
+                    confirmBtnHoverBgColor: '#00649a',
+                    confirmBtnHoverTextColor: '#fff',
+                    // 取消按钮
+                    cancelBtnBgColor: '#fff',
+                    cancelBtnBorderColor: '#bbb',
+                    cancelBtnTextColor: '#999',
+                    cancelBtnHoverBgColor: '#fff',
+                    cancelBtnHoverBorderColor: '#bbb',
+                    cancelBtnHoverTextColor: '#666'
+                }
+                // 点击有效的某一触发的回调函数
+                // 注意：配置了此参数，设置窗口无效，即不能针对日期做参数设置
+                // 返回每天的数据
+                //        everyday: function (dayData) {
+                //            console.log('点击某日，返回当天的数据');
+                //            console.log(dayData);
+                //        },
+                // 隐藏底部按钮（重置、确定、取消），前台使用该插件时，则需要隐藏底部按钮
+                //        hideFooterButton: true
+            });
+        }
+        //log(zxCalendar)
+        function log(s) {
+            console.log(s)
+        }
+
+
     </script>
 }
