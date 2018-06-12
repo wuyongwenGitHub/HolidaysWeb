@@ -61,7 +61,14 @@ namespace Holidays.Web.Areas.Admin.Controllers
                 if (OperateContext.Current.Login(loginAccount, loginPassword))
                 {
                     status = "ok";
-                    msg = "/Admin/Main";
+                    if (OperateContext.Current.AdminUser!=null)
+                    {
+                        msg = "/Admin/Main";
+                    }
+                    else
+                    {
+                        msg = "/Admin/PermissionManager/UserManagerView";
+                    }
                 }
                 else
                 {

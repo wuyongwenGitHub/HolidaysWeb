@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Holidays.Web
+@{
     ViewBag.Title = "用户管理";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
@@ -48,7 +49,7 @@
                         <td>{{ user.Email }}</td>
                         <td>{{ user.CreateTime }}</td>
                         <td>{{ user.Description }}</td>
-                        <td>
+                        <td ng-if="user.ParentId==-1">
                             <a href="javascript:;" ng-click="openEditUserModal(user.Id)" title="编辑" class="fa fa-edit btn-xs"></a>
                             <a href="javascript:;" ng-click="del(user.Id)" title="删除" class="fa fa-trash btn-xs"></a>
                         </td>

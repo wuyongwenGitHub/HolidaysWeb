@@ -8271,6 +8271,7 @@
     <Content Include="Areas\Weixin\Views\WeUser\HouseScoreView.cshtml" />
     <Content Include="Areas\Weixin\Views\WeUser\HouseCommentView.cshtml" />
     <Content Include="Areas\Weixin\Views\WeUser\CouponCodeView.cshtml" />
+    <Content Include="Areas\Admin\Views\NoPermission\Index.cshtml" />
     <None Include="bundleconfig.json" />
     <Content Include="Framework\layui2\font\iconfont.eot" />
     <Content Include="Framework\layui2\font\iconfont.ttf" />

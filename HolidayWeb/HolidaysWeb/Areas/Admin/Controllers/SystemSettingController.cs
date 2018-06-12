@@ -20,7 +20,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:57:12
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult UpdatePasswordView()
         {
@@ -102,7 +102,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-23 00:29:53
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult RoyaltyRateSettingView()
         {

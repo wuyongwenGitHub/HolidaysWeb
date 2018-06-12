@@ -24,7 +24,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:43:04
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult HouseListView()
         {
@@ -119,7 +119,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 房屋评价管理页面
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult HouseEvaluateListView()
         {
@@ -216,7 +216,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2018-03-31
         /// </summary>
         /// <returns></returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult AddHouseView(long? id)
         {

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Holidays.Web;
+@{
     Layout = null;
 }
 
@@ -21,7 +22,7 @@
 
     <!-- Custom Theme Style -->
     <link href="~/Framework/gentelella-master/build/css/custom.min.css" rel="stylesheet" />
-    
+
 </head>
 <body class="nav-md">
     @RenderSection("modal", false)
@@ -51,77 +52,84 @@
                         <div class="menu_section">
                             <h3>系统管理员</h3>
                             <ul class="nav side-menu">
-                               
+
+
 
                                 <li>
-                                        <a href="/Admin/Main"><i class="fa fa-dashboard"></i> 后台管理首页 </a>
-                                    </li>
-                                    <li>
-                                        <a><i class="fa fa-user"></i>权限管理<span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="/Admin/PermissionManager/UserManagerView">用户管理</a></li>
-                                            <li><a href="/Admin/PermissionManager/RoleManagerView">角色管理</a></li>
-                                            <li><a href="/Admin/PermissionManager/PermManagerView">菜单权限管理</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="/Admin/HomeDataSetting"><i class="fa fa-edit"></i> 首页数据设置 </a>
-                                    </li>
-                                    <li>
-                                        <a><i class="fa fa-home"></i> 房源管理 <span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="/Admin/HouseResource/HouseListView">房源信息管理</a></li>
-                                            <li><a href="/Admin/HouseResource/HouseEvaluateListView">房源评价管理</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="/Admin/ScenicSpot"><i class="fa fa-umbrella"></i> 旅游景点管理 </a>
-                                    </li>
-                                    <li>
-                                        <a><i class="fa fa-shopping-bag"></i> 店铺管理 <span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="/Admin/Shop/Index">店铺管理首页</a></li>
-                                            <li><a href="/Admin/Shop/ShopCheckManageView">店铺审核</a></li>
-                                            <li><a href="/Admin/Shop/ShopCategoryView">店铺风格管理</a></li>
+                                    <a><i class="fa fa-user"></i>权限管理<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/Admin/PermissionManager/UserManagerView">用户管理</a></li>
+                                        <li><a href="/Admin/PermissionManager/RoleManagerView">角色管理</a></li>
+                                        <li><a href="/Admin/PermissionManager/PermManagerView">菜单权限管理</a></li>
+                                    </ul>
+                                </li>
+                                @{
+        if (OperateContext.Current.AdminUser != null)
+        {
+                            <li>
+                                <a href="/Admin/Main"><i class="fa fa-dashboard"></i> 后台管理首页 </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/HomeDataSetting"><i class="fa fa-edit"></i> 首页数据设置 </a>
+                            </li>
+                            <li>
+                                <a><i class="fa fa-home"></i> 房源管理 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/Admin/HouseResource/HouseListView">房源信息管理</a></li>
+                                    <li><a href="/Admin/HouseResource/HouseEvaluateListView">房源评价管理</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/Admin/ScenicSpot"><i class="fa fa-umbrella"></i> 旅游景点管理 </a>
+                            </li>
+                            <li>
+                                <a><i class="fa fa-shopping-bag"></i> 店铺管理 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/Admin/Shop/Index">店铺管理首页</a></li>
+                                    <li><a href="/Admin/Shop/ShopCheckManageView">店铺审核</a></li>
+                                    <li><a href="/Admin/Shop/ShopCategoryView">店铺风格管理</a></li>
 
-                                        </ul>
+                                </ul>
 
-                                    </li>
-                                    <li>
-                                        <a><i class="fa fa-table"></i> 旅游商品管理 <span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="/Admin/TourismProduct/ProductManageView">商品管理</a></li>
-                                            <li><a href="/Admin/TourismProduct/CategoryManageView">商品分类管理</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a><i class="fa fa-user"></i> 会员管理 <span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="/Admin/NormalUser/UserlistView">会员信息管理</a></li>
-                                            <li><a href="/Admin/NormalUser/UserFavoriteListView">会员收藏管理</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a><i class="fa fa-users"></i> 房东管理 <span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="/Admin/Landlord/LandlordManageView">房东信息管理</a></li>
-                                            <li><a href="/Admin/Landlord/LandlordCertificationView">实名认证审核</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="/Admin/TourCarLease"><i class="fa fa-car"></i> 旅游车辆租赁管理 </a>
-                                    </li>
-                                    <li>
-                                        <a href="/Admin/DataStats"><i class="fa fa-bar-chart-o"></i> 数据统计 </a>
-                                    </li>
-                                    <li>
-                                        <a><i class="fa fa-cogs"></i> 系统设置 <span class="fa fa-chevron-down"></span></a>
-                                        <ul class="nav child_menu">
-                                            <li><a href="/Admin/SystemSetting/RoyaltyRateSettingView">平台提成设置</a>
-                                            <li><a href="/Admin/SystemSetting/UpdatePasswordView">修改密码</a>
-                                            <li><a href="/Admin/Login/Logout">退出系统</a>
-                                        </ul>
-                                    </li>
+                            </li>
+                            <li>
+                                <a><i class="fa fa-table"></i> 旅游商品管理 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/Admin/TourismProduct/ProductManageView">商品管理</a></li>
+                                    <li><a href="/Admin/TourismProduct/CategoryManageView">商品分类管理</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a><i class="fa fa-user"></i> 会员管理 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/Admin/NormalUser/UserlistView">会员信息管理</a></li>
+                                    <li><a href="/Admin/NormalUser/UserFavoriteListView">会员收藏管理</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a><i class="fa fa-users"></i> 房东管理 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/Admin/Landlord/LandlordManageView">房东信息管理</a></li>
+                                    <li><a href="/Admin/Landlord/LandlordCertificationView">实名认证审核</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/Admin/TourCarLease"><i class="fa fa-car"></i> 旅游车辆租赁管理 </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/DataStats"><i class="fa fa-bar-chart-o"></i> 数据统计 </a>
+                            </li>
+                            <li>
+                                <a><i class="fa fa-cogs"></i> 系统设置 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="/Admin/SystemSetting/RoyaltyRateSettingView">平台提成设置</a>
+                                    <li><a href="/Admin/SystemSetting/UpdatePasswordView">修改密码</a>
+                                    <li><a href="/Admin/Login/Logout">退出系统</a>
+                                </ul>
+                            </li>
+}
+                                }
+
                             </ul>
                         </div>
                     </div>
@@ -223,6 +231,6 @@
 
     <!-- Custom Theme Scripts -->
     <script src="~/Framework/gentelella-master/build/js/custom.min.js"></script>
-   
+
 </body>
 </html>

@@ -22,7 +22,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-25 18:58:41
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
         public ActionResult Index()
         {
             // 房东审核待办数

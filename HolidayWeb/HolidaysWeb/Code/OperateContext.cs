@@ -17,6 +17,7 @@ namespace Holidays.Web
     {
         private const string ADMIN_SYSUSER = "SYSAdminLoginUser";
         private const string USER_KEY = "LoginUser";
+        private const string CHILDUSER_KEY = "ChildUser";
         private const string ADMIN_LOGIC_SESSION_KEY = "BLLSession";
         private const string CURRENT_CITY = "CurrentCity";
 
@@ -139,7 +140,7 @@ namespace Holidays.Web
             password = Common.Encrypt.MD5Encrypt32(password);
             Model.Entites.AdminUser user = BLLSession.IAdminUserBLL.GetListBy(m => m.LoginAccount == account && m.LoginPassword == password).FirstOrDefault();
             //获取非admin的其他后台用户
-            Model.Entites.User otherAdminUser = BLLSession.IUserBLL.GetListBy(m => m.LoginName == account && m.Password == password).FirstOrDefault();
+            Model.Entites.User otherAdminUser = BLLSession.IUserBLL.GetListBy(m => m.LoginName == account && m.Password == password&&m.ParentId==-1).FirstOrDefault();
 
             if (user != null||otherAdminUser!=null)
             {
@@ -217,7 +218,40 @@ namespace Holidays.Web
             set { Session[USER_KEY] = value; }
         }
         #endregion
+        #region 子账号信息
+        public Model.Entites.User ChildUserInfo
+        {
+            get
+            {
+                Model.Entites.User childUser = Session[CHILDUSER_KEY] as Model.Entites.User;
+                if (childUser == null)
+                {
+                    HttpCookie cookie = OperateContext.Current.Request.Cookies[CHILDUSER_KEY];
+                    if (cookie != null && cookie.Value != null && !String.IsNullOrEmpty(cookie.Value))
+                    {
+                        childUser = Newtonsoft.Json.JsonConvert.DeserializeObject<Model.Entites.User>(cookie.Value.TrimStart('[').TrimEnd(']'));
 
+                        if (childUser != null)
+                        {
+                            return childUser;
+                        }
+                    }
+                }
+                else
+                {
+                    // 为保证数据实时性，暂时从数据库读取用户数据
+                    childUser = OperateContext.Current.BLLSession.IUserBLL.GetListBy(m => m.Id == childUser.Id).FirstOrDefault();
+
+                }
+
+                return childUser;
+            }
+            set
+            {
+                Session[CHILDUSER_KEY] = value;
+            }
+        }
+        #endregion
         #region 2.5 前台用户登录方法 + bool UserLogin(string account, string password)
         /// <summary>
         /// 前台用户登录方法
@@ -340,7 +374,26 @@ namespace Holidays.Web
                 OperateContext.Current.BLLSession.ISysLogBLL.Add(log);
             }
 
+            //尝试子账号登录
+           var childUser= OperateContext.Current.BLLSession.IUserBLL.GetListBy(s => s.IsDeleted == false && s.LoginName == loginUser.LoginAccount&&s.Password==loginUser.LoginPwd);
+            if (childUser.Count>0)
+            {
+                var userInfo = childUser.FirstOrDefault();
+                Session[CHILDUSER_KEY] = userInfo;
+                //获取主账号信息
+                var account = OperateContext.Current.BLLSession.IUserBLL.GetListBy(s => s.IsDeleted == false && s.Id == userInfo.ParentId).FirstOrDefault();
+                UserInfo = OperateContext.Current.BLLSession.IUserInfoViewBLL.GetListBy(s => s.ID == account.AccountId).FirstOrDefault();
+                if (isAutoLogin)
+                {
+                    HttpCookie cookie = new HttpCookie(CHILDUSER_KEY);
+                    cookie.Expires = DateTime.Now.AddMonths(1);
+                    cookie.Value = Newtonsoft.Json.JsonConvert.SerializeObject(userInfo);
 
+                    OperateContext.Current.Response.Cookies.Add(cookie);
+                }
+             
+                return true;
+            }
             return false;
         }
         #endregion
@@ -352,7 +405,7 @@ namespace Holidays.Web
         /// <returns></returns>
         public bool UserIsLogin()
         {
-            return UserInfo != null;
+            return UserInfo != null||ChildUserInfo!=null;
         }
         #endregion
 

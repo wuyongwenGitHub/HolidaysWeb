@@ -1,6 +1,8 @@
 ﻿using Holidays.Common;
+using Holidays.Common.Attributes;
 using Holidays.Model.Entites;
 using Holidays.Model.FormatModel;
+using Holidays.Web.Areas.Admin;
 using Holidays.Web.Controllers;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,40 @@ namespace Holidays.Web.Areas.Weixin.Controllers
 {
     public class WeUserController : BaseController
     {
+        public bool UserHasPerm()
+        {
+            bool IsPermission = false;
+            //以主账号形式登录
+            if (OperateContext.Current.ChildUserInfo==null)
+            {
+                IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+            }
+            //以子账号形式登录
+            else
+            {
+                //判断权限
+                User currentUser = OperateContext.Current.ChildUserInfo;
+               
+                if (currentUser != null)
+                {
+                    if (currentUser.ParentId == -1)//房东本人
+                    {
+                        return IsPermission = true;
+                    }
+                    //子账户判断权限
+                    List<Permission> funcPermissions = AccountHelper.GetUserMenuPermission(currentUser.GUIID);
+                    if (funcPermissions != null)
+                    {
+                        var hasPerm = funcPermissions.Where(s => s.Url == HttpContext.Request.Path).Count() > 0;
+                        if (hasPerm)
+                        {
+                            IsPermission = true;
+                        }
+                    }
+                }
+            }
+            return IsPermission;
+        }
         //
         // GET: /Weixin/WeUser/
 
@@ -94,7 +130,8 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             if (ViewBag.IsLogin)
             {
                 ViewBag.IsPermission = false;
-                ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                //ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                ViewBag.IsPermission = UserHasPerm();
                 //
                 shop = OperateContext.Current.BLLSession.IShopInfoBLL.GetListBy(h => h.UserId == OperateContext.Current.UserInfo.ID).FirstOrDefault();
                 ViewBag.HasShop = shop != null ? true : false;
@@ -153,6 +190,11 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             }
             var encryptPwd = Common.Encrypt.MD5Encrypt32(pwd.Trim());
             var loginUser = OperateContext.Current.UserInfo;
+
+            if (OperateContext.Current.ChildUserInfo!=null)
+            {
+                loginUser.LoginPwd = OperateContext.Current.ChildUserInfo.Password;
+            }
             if (loginUser.LoginPwd != encryptPwd)
             {
                 msg = "密码错误！";
@@ -160,13 +202,23 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             else
             {
                 var encryptNewPwd = Common.Encrypt.MD5Encrypt32(newpwd.Trim());
-                var result = OperateContext.Current.BLLSession.IUserInfoBLL.Modify(new UserInfo { ID = loginUser.ID, LoginPwd = encryptNewPwd }, "LoginPwd");
+                var result=0;
+                if (OperateContext.Current.ChildUserInfo!=null)//子账号
+                {
+                    result = OperateContext.Current.BLLSession.IUserBLL.Modify(new User {Id=OperateContext.Current.ChildUserInfo.Id,  Password = encryptNewPwd }, "Password");
+               
+                }
+                else//房东本人
+                {
+                    result = OperateContext.Current.BLLSession.IUserInfoBLL.Modify(new UserInfo { ID = loginUser.ID, LoginPwd = encryptNewPwd }, "LoginPwd");
+                }
                 if (result == 1)
                 {
                     status = "ok";
                     msg = "修改密码成功！";
+                    var accountName = OperateContext.Current.ChildUserInfo == null ? loginUser.LoginAccount : OperateContext.Current.ChildUserInfo.LoginName;
                     //重新登录
-                    OperateContext.Current.UserLogin(new UserInfoView { LoginAccount = loginUser.LoginAccount, LoginPwd = encryptNewPwd }, 3, true);
+                    OperateContext.Current.UserLogin(new UserInfoView { LoginAccount = accountName, LoginPwd = encryptNewPwd }, 3, true);
                 }
             }
             return OperateContext.Current.RedirectAjax(status, msg, null, null);
@@ -176,12 +228,15 @@ namespace Holidays.Web.Areas.Weixin.Controllers
         /// 回复评论
         /// </summary>
         /// <returns></returns>
+        
+
         public ActionResult ReplyCommentView()
         {
             if (ViewBag.IsLogin)
             {
                 ViewBag.IsPermission = false;
-                ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                //ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                ViewBag.IsPermission = UserHasPerm();
                 //
             }
             return View();
@@ -197,7 +252,8 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             if (ViewBag.IsLogin)
             {
                 ViewBag.IsPermission = false;
-                ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                //ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                ViewBag.IsPermission = UserHasPerm();
                 //
                 if (id.HasValue)
                 {
@@ -289,12 +345,15 @@ namespace Holidays.Web.Areas.Weixin.Controllers
         /// 订单管理
         /// </summary>
         /// <returns></returns>
+        
+
         public ActionResult OrderManageView()
         {
             if (ViewBag.IsLogin)
             {
                 ViewBag.IsPermission = false;
-                ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                //ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                ViewBag.IsPermission = UserHasPerm();
                 //
             }
             return View();
@@ -350,7 +409,8 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             if (ViewBag.IsLogin)
             {
                 ViewBag.IsPermission = false;
-                ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                //ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                ViewBag.IsPermission = UserHasPerm();
                 //
                 order = OperateContext.Current.BLLSession.IOrderInfoBLL.GetListBy(h => h.ID == id).FirstOrDefault();
             }
@@ -423,7 +483,8 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             if (ViewBag.IsLogin)
             {
                 ViewBag.IsPermission = false;
-                ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                //ViewBag.IsPermission = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == OperateContext.Current.UserInfo.AccountID).FirstOrDefault().State == 0;
+                ViewBag.IsPermission = UserHasPerm();
                 var shopInfo = OperateContext.Current.BLLSession.IShopInfoBLL.GetListBy(h => h.UserId == OperateContext.Current.UserInfo.ID).FirstOrDefault();
                 ViewBag.TotalMoney = "￥ 0.00";
                 ViewBag.TodayTotal = "￥ 0.00";

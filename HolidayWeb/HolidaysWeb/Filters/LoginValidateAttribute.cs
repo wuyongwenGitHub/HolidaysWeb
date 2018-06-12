@@ -20,10 +20,13 @@ namespace Holidays.Web.Filters
         /// <param name="filterContext"></param>
         public override void OnAuthorization(System.Web.Mvc.AuthorizationContext filterContext)
         {
+        
+            
             //1.如果请求的 Admin 区域里的 控制器类和方法，那么就要验证权限
             // 当前请求匹配的 路由对象中 是否 有 area区域
-            // 监测区域名 是否为 admin
-            if (!filterContext.RouteData.DataTokens.Keys.Contains("area") || filterContext.RouteData.DataTokens["area"].ToString().ToLower() != "admin")
+            // 监测区域名 是否为 admin weixin
+            if (!filterContext.RouteData.DataTokens.Keys.Contains("area") || filterContext.RouteData.DataTokens["area"].ToString().ToLower() != "admin"
+               )
             {
                 return;
             }
