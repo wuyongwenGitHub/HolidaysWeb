@@ -649,6 +649,7 @@
     <Property Name="Rules" Type="varchar(max)" Nullable="true" />
     <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
     <Property Name="COORDINATE" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="imageIntroduce" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ShopInfoCertificate">
     <Key>
@@ -1514,6 +1515,7 @@
           <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="COORDINATE" Type="String" Nullable="true" />
+          <Property Name="imageIntroduce" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="ShopInfoCertificate">
           <Key>
@@ -2302,6 +2304,7 @@
           <ScalarProperty Name="Rules" ColumnName="Rules" />
           <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
           <ScalarProperty Name="COORDINATE" ColumnName="COORDINATE" />
+          <ScalarProperty Name="imageIntroduce" ColumnName="imageIntroduce" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

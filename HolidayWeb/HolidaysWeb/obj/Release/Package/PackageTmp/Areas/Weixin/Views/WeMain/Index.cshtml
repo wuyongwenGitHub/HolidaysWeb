@@ -82,6 +82,55 @@
             .news .swap {
                 top: 20px;
             }
+        .build li {
+            margin-left:15px;
+        }
+        .buildUl li {
+            display:block;
+            float:left;
+            width:25%;
+            height:100px;
+        }
+            .buildUl li .firstSpan{
+                display:block;
+                margin:0 auto;
+                width:80px;
+                height:80px;
+                border-radius:80px;
+                background:red;
+            }
+                .buildUl li .firstSpan img {
+                    width:80px;
+                    height:80px;
+                    border-radius:80px;
+                }
+            .buildUl li .secSpan {
+                display:block;
+                margin-top:5px;
+            }
+        .picDis {
+            margin-top:10px;
+                width:100%;
+                height:160px;
+        }
+            .picDis img {
+                width:100%;
+            } 
+            .picDis .zzc {
+                width: 100%;
+                height: 160px;
+                background: black;
+                position: absolute;
+                opacity: 0.4;
+                color: #fff;
+                font-size: 24px;
+                text-align: center;
+                line-height: 50px;
+            }
+                .picDis .zzc span {
+                    display:block;
+                    margin-top:50px;
+                }
     </style>
 }
 
@@ -147,11 +196,100 @@
                 <li class="gmenu-item"><a href="/weixin/wecar/carlistview"><img src="/Images/wechart/mgh_06.png" alt="" class="img04"></a></li>
             </ul>
         </div>
-
+        @* 民宿客栈 农家乐    酒店宾馆  更多*@
+        <div class="ghday-specialty" style="height:150px">
+            <div class="ghline-header"><span>我要订房</span></div>
+            <ul style="text-align: center;font-size:12px;" class="buildUl">
+                <li>
+                    <span class="firstSpan">
+                        <img src="~/Images/most/scenicSpot/民宿.jpg" />
+                    </span>
+                    <span class="secSpan">民宿客栈</span>
+                </li>
+                <li>
+                    <span class="firstSpan">
+                        <img src="~/Images/most/scenicSpot/农家乐.jpg" />
+                    </span>
+                    <span class="secSpan">农家乐</span>
+                </li>
+                <li>
+                    <span class="firstSpan">
+                        <img src="~/Images/most/scenicSpot/酒店.jpg" />
+                    </span>
+                    <span class="secSpan">酒店宾馆</span>
+                </li>
+                <li>
+                    <span class="firstSpan">
+                        <img src="~/Images/most/scenicSpot/更多.jpg" />
+                    </span>
+                    <span class="secSpan">更多</span>
+                </li>
+            </ul>
+        </div>
+        @*吃喝玩乐*@
+        <div class="ghday-specialty">
+            <div class="ghline-header"><span>啥都有</span></div>
+            <ul style="text-align: center;font-size:18px;color:#efefef">
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;background-color:darkorange;border-radius:10px;line-height:60px">吃喝玩乐</li>
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;background-color:aquamarine;border-radius:10px;line-height:60px">机票预定</li>
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;margin-top:5px;background-color:burlywood;border-radius:10px;line-height:60px">特产购买</li>
+                <li style="height:60px;width:45%;display:inline-block;text-align:center;margin-top:5px;background-color:cadetblue;border-radius:10px;line-height:60px">专车出行</li>
+            </ul>
+        </div>
+        <div class="ghday-specialty" style="height:150px">
+            <div class="ghline-header"><span>热门景区</span></div>
+            <ul style="text-align: center;font-size:12px;" class="buildUl">
+                <li><a href="~/weixin/wehouse/ShopListView?keywords=黑山谷&spotId=5">
+                    <span class="firstSpan">
+                        <img src="~/Images/most/scenicSpot/黑山谷.jpg" />
+                    </span>
+                    <span class="secSpan">黑山谷</span>
+                </a>
+                </li>
+                <li>
+                    <a href="~/weixin/wehouse/ShopListView?keywords=黑山谷&spotId=6">
+                        <span class="firstSpan">
+                            <img src="~/Images/most/scenicSpot/奥陶纪.jpg" />
+                        </span>
+                        <span class="secSpan">奥陶纪</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="~/weixin/wehouse/ShopListView?keywords=城区&spotId=13">
+                        <span class="firstSpan">
+                            <img src="~/Images/most/scenicSpot/城区.jpg" />
+                        </span>
+                        <span class="secSpan">城区</span>
+                    </a>
+                </li>
+                <li>
+                    <span class="firstSpan">
+                      <a href="~/weixin/wehouse/ShopListView?keywords=黑山谷&spotId=5">
+                        <img src="~/Images/most/scenicSpot/全部.jpg" />
+                        </span>
+                        <span class="secSpan">更多</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="picDis">
+            <div class="zzc">
+            <span>最地道</span>
+             </div>
+            <img src="~/Images/most/mostDi.jpg" />
+        </div>
+        <div class="picDis">
+            <div class="zzc"> <span>最好玩</span></div>
+            <img src="~/Images/most/mostPlay.jpg" />
+        </div>
+        <div class="picDis">
+            <div class="zzc"> <span>最舒适</span></div>
+            <img src="~/Images/most/mostShu.jpg" />
+        </div>
         @*热门景点展示*@
         @if (ViewBag.SpotInfoList != null && ViewBag.SpotInfoList.Count > 0)
     {
-        <div class="ghday-room">
+        <div class="ghday-room" >
             <div class="ghline-header"><span>热门景区</span></div>
             <div class="room-main">
                 <div id="spotList" class="flex-images" style="margin-top:10px;">
@@ -185,7 +323,7 @@
 
                         <div class="hotel-hd clearfix" style="height:auto;">
                             <div class="hotel-logo fl has-more-snapshots" style="height:135px;width:135px;min-width:38%;">
-                                <a href="/weixin/wehouse/RentHouseListView?keywords=@shop.ShopName">
+                                <a href="/weixin/wehouse/RentHouseListView?keywords=@shop.ShopName&id=@shop.ID">
                                     <img src="@shop.ShopImgs" width="75" height="75" />
                                 </a>
                             </div>
@@ -217,7 +355,7 @@ else
     <p style="text-align: center; padding: 20px; font-size: 14px;">暂无数据！</p>
 }
         @*吃喝玩乐*@
-        <div class="ghday-specialty">
+        <div class="ghday-specialty" style="display:none">
             <div class="ghline-header"><span>之最</span></div>
             <ul style="text-align: center;font-size:18px;color:#efefef">
                 <li style="height:60px;width:45%;display:inline-block;text-align:center;background-color:darkorange;line-height:60px">最好玩</li>
@@ -227,7 +365,7 @@ else
             </ul>
         </div>
         @*吃喝玩乐*@
-        <div class="ghday-specialty" style="height:120px">
+        <div class="ghday-specialty" style="height:120px; display:none">
             <div class="ghline-header"><span>吃喝玩乐</span></div>
             <ul style="text-align: center;font-size:24px;">
                 <li style="height:60px;width:60px;display:inline-block;text-align:center;border:1px solid #333;background-color:white;line-height:60px;border-radius:60px">吃</li>
@@ -239,7 +377,7 @@ else
         @*热门特产展示*@
         @if (ViewBag.ProductList != null && ViewBag.ProductList.Count > 0)
     {
-        <div class="ghday-specialty">
+        <div class="ghday-specialty" style="display:none">
             <div class="ghline-header"><span>热门特产</span></div>
             <div class="specialty-main">
                 <ul>
@@ -259,7 +397,7 @@ else
     @*热门房源展示*@
         @if (ViewBag.buildInfos != null && ViewBag.buildInfos.Count > 0)
     {
-        <div class="ghday-specialty">
+        <div class="ghday-specialty" style="display:none">
             <div class="ghline-header"><span>热门房源</span></div>
             <div class="specialty-main">
                 <ul>
@@ -277,9 +415,10 @@ else
         </div>
 }
     @*车辆租赁*@
+    @* 隐藏 *@
         @if (ViewBag.CarList != null && ViewBag.CarList.Count > 0)
     {
-        <div class="ghday-cars">
+        <div class="ghday-cars" style="display:none">
             <div class="ghline-header"><span>车辆租赁</span></div>
             <div class="specialty-main">
                 <ul>

@@ -40,5 +40,6 @@ namespace Holidays.Model.Entites
         public string Rules { get; set; }
         public string ChargesNotes { get; set; }
         public string COORDINATE { get; set; }
+        public string imageIntroduce { get; set; }
     }
 }
