@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace Holidays.Web.Controllers
 {
@@ -1195,6 +1196,49 @@ namespace Holidays.Web.Controllers
             }
 
             return new JsonResult { Data = result };
+        }
+        public ActionResult SavePriceAuto(string PriceAutos)
+        {
+            JavaScriptSerializer Serializer = new JavaScriptSerializer();
+            List<ShopToDayPrice> ShopToDayPrices = Serializer.Deserialize<List<ShopToDayPrice>>(PriceAutos);
+            //json字符串转为对象, 反序列化
+            string status = "fail";
+            string msg = "保存失败！";
+            int statu = 0;
+            ShopToDayPrices.ForEach(x =>
+            {
+                //查看当前日期是否存在
+                ShopToDayPrice ShopToDayPrice = OperateContext.Current.BLLSession.IShopToDaySetBll.GetListBy(h => h.date == x.date && h.ShopId == x.ShopId).FirstOrDefault<ShopToDayPrice>();
+                int result = 0;
+                if (ShopToDayPrice != null && ShopToDayPrice.Id > 0)
+                {
+                    x.Id = ShopToDayPrice.Id;
+                    result = OperateContext.Current.BLLSession.IShopToDaySetBll.Modify(x);
+                }
+                else
+                {
+                    result = OperateContext.Current.BLLSession.IShopToDaySetBll.Add(x);
+                }
+                if (result != 1)
+                {
+                    statu = 1;
+                    return;
+                }
+
+            });
+            if (statu != 1)
+            {
+                status = "ok";
+                msg = "保存成功！";
+            }
+            return OperateContext.Current.RedirectAjax(status, msg, null, null);
+
+        }
+        public ActionResult GetPriceAutoByShopID(int ShopId)
+        {
+            List<ShopToDayPrice> shopToDayPricelist = OperateContext.Current.BLLSession.IShopToDaySetBll.GetListBy(h => h.ShopId == ShopId).ToList<ShopToDayPrice>();
+            //List<TodayPrice> a = OperateContext.Current.CustomSql<TodayPrice>();
+            return OperateContext.Current.RedirectAjax("ok", null, shopToDayPricelist, null);
         }
     }
 }
