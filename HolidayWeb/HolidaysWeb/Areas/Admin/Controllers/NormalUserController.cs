@@ -22,7 +22,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:35:19
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult UserlistView()
         {
@@ -119,7 +119,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-23 00:12:18
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult UserFavoriteListView()
         {

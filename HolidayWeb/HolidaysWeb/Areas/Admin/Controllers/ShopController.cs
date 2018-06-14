@@ -17,7 +17,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
     {
         //
         // GET: /Admin/Shop/
-        [ValidMenuPerm]
+        
 
         public ActionResult Index()
         {
@@ -172,14 +172,14 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult ShopCheckManageView()
         {
             ViewBag.ShopCategoryList = OperateContext.Current.BLLSession.IShopCategoryBLL.GetListBy(h => h.ID > 0, h => h.SortBy).ToList();
             return View();
         }
-        [ValidMenuPerm]
+        
 
         public ActionResult ShopView(long? id)
         {
@@ -257,7 +257,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         #endregion
 
         #region 店铺分类
-        [ValidMenuPerm]
+        
 
         public ActionResult ShopCategoryView()
         {

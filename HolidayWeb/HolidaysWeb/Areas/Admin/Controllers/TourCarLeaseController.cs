@@ -22,7 +22,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:29:21
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult Index()
         {

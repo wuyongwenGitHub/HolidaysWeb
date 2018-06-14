@@ -25,6 +25,12 @@
             text-decoration-line: none;
             color: #fff;
         }
+
+        .coordinate {
+            width: 30px;
+            float: right;
+            margin-right: 10px;
+        }
     </style>
 }
 
@@ -132,7 +138,7 @@
                     {
                         <p class="hinfo-view" style="color:#f00;">不可退</p>
                     }
-                    @if(Model.IsBack == 0)
+                    @if (Model.IsBack == 0)
                     {
                         <p class="hinfo-view" style="color:#f00;">入住当天18点前24小时内不可退</p>
                     }
@@ -185,7 +191,17 @@
                             }
                         </p>*@
                     <p class="hinfo-view">状态：<span>@(Model.IsEmpty == 0 ? "可订" : "已满")</span></p>
-                    <p class="hinfo-view">位置：<span>@ViewBag.City</span></p>
+                    <p class="hinfo-view">
+                        位置：<span>@ViewBag.City</span>
+                        @if (ViewBag.COORDINATE == null)
+                        {
+                            <img class="coordinate" onclick="MapCoordinates('@Model.Address',1,'')" src="~/Images/weixin/map.gif" />
+                        }
+                        else
+                        {
+                            <img class="coordinate" onclick="MapCoordinates('@Model.Address',2,'@ViewBag.COORDINATE')" src="~/Images/weixin/map.gif" />
+                        }
+                    </p>
                     <p class="hinfo-view">　　　<span>@Model.Address</span></p>
                     <p class="hinfo-view">配套设施：</p>
 
@@ -365,4 +381,41 @@
             });
         })
     </script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.2&key=3a6163ef3771946010124aeb08458ee4"></script>
+    <script type="text/javascript">
+        function MapCoordinates(address, type, jw) {
+            if (type == 1) {
+                AMap.plugin('AMap.Geocoder',
+                    function () {
+                        var geocoder = new AMap.Geocoder({
+                        });
+                        geocoder.getLocation(address,
+                            function (status, result) {
+                                if (status == 'complete' && result.geocodes.length) {
+                                    console.log(result.geocodes[0].location);
+                                    var l = result.geocodes[0].location.L;
+                                    var n = result.geocodes[0].location.N;
+                                    window.location.href = "https://uri.amap.com/marker?position=" +
+                                        l +
+                                        "," +
+                                        n +
+                                        "&name=" +
+                                        address +
+                                        "&src=mypage&coordinate=gaode&callnative=0";
+                                } else {
+                                    alert("获取失败");
+                                }
+                            });
+                    });
+            } else {
+                window.location.href = "https://uri.amap.com/marker?position=" + jw +
+                    "&name=" +
+                    address +
+                    "&src=mypage&coordinate=gaode&callnative=0";
+
+            }
+        }
+
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
 }

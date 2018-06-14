@@ -28,5 +28,7 @@ namespace Holidays.Model.Entites
         public bool IsDeleted { get; set; }
         public string Email { get; set; }
         public System.Guid GUIID { get; set; }
+        public long ParentId { get; set; }
+        public Nullable<long> AccountId { get; set; }
     }
 }

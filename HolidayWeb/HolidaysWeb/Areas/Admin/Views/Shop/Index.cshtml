@@ -162,6 +162,24 @@
                                 </div>
                             </div>
                             <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopImgs">
+                                    店铺介绍图片 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <input id="showImageList" name="imageIntroduce" value="" class="form-control col-md-7 col-xs-12" type="hidden" />
+                                   
+                                    <img class="ShopImgs" ng-repeat="item in ShowImageList"  width="130" height="130" src="{{ item }}" alt="店铺图片" />
+                                    <br /><br />
+                                    <div id="btnUploadImg1">选择图片</div>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for=""></label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    请上传分辨率为 400*230 的照片
+                                </div>
+                            </div>
+                            <div class="item form-group">
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="StartPrice">
                                     起订价格(元)<span class="required">*</span>
                                 </label>
@@ -169,8 +187,8 @@
                                     <input ng-model="Shop.StartPrice" name="StartPrice" maxlength="20" class="form-control col-md-7 col-xs-12" type="text" />
                                 </div>
                                 @*<div style="height:35px;line-height:35px">
-                                    <a href="#" ng-click="openPriceCalendarModal(shop)">价格日历</a>
-                                </div>*@
+                <a href="#" ng-click="openPriceCalendarModal(shop)">价格日历</a>
+            </div>*@
                             </div>
                             <div class="item form-group">
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Scores">
@@ -420,6 +438,20 @@
                             $("#ShopImgs").attr("src", url);
                             $("input[name='ShopImgs']").val(url);
                         });
+                        fnUploadImage("btnUploadImg1", function (url) {
+                            //$("#ShopImgs").attr("src", url);
+                            //$("input[name='ShopImgs']").val(url);
+                            var tempList = $scope.ShowImageList;
+                            if (tempList.length == 0) {
+                                tempList.push(url);
+                            } else {
+                                tempList.push(url);
+                            }
+                            $scope.ShowImageList = tempList;
+                            $(".ShopImgs:last").before("<img class='ShopImgs' width='130' height='130' src='"+url+"' alt='店铺图片' />");
+                            
+                            $("#editShopModal").modal();
+                        });
                     }).on("hide.bs.modal", fnDestroyUploader);
 
                     $scope.initShopList = function (page) {
@@ -477,6 +509,12 @@
                     //};
                     //
                     $scope.openViewShopModal = function (shop) {
+                        //if (shop.imageIntroduce != undefined) {
+                        //    $scope.ShowImageList = shop.imageIntroduce.split(",");
+                        //} else {
+                        //    $scope.ShowImageList = [];
+                        //}
+                        
                         $scope.Shop = shop;
                         $("#viewShopInfoModal").modal();
                     };
@@ -498,6 +536,11 @@
 
                     //打开编辑店铺信息窗口
                     $scope.openEditShopModal = function (shop) {
+                        if (shop.imageIntroduce != undefined) {
+                            $scope.ShowImageList = shop.imageIntroduce.split(",");
+                        } else {
+                            $scope.ShowImageList = [];
+                        }
                         $scope.Shop = shop;
                         $scope.queryShopByID(shop.ID);
                         $("#editShopModal").modal();
@@ -577,10 +620,18 @@
                     //保存店铺
                     $scope.saveShop = function () {
                         var loadIndex = layer.load();
+                        var msg = "";
+                        for (var i = 0; i < $scope.ShowImageList.length; i++) {
+                            if (i == 0) {
+                                msg = $scope.ShowImageList[i];
+                            } else {
+                                msg += ","+$scope.ShowImageList[i];
+                            }
+                        }
+                        $("#showImageList").val(msg);
                         var data = $("#form1").serialize();
                         $.post('/Admin/Shop/SaveShop', data, function (result) {
                             layer.close(loadIndex);
-
                             if (result.Status == "ok") {
                                 layer.alert(result.Msg, { icon: 1 }, function () {
                                     window.location.reload();

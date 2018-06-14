@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/05/2018 23:20:39
+-- Date Created: 06/13/2018 23:10:31
 -- Generated from EDMX file: F:\newWebSite\HolidaysWeb\HolidayWeb\Holidays.Model\Entites\HolidaysEntites.edmx
 -- --------------------------------------------------
 
@@ -166,7 +166,7 @@ CREATE TABLE [dbo].[CarInfo] (
     [ID] bigint IDENTITY(1,1) NOT NULL,
     [CarName] nvarchar(50)  NULL,
     [Linkman] nvarchar(20)  NULL,
-    [Phone1] nvarchar(50)  NULL,SysLog
+    [Phone1] nvarchar(50)  NULL,
     [Phone2] nvarchar(50)  NULL,
     [Address] nvarchar(200)  NULL,
     [CarImg] nvarchar(255)  NULL,
@@ -685,7 +685,8 @@ CREATE TABLE [dbo].[ShopInfo] (
     [About] varchar(max)  NULL,
     [Rules] varchar(max)  NULL,
     [ChargesNotes] varchar(max)  NULL,
-    [COORDINATE] nvarchar(max)  NULL
+    [COORDINATE] nvarchar(max)  NULL,
+    [imageIntroduce] nvarchar(max)  NULL
 );
 GO
 
@@ -792,7 +793,7 @@ CREATE TABLE [dbo].[HouseEvaluateView] (
     [ShopName] nvarchar(255)  NULL,
     [Comments] varchar(max)  NULL,
     [CreateOn] datetime  NULL,
-    [FromUserId] bigint  NULL,SpotInfo
+    [FromUserId] bigint  NULL,
     [FromUserName] nvarchar(100)  NULL
 );
 GO
@@ -815,7 +816,9 @@ CREATE TABLE [dbo].[T_User] (
     [CreateTime] datetime  NULL,
     [IsDeleted] bit  NOT NULL,
     [Email] nvarchar(max)  NULL,
-    [GUIID] uniqueidentifier  NOT NULL
+    [GUIID] uniqueidentifier  NOT NULL,
+    [ParentId] bigint  NOT NULL,
+    [AccountId] bigint  NULL
 );
 GO
 

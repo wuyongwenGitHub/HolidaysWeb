@@ -565,6 +565,7 @@
           <ScalarProperty Name="About" ColumnName="About" />
           <ScalarProperty Name="Rules" ColumnName="Rules" />
           <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
+          <ScalarProperty Name="COORDINATE" ColumnName="COORDINATE" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -701,6 +702,8 @@
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="GUIID" ColumnName="GUIID" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="AccountId" ColumnName="AccountId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

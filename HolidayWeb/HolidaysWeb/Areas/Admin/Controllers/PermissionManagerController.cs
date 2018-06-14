@@ -19,7 +19,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         //
         // GET: /Admin/PermissionManage/
         #region 用户操作
-        [ValidMenuPerm]
+        
 
         public ActionResult UserManagerView()
         {
@@ -74,6 +74,12 @@ namespace Holidays.Web.Areas.Admin.Controllers
                 else if (userViewModel.Id > 0)//编辑用户
                 {
                     var user = OperateContext.Current.BLLSession.IUserBLL.GetListBy(h => h.Id == userViewModel.Id).FirstOrDefault();
+                    //房东不能编辑自己,只能编辑子账号
+                    if (user.ParentId==-1&&OperateContext.Current.User!=null)
+                    {
+                        return OperateContext.Current.RedirectAjax(HolidaysWebConst.HolidaysWebConst.FAIL, "您没有权限对自己进行修改，请联系管Admin用户！", null, null);
+
+                    }
                     user.LoginName = userViewModel.LoginName;
                     user.Password = userViewModel.Password==user.Password?userViewModel.Password:Common.Encrypt.MD5Encrypt32( userViewModel.Password).ToUpper();
                     user.UserRealName = userViewModel.UserRealName;
@@ -104,7 +110,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
                         UserRealName = userViewModel.UserRealName,
                         Description = userViewModel.Description,
                         Email = userViewModel.Email,
-                        //Role=user.Role,
+                        ParentId = OperateContext.Current.User==null?-1:OperateContext.Current.User.Id,
                         CreateTime = DateTime.Now,
                         IsDeleted = false
                     };
@@ -174,44 +180,67 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult QueryUserById(long Id)
         {
-            string state = HolidaysWebConst.HolidaysWebConst.SUCCESS;
-            var msg = string.Empty;
-            Expression<Func<User, bool>> expression = h => h.IsDeleted == false && h.Id == Id;
-            var user = OperateContext.Current.BLLSession.IUserBLL.GetListBy(expression);
+           var test= OperateContext.Current.BLLSession.IUserInfoBLL.GetListBy(s => s.ID > -1);
 
-
-            if (user.Count <= 0)
+            
+            foreach (var item in test)
             {
-                state = HolidaysWebConst.HolidaysWebConst.FAIL;
-                msg = "未能查询到该用户";
-            }
-            //获取所有角色并标记当前用户所拥有角色
-            var allRoles = OperateContext.Current.BLLSession.IRoleBLL.GetListBy(s => s.IsDeleted == false);
-            List<RoleWithSelectedViewModel> rvList = new List<RoleWithSelectedViewModel>();
-            foreach (var role in allRoles)
-            {
-                RoleWithSelectedViewModel rv = new RoleWithSelectedViewModel();
-                rv.CreateTime = role.CreateTime;
-                rv.Description = role.Description;
-                rv.Name = role.Name;
-                rv.RoleId = role.Id;
-                //var isSelected = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.UserId == user.SingleOrDefault().GUIID && s.RoleId == role.GUID).Count>0;
-                bool isSelected = false;
-                var includesRoles = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.RoleId == role.GUID);
-                foreach (var includeRole in includesRoles)
+                if (string.IsNullOrEmpty(item.LoginAccount))
                 {
-                    if (includeRole.UserId == user.FirstOrDefault().GUIID)
-                    {
-                        isSelected = true;
-                        rv.IsSelected = isSelected;
-                    }
+                    continue;
                 }
-                rvList.Add(rv);
+                User user = new User();
+                user.GUIID = Guid.NewGuid();
+                user.IsDeleted = false;
+                user.LoginName = item.LoginAccount;
+                user.Password = item.LoginPwd;
+                user.UserRealName = item.Username;
+                user.ParentId = -1;
+                user.AccountId = item.ID;
+                user.CreateTime = item.CreateTime;
+                user.Description = "主账号，该账号可以分配子账号！";
+                user.Email = item.Email;
+                OperateContext.Current.BLLSession.IUserBLL.Add(user);
             }
-            QueryUserByIdViewModel qv = new QueryUserByIdViewModel();
-            qv.User = user.FirstOrDefault();
-            qv.RoleWithSelectedViewModels = rvList;
-            return OperateContext.Current.RedirectAjax(state, msg, qv, null);
+            return Content("ok");
+            //string state = HolidaysWebConst.HolidaysWebConst.SUCCESS;
+            //var msg = string.Empty;
+            //Expression<Func<User, bool>> expression = h => h.IsDeleted == false && h.Id == Id;
+            //var user = OperateContext.Current.BLLSession.IUserBLL.GetListBy(expression);
+
+
+            //if (user.Count <= 0)
+            //{
+            //    state = HolidaysWebConst.HolidaysWebConst.FAIL;
+            //    msg = "未能查询到该用户";
+            //}
+            ////获取所有角色并标记当前用户所拥有角色
+            //var allRoles = OperateContext.Current.BLLSession.IRoleBLL.GetListBy(s => s.IsDeleted == false);
+            //List<RoleWithSelectedViewModel> rvList = new List<RoleWithSelectedViewModel>();
+            //foreach (var role in allRoles)
+            //{
+            //    RoleWithSelectedViewModel rv = new RoleWithSelectedViewModel();
+            //    rv.CreateTime = role.CreateTime;
+            //    rv.Description = role.Description;
+            //    rv.Name = role.Name;
+            //    rv.RoleId = role.Id;
+            //    //var isSelected = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.UserId == user.SingleOrDefault().GUIID && s.RoleId == role.GUID).Count>0;
+            //    bool isSelected = false;
+            //    var includesRoles = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.RoleId == role.GUID);
+            //    foreach (var includeRole in includesRoles)
+            //    {
+            //        if (includeRole.UserId == user.FirstOrDefault().GUIID)
+            //        {
+            //            isSelected = true;
+            //            rv.IsSelected = isSelected;
+            //        }
+            //    }
+            //    rvList.Add(rv);
+            //}
+            //QueryUserByIdViewModel qv = new QueryUserByIdViewModel();
+            //qv.User = user.FirstOrDefault();
+            //qv.RoleWithSelectedViewModels = rvList;
+            //return OperateContext.Current.RedirectAjax(state, msg, qv, null);
         }
         /// <summary>
         /// 删除单个用户
@@ -222,15 +251,22 @@ namespace Holidays.Web.Areas.Admin.Controllers
         public ActionResult DeleteUser(long Id)
         {
             string state = HolidaysWebConst.HolidaysWebConst.SUCCESS;
+            var msg = "删除成功";
             #region 删除用户条件
+            var currentUser = OperateContext.Current.User;
+            if (currentUser!=null&& currentUser.ParentId==-1)
+            {
+                return OperateContext.Current.RedirectAjax(HolidaysWebConst.HolidaysWebConst.FAIL, "你没有删除自己的权限，请联系Admin管理员", null, null);
+            }
             Expression<Func<User, bool>> expression = h => h.Id == Id;
             #endregion
             int result = OperateContext.Current.BLLSession.IUserBLL.DelBy(expression);
             if (result != 1)
             {
                 state = HolidaysWebConst.HolidaysWebConst.FAIL;
+                msg = "删除失败";
             }
-            return OperateContext.Current.RedirectAjax(state, string.Empty, null, null);
+            return OperateContext.Current.RedirectAjax(state, msg, null, null);
         }
         /// <summary>
         /// 批量删除用户
@@ -294,9 +330,16 @@ namespace Holidays.Web.Areas.Admin.Controllers
             }
             #endregion
             int rowCount = 0;
+            var currentPermUser = OperateContext.Current.User;
             IList<User> users = OperateContext.Current.BLLSession.IUserBLL.GetPagedList(page, row, ref rowCount, whereString, m => m.Id);
+            if (currentPermUser!=null)//非admin
+            {
+                users = users.Where(s => s.IsDeleted == false && s.ParentId == currentPermUser.Id).ToList();
+                users.Add(currentPermUser);
+            }
+        
             PageModel<User> model = PageModel<User>.GetPageModel(users, page, rowCount, row);
-
+            
             //var tkvemp = model.Data.Select(o => new { o.CreateTime, o.Description, o.Email, o.Id, o.IsDeleted, o.LoginName, o.Password, o.RoleId, o.UserRealName, Role = o.Role.Select(h => new { h.Name, h.Id }) });
             JsonSerializerSettings setting = new JsonSerializerSettings()
             {
@@ -310,7 +353,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         }
         #endregion
         #region 角色操作
-        [ValidMenuPerm]
+        
 
         public ActionResult RoleManagerView()
         {
@@ -644,7 +687,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         }
         #endregion
         #region 权限操作
-        [ValidMenuPerm]
+        
 
         public ActionResult PermManagerView()
         {

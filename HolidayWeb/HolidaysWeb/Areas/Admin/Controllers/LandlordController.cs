@@ -22,7 +22,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:37:34
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult LandlordCertificationView()
         {
@@ -142,7 +142,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:39:47
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult LandlordManageView()
         {
@@ -217,13 +217,18 @@ namespace Holidays.Web.Areas.Admin.Controllers
             string msg = "操作失败！";
 
             UserAccount userAccount = OperateContext.Current.BLLSession.IUserAccountBLL.GetListBy(m => m.ID == accountID).FirstOrDefault();
-
+            //获取房东信息
+           var info= OperateContext.Current.BLLSession.IUserInfoBLL.GetListBy(s => s.AccountID == accountID).FirstOrDefault();
             if (userAccount != null)
             {
+                //更改权限用户表用户状态
+                var user = OperateContext.Current.BLLSession.IUserBLL.GetListBy(s => s.AccountId == info.ID).FirstOrDefault();
+                user.IsDeleted = true;
+                var editResult = OperateContext.Current.BLLSession.IUserBLL.Modify(user);
                 userAccount.State = state;
                 int result = OperateContext.Current.BLLSession.IUserAccountBLL.Modify(userAccount);
-
-                if (result == 1 && (state == 1 || state == 2))
+              
+                if (result == 1&&editResult==1 && (state == 1 || state == 2))
                 {
                     // 下架房东房源
                     UserInfo userInfo = OperateContext.Current.BLLSession.IUserInfoBLL.GetListBy(m => m.AccountID == accountID).FirstOrDefault();
@@ -305,7 +310,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult LandlordInfoView(int? id)
         {
@@ -326,7 +331,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult CreateAccountView(int id)
         {
@@ -425,7 +430,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult CreateLandlordView(long? id)
         {
@@ -527,7 +532,13 @@ namespace Holidays.Web.Areas.Admin.Controllers
 
                             OperateContext.Current.BLLSession.IUserInfoExtBLL.Modify(userExt);
                         }
-                        if(result == 1)
+                        //编辑权限用户表
+                        var user = OperateContext.Current.BLLSession.IUserBLL.GetListBy(h => h.Id == model.ID).FirstOrDefault();
+                        user.LoginName = model.LoginAccount;
+                        user.Password = model.LoginPwd;
+                        user.Email = model.Email;
+                        var editUserTable = OperateContext.Current.BLLSession.IUserBLL.Add(user);
+                        if (result == 1&&editUserTable==1)
                         {
 
                             status = "ok";
@@ -560,6 +571,18 @@ namespace Holidays.Web.Areas.Admin.Controllers
                         newUser.LoginAccount = model.LoginAccount;
                         newUser.LoginPwd = Encrypt.MD5Encrypt32(model.LoginPwd.Trim());
                         var result = OperateContext.Current.BLLSession.IUserInfoBLL.Add(newUser);
+                        //添加权限用户表
+                        var user = new User();
+                        user.GUIID = Guid.NewGuid();
+                        user.LoginName = model.LoginAccount;
+                        user.Password =Common.Encrypt.MD5Encrypt32( model.LoginPwd);
+                        user.IsDeleted = false;
+                        user.CreateTime = DateTime.Now;
+                        user.Description = "主账户，该账户可以分配子账户以及权限！";
+                        user.Email = model.Email;
+                        user.ParentId = -1;
+                        user.AccountId = newUser.ID;
+                        var addUserTable = OperateContext.Current.BLLSession.IUserBLL.Add(user);
                         //认证信息
                         //UserInfoCertificate uic = new UserInfoCertificate
                         //{
@@ -579,7 +602,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
                         userExt.AlipayAccount = model.AlipayAccount;
                         OperateContext.Current.BLLSession.IUserInfoExtBLL.Add(userExt);
 
-                        if (result == 1)
+                        if (result == 1&&addUserTable==1)
                         {
                             status = "ok";
                             msg = "保存成功！";

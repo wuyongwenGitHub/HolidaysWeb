@@ -643,6 +643,7 @@
     <Property Name="About" Type="varchar(max)" Nullable="true" />
     <Property Name="Rules" Type="varchar(max)" Nullable="true" />
     <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
+    <Property Name="COORDINATE" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ShopInfoCertificate">
     <Key>
@@ -789,6 +790,8 @@
     <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
     <Property Name="GUIID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ParentId" Type="bigint" Nullable="false" />
+    <Property Name="AccountId" Type="bigint" Nullable="true" />
   </EntityType>
   <EntityType Name="T_Role">
     <Key>

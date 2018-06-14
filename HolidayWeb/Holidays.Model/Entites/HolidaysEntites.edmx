@@ -649,6 +649,7 @@
     <Property Name="Rules" Type="varchar(max)" Nullable="true" />
     <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
     <Property Name="COORDINATE" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="imageIntroduce" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ShopInfoCertificate">
     <Key>
@@ -795,6 +796,8 @@
     <Property Name="IsDeleted" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
     <Property Name="GUIID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ParentId" Type="bigint" Nullable="false" />
+    <Property Name="AccountId" Type="bigint" Nullable="true" />
   </EntityType>
   <EntityType Name="T_Role">
     <Key>
@@ -1512,6 +1515,7 @@
           <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="COORDINATE" Type="String" Nullable="true" />
+          <Property Name="imageIntroduce" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="ShopInfoCertificate">
           <Key>
@@ -1658,6 +1662,8 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" DefaultValue="false" />
           <Property Name="Email" Type="String" Nullable="true" />
           <Property Name="GUIID" Type="Guid" Nullable="false" />
+          <Property Name="ParentId" Type="Int64" Nullable="false" />
+          <Property Name="AccountId" Type="Int64" Nullable="true" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -2298,6 +2304,7 @@
           <ScalarProperty Name="Rules" ColumnName="Rules" />
           <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
           <ScalarProperty Name="COORDINATE" ColumnName="COORDINATE" />
+          <ScalarProperty Name="imageIntroduce" ColumnName="imageIntroduce" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -2434,6 +2441,8 @@
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="GUIID" ColumnName="GUIID" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="AccountId" ColumnName="AccountId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

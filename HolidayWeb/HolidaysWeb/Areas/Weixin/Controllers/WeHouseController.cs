@@ -1,4 +1,5 @@
 ﻿using Holidays.Common;
+using Holidays.Common.Attributes;
 using Holidays.Model.Entites;
 using Holidays.Model.FormatModel;
 using Holidays.Web.Controllers;
@@ -23,6 +24,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
         /// 2017-2-14 20:04:53
         /// </summary>
         /// <returns>View</returns>
+        
         public ActionResult SellHouseListView(string keywords, int? bySort)
         {
             int currentCityId = OperateContext.Current.CurrentCity.Id;
@@ -63,7 +65,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             }
             return View(houseList);
         }
-
+        
         /// <summary>
         /// 租房列表页面
         /// add by fruitchan
@@ -128,7 +130,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             }
             return View(houseList);
         }
-
+        
         /// <summary>
         /// 房源详情页面
         /// add by fruitchan
@@ -202,7 +204,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
 
             return View(houseInfo);
         }
-
+        
         /// <summary>
         /// 房源评价页面
         /// add by fruitchan
@@ -264,7 +266,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
 
             return View(houseEvaluateList);
         }
-
+        [ValidMenuPerm]
         /// <summary>
         /// 房源管理页面
         /// add by fruitchan
@@ -313,7 +315,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             }
             return View();
         }
-
+        
         /// <summary>
         /// 发布房源页面
         /// add by fruitchan
@@ -369,7 +371,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
 
             return View(houseInfo);
         }
-
+        
         public ActionResult ShopListView(string keywords, int? bySort, int? byFilter, int? desc,long? spotId)
         {
             keywords = keywords == null ? "" : keywords;
@@ -437,7 +439,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             return View(shopList);
 
         }
-
+        
         /// <summary>
         /// 店铺管理
         /// </summary>
@@ -454,7 +456,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             }
             return View();
         }
-
+        
         public ActionResult AddShopView()
         {
             if (ViewBag.IsLogin)
@@ -468,7 +470,7 @@ namespace Holidays.Web.Areas.Weixin.Controllers
             }
             return View();
         }
-
+        [ValidMenuPerm]
         /// <summary>
         /// 创建店铺
         /// </summary>

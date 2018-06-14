@@ -6633,6 +6633,17 @@
     <Content Include="Images\Admin\fb-02.jpg" />
     <Content Include="Images\Admin\fb-04.jpg" />
     <Content Include="Images\beian.png" />
+    <Content Include="Images\most\mostDi.jpg" />
+    <Content Include="Images\most\mostPlay.jpg" />
+    <Content Include="Images\most\mostShu.jpg" />
+    <Content Include="Images\most\scenicSpot\全部.jpg" />
+    <Content Include="Images\most\scenicSpot\农家乐.jpg" />
+    <Content Include="Images\most\scenicSpot\城区.jpg" />
+    <Content Include="Images\most\scenicSpot\奥陶纪.jpg" />
+    <Content Include="Images\most\scenicSpot\更多.jpg" />
+    <Content Include="Images\most\scenicSpot\民宿.jpg" />
+    <Content Include="Images\most\scenicSpot\酒店.jpg" />
+    <Content Include="Images\most\scenicSpot\黑山谷.jpg" />
     <Content Include="Images\weixin\more.png" />
     <Content Include="Scripts\jqthumb.min.js" />
     <Content Include="Scripts\jQuery-Util.js" />
@@ -6972,6 +6983,7 @@
     <Folder Include="Framework\angular-1.6.0-rc.2\i18n\ngLocale\" />
     <Folder Include="Framework\gentelella-master\vendors\google-code-prettify\bin\" />
     <Folder Include="Framework\plugins\" />
+    <Folder Include="Images\most\build\" />
     <Folder Include="Images\Upload\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -8271,6 +8283,7 @@
     <Content Include="Areas\Weixin\Views\WeUser\HouseScoreView.cshtml" />
     <Content Include="Areas\Weixin\Views\WeUser\HouseCommentView.cshtml" />
     <Content Include="Areas\Weixin\Views\WeUser\CouponCodeView.cshtml" />
+    <Content Include="Areas\Admin\Views\NoPermission\Index.cshtml" />
     <None Include="bundleconfig.json" />
     <Content Include="Framework\layui2\font\iconfont.eot" />
     <Content Include="Framework\layui2\font\iconfont.ttf" />

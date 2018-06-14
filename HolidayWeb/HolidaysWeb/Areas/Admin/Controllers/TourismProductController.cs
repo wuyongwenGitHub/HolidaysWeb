@@ -23,7 +23,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:50:55
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult CategoryManageView()
         {
@@ -117,7 +117,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 2016-11-22 20:51:37
         /// </summary>
         /// <returns>View</returns>
-        [ValidMenuPerm]
+        
 
         public ActionResult ProductManageView()
         {
