@@ -5,6 +5,15 @@
 @section styles{
     <link href="~/Framework/webuploader-0.1.5/webuploader.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Framework/PriceCalendarp/css/calendar-price-jquery.min.css" />
+    <style>
+        #cha_img {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 20px;
+            height: 20px;
+        }
+    </style>
 }
 
 
@@ -167,8 +176,10 @@
                                 </label>
                                 <div class="col-md-4 col-sm-4 col-xs-12">
                                     <input id="showImageList" name="imageIntroduce" value="" class="form-control col-md-7 col-xs-12" type="hidden" />
-                                   
-                                    <img class="ShopImgs" ng-repeat="item in ShowImageList"  width="130" height="130" src="{{ item }}" alt="店铺图片" />
+                                    <div id="img_div" style="position: relative;" >
+                                        <img class="ShopImgs" src="{{ item }}" alt="店铺图片" ng-repeat="item in ShowImageList" />
+                                        @*<img src="~/Images/cha.png" id="cha_img"  ng-click="onDeleteImage(item,Shop.ID)" />*@
+                                    </div>
                                     <br /><br />
                                     <div id="btnUploadImg1">选择图片</div>
                                 </div>
@@ -448,7 +459,11 @@
                                 tempList.push(url);
                             }
                             $scope.ShowImageList = tempList;
-                            $(".ShopImgs:last").before("<img class='ShopImgs' width='130' height='130' src='"+url+"' alt='店铺图片' />");
+                            if ($(".ShopImgs:last").length == 0) {
+                                $("#img_div").append("<img class='ShopImgs'  width='400' height='230' src='" + url + "' alt='店铺图片' />");
+                            } else {
+                                $(".ShopImgs:last").before("<img class='ShopImgs'  width='400' height='230' src='" + url + "' alt='店铺图片' />");
+                            }
                             
                             $("#editShopModal").modal();
                         });
@@ -474,7 +489,17 @@
                             layer.alert('系统异常', { icon: 2 });
                         });
                     }
-
+                    $scope.onDeleteImage = function(url,shopId) {
+                        $http({
+                            method: 'post',
+                            url: '/Admin/Shop/DeleteImage',
+                            data: { url: url, ShopId: shopId}
+                        }).then(function successCallback(response) {
+                          
+                        }, function errorCallback(response) {
+                            layer.alert('系统异常', { icon: 2 });
+                        });
+                    }
                     $http({
                         method: 'post',
                         url: '/Admin/Shop/GetShopCategoryList'

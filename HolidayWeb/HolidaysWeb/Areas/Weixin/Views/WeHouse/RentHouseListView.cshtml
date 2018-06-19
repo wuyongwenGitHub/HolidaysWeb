@@ -15,20 +15,20 @@
             margin-bottom: 2px;
         }
 
-            .houseMiaoShu div:first-child {
-                width: 100%;
-                height: 69%;
-            }
+        .houseMiaoShu div:first-child {
+            width: 100%;
+            bottom: 429px;
+        }
 
-            .houseMiaoShu span {
-                font-size: 15px;
-                display: block;
-            }
+        .houseMiaoShu span {
+            font-size: 15px;
+            display: block;
+        }
 
-                .houseMiaoShu span:last-child {
-                    float: right;
-                    margin-top: -30px;
-                }
+        .houseMiaoShu span:last-child {
+            float: right;
+            margin-top: -30px;
+        }
 
         .lic {
             font-size: 13px !important;
@@ -47,7 +47,14 @@
         }
     </style>
 }
-
+@if (ViewBag.ShopInfo!=null)
+{
+    <style>
+        .buyhouse-main, .torent-main {
+            padding-top: 30px;
+        }
+    </style>
+}
 <div class="page-wrap pb102">
 
     @if (ViewBag.ShopInfo != null)
