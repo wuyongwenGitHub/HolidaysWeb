@@ -566,6 +566,7 @@
           <ScalarProperty Name="Rules" ColumnName="Rules" />
           <ScalarProperty Name="ChargesNotes" ColumnName="ChargesNotes" />
           <ScalarProperty Name="COORDINATE" ColumnName="COORDINATE" />
+          <ScalarProperty Name="imageIntroduce" ColumnName="imageIntroduce" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

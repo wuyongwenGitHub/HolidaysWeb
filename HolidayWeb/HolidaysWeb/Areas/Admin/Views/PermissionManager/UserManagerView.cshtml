@@ -175,8 +175,9 @@
                     url: "/Admin/PermissionManager/GetUserList",
                     data: data
                 }).then(function successCallback(result) {
-                    
-                    var data = JSON.parse(result.data).Data;
+                    //var data = JSON.parse(result.data).Data;
+                    var data = result.data.Data;
+
                     for (var i = 0; i < data.length; i++) {
                         //data[i].CreateTime = jsonDatetimeFormat(data[i].CreateTime);
                         data[i].CreateTime=  new Date(data[i].CreateTime).toLocaleString()
@@ -261,6 +262,7 @@
             };
             //打开编辑用户信息窗口
             $scope.openEditUserModal = function (id) {
+                debugger
                 $scope.queryUserByID(id);
                 $("#editUserModal").modal();
                 

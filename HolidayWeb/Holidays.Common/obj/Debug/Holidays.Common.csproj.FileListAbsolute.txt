@@ -10,3 +10,9 @@ D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Com
 D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Common.dll
 D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Common.pdb
 D:\新建文件夹 (2)\WebSite\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Common.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (3)\HolidaysWeb\HolidayWeb\Holidays.Common\bin\Debug\Holidays.Common.dll
+D:\新建文件夹 (3)\HolidaysWeb\HolidayWeb\Holidays.Common\bin\Debug\Holidays.Common.pdb
+D:\新建文件夹 (3)\HolidaysWeb\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Common.csprojResolveAssemblyReference.cache
+D:\新建文件夹 (3)\HolidaysWeb\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Common.csproj.CoreCompileInputs.cache
+D:\新建文件夹 (3)\HolidaysWeb\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Common.dll
+D:\新建文件夹 (3)\HolidaysWeb\HolidayWeb\Holidays.Common\obj\Debug\Holidays.Common.pdb
