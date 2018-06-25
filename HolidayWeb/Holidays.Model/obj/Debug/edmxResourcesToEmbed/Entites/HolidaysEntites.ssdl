@@ -644,6 +644,7 @@
     <Property Name="Rules" Type="varchar(max)" Nullable="true" />
     <Property Name="ChargesNotes" Type="varchar(max)" Nullable="true" />
     <Property Name="COORDINATE" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="imageIntroduce" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ShopInfoCertificate">
     <Key>

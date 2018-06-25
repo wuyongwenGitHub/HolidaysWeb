@@ -180,67 +180,67 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult QueryUserById(long Id)
         {
-           var test= OperateContext.Current.BLLSession.IUserInfoBLL.GetListBy(s => s.ID > -1);
+            //var test= OperateContext.Current.BLLSession.IUserInfoBLL.GetListBy(s => s.ID > -1);
 
-            
-            foreach (var item in test)
+
+            // foreach (var item in test)
+            // {
+            //     if (string.IsNullOrEmpty(item.LoginAccount))
+            //     {
+            //         continue;
+            //     }
+            //     User user = new User();
+            //     user.GUIID = Guid.NewGuid();
+            //     user.IsDeleted = false;
+            //     user.LoginName = item.LoginAccount;
+            //     user.Password = item.LoginPwd;
+            //     user.UserRealName = item.Username;
+            //     user.ParentId = -1;
+            //     user.AccountId = item.ID;
+            //     user.CreateTime = item.CreateTime;
+            //     user.Description = "主账号，该账号可以分配子账号！";
+            //     user.Email = item.Email;
+            //     OperateContext.Current.BLLSession.IUserBLL.Add(user);
+            // }
+            // return Content("ok");
+            string state = HolidaysWebConst.HolidaysWebConst.SUCCESS;
+            var msg = string.Empty;
+            Expression<Func<User, bool>> expression = h => h.IsDeleted == false && h.Id == Id;
+            var user = OperateContext.Current.BLLSession.IUserBLL.GetListBy(expression);
+
+
+            if (user.Count <= 0)
             {
-                if (string.IsNullOrEmpty(item.LoginAccount))
-                {
-                    continue;
-                }
-                User user = new User();
-                user.GUIID = Guid.NewGuid();
-                user.IsDeleted = false;
-                user.LoginName = item.LoginAccount;
-                user.Password = item.LoginPwd;
-                user.UserRealName = item.Username;
-                user.ParentId = -1;
-                user.AccountId = item.ID;
-                user.CreateTime = item.CreateTime;
-                user.Description = "主账号，该账号可以分配子账号！";
-                user.Email = item.Email;
-                OperateContext.Current.BLLSession.IUserBLL.Add(user);
+                state = HolidaysWebConst.HolidaysWebConst.FAIL;
+                msg = "未能查询到该用户";
             }
-            return Content("ok");
-            //string state = HolidaysWebConst.HolidaysWebConst.SUCCESS;
-            //var msg = string.Empty;
-            //Expression<Func<User, bool>> expression = h => h.IsDeleted == false && h.Id == Id;
-            //var user = OperateContext.Current.BLLSession.IUserBLL.GetListBy(expression);
-
-
-            //if (user.Count <= 0)
-            //{
-            //    state = HolidaysWebConst.HolidaysWebConst.FAIL;
-            //    msg = "未能查询到该用户";
-            //}
-            ////获取所有角色并标记当前用户所拥有角色
-            //var allRoles = OperateContext.Current.BLLSession.IRoleBLL.GetListBy(s => s.IsDeleted == false);
-            //List<RoleWithSelectedViewModel> rvList = new List<RoleWithSelectedViewModel>();
-            //foreach (var role in allRoles)
-            //{
-            //    RoleWithSelectedViewModel rv = new RoleWithSelectedViewModel();
-            //    rv.CreateTime = role.CreateTime;
-            //    rv.Description = role.Description;
-            //    rv.Name = role.Name;
-            //    rv.RoleId = role.Id;
-            //    //var isSelected = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.UserId == user.SingleOrDefault().GUIID && s.RoleId == role.GUID).Count>0;
-            //    bool isSelected = false;
-            //    var includesRoles = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.RoleId == role.GUID);
-            //    foreach (var includeRole in includesRoles)
-            //    {
-            //        if (includeRole.UserId == user.FirstOrDefault().GUIID)
-            //        {
-            //            isSelected = true;
-            //            rv.IsSelected = isSelected;
-            //        }
-            //    }
-            //    rvList.Add(rv);
-            //}
-            //QueryUserByIdViewModel qv = new QueryUserByIdViewModel();
-            //qv.User = user.FirstOrDefault();
-            //qv.RoleWithSelectedViewModels = rvList;
-            //return OperateContext.Current.RedirectAjax(state, msg, qv, null);
+            //获取所有角色并标记当前用户所拥有角色
+            var allRoles = OperateContext.Current.BLLSession.IRoleBLL.GetListBy(s => s.IsDeleted == false);
+            List<RoleWithSelectedViewModel> rvList = new List<RoleWithSelectedViewModel>();
+            foreach (var role in allRoles)
+            {
+                RoleWithSelectedViewModel rv = new RoleWithSelectedViewModel();
+                rv.CreateTime = role.CreateTime;
+                rv.Description = role.Description;
+                rv.Name = role.Name;
+                rv.RoleId = role.Id;
+                //var isSelected = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.UserId == user.SingleOrDefault().GUIID && s.RoleId == role.GUID).Count>0;
+                bool isSelected = false;
+                var includesRoles = OperateContext.Current.BLLSession.IUserRoleBLL.GetListBy(s => s.RoleId == role.GUID);
+                foreach (var includeRole in includesRoles)
+                {
+                    if (includeRole.UserId == user.FirstOrDefault().GUIID)
+                    {
+                        isSelected = true;
+                        rv.IsSelected = isSelected;
+                    }
+                }
+                rvList.Add(rv);
+            }
+            QueryUserByIdViewModel qv = new QueryUserByIdViewModel();
+            qv.User = user.FirstOrDefault();
+            qv.RoleWithSelectedViewModels = rvList;
+            return OperateContext.Current.RedirectAjax(state, msg, qv, null);
         }
         /// <summary>
         /// 删除单个用户
@@ -349,7 +349,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
 
             var ret = JsonConvert.SerializeObject(model, setting);
             //JavaScriptSerializer js = new JavaScriptSerializer()
-            return Json(ret);
+            return new JsonResult() {Data=model };
         }
         #endregion
         #region 角色操作

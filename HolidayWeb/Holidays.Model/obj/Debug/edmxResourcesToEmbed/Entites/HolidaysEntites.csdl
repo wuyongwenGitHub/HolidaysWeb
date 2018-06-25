@@ -644,6 +644,7 @@
     <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="ChargesNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="COORDINATE" Type="String" Nullable="true" />
+    <Property Name="imageIntroduce" Type="String" Nullable="true" />
   </EntityType>
   <EntityType Name="ShopInfoCertificate">
     <Key>
