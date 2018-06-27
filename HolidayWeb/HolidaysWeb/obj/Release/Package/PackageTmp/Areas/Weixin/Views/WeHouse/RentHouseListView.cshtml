@@ -15,20 +15,20 @@
             margin-bottom: 2px;
         }
 
-            .houseMiaoShu div:first-child {
-                width: 100%;
-                height: 77%;
-            }
+        .houseMiaoShu div:first-child {
+            width: 100%;
+            bottom: 429px;
+        }
 
-            .houseMiaoShu span {
-                font-size: 15px;
-                display: block;
-            }
+        .houseMiaoShu span {
+            font-size: 15px;
+            display: block;
+        }
 
-                .houseMiaoShu span:last-child {
-                    float: right;
-                    margin-top: -30px;
-                }
+        .houseMiaoShu span:last-child {
+            float: right;
+            margin-top: -30px;
+        }
 
         .lic {
             font-size: 13px !important;
@@ -42,31 +42,61 @@
         }
 
         .houseMiaoShu img {
-            width: 100%;
-            height: 100%;
+            width: 400px;
+            height: 230px;
         }
     </style>
 }
-
+@if (ViewBag.ShopInfo!=null)
+{
+    <style>
+        .buyhouse-main, .torent-main {
+            padding-top: 30px;
+        }
+    </style>
+}
 <div class="page-wrap pb102">
 
     @if (ViewBag.ShopInfo != null)
     {
         <div class="houseMiaoShu">
-            <div>
-                <img src='http://www.wyqdj.com/@ViewBag.ShopInfo.ShopImgs' />
+            <div class="flicking_con">
+                @if (!string.IsNullOrEmpty(ViewBag.ShopInfo.imageIntroduce))
+                {
+                    for (int i = 0; i < ViewBag.ShopInfo.imageIntroduce.Split(',').Length; i++)
+                    {
+                        <a href="javascript:;">@i</a>
+                    }
+                }
+            </div>
+            <div class="main_image">
+                @if (!string.IsNullOrEmpty(ViewBag.ShopInfo.imageIntroduce))
+                {
+                    <ul>
+                        @foreach (var shopImg in ViewBag.ShopInfo.imageIntroduce.Split(','))
+                        {
+                            <li><a href="javascript:;"><img src="@shopImg"></a></li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                   <img src="http://www.wyqdj.com/@ViewBag.ShopInfo.ShopImgs">
+                }
+
+                <a href="javascript:;" id="btn_prev"></a><a href="javascript:;" id="btn_next"></a>
             </div>
             <div class="map">
-                <span>地址：@ViewBag.ShopInfo.Locations</span>
+                <span>地址：@(ViewBag.ShopInfo.Locations.Length > 15 ? ViewBag.ShopInfo.Locations.Replace(ViewBag.ShopInfo.Locations.Substring(15, ViewBag.ShopInfo.Locations.Length - 15), "...") : ViewBag.ShopInfo.Locations)</span>
                 <span class="lic">附近景区：@ViewBag.ShopInfo.SpotName</span>
                 @if (string.IsNullOrEmpty(ViewBag.ShopInfo.COORDINATE))
-    {
-            <span style="color:aquamarine" onclick="MapCoordinates('@ViewBag.ShopInfo.Locations',1,'')">地图/导航 ></span>
-}
-else
-{
-            <span style="color:aquamarine" onclick="MapCoordinates('@ViewBag.ShopInfo.Locations',2,'@ViewBag.ShopInfo.COORDINATE')">地图/导航 ></span>
-}
+                {
+                    <span style="color: aquamarine" onclick="MapCoordinates('@ViewBag.ShopInfo.Locations', 1, '')">地图/导航 ></span>
+                }
+                else
+                {
+                    <span style="color: aquamarine" onclick="MapCoordinates('@ViewBag.ShopInfo.Locations', 2, '@ViewBag.ShopInfo.COORDINATE')">地图/导航 ></span>
+                }
 
             </div>
         </div>
@@ -81,7 +111,7 @@ else
 
 
 
-    <div class="specity-header torent-header">
+    <div class="specity-header torent-header" style="height: 50px;">
         <ul>
             <li class="specder-item @if (ViewBag.BySort == 1)
                                     {@Html.Raw("sortup")
@@ -210,9 +240,10 @@ else
             window.location.href = "/weixin/wehouse/renthouselistview?keywords=" + keywords + "&bySort=" + bySort;
         }
 
-        $("#txtKeywords").on("blur", function () {
-            fnSearch(0);
-        });
+        $("#txtKeywords").on("blur",
+            function () {
+                fnSearch(0);
+            });
     </script>
 
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.2&key=3a6163ef3771946010124aeb08458ee4"></script>
@@ -242,7 +273,8 @@ else
                             });
                     });
             } else {
-                window.location.href = "https://uri.amap.com/marker?position=" + jw +
+                window.location.href = "https://uri.amap.com/marker?position=" +
+                    jw +
                     "&name=" +
                     address +
                     "&src=mypage&coordinate=gaode&callnative=0";
@@ -250,6 +282,37 @@ else
             }
         }
 
+        $(function () {
+            //图片幻灯片
+            $(".main_image").touchSlider({
+                flexible: true,
+                speed: 200,
+                btn_prev: $("#btn_prev"),
+                btn_next: $("#btn_next"),
+                paging: $(".flicking_con a"),
+                counter: function (e) {
+                    $(".flicking_con a").removeClass("on").eq(e.current - 1).addClass("on");
+                }
+            });
+            timer = setInterval(function () {
+                $("#btn_next").click();
+            }, 5000);
+            $(".main_image").hover(function () {
+                clearInterval(timer);
+            }, function () {
+                timer = setInterval(function () {
+                    $("#btn_next").click();
+                }, 5000);
+            });
+            $(".main_image").bind("touchstart", function () {
+                clearInterval(timer);
+            }).bind("touchend", function () {
+                timer = setInterval(function () {
+                    $("#btn_next").click();
+                }, 5000);
+            });
+
+        });
     </script>
     <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
 }

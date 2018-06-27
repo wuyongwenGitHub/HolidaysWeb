@@ -17,7 +17,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
     {
         //
         // GET: /Admin/Shop/
-        
+
 
         public ActionResult Index()
         {
@@ -172,14 +172,14 @@ namespace Holidays.Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        
+
 
         public ActionResult ShopCheckManageView()
         {
             ViewBag.ShopCategoryList = OperateContext.Current.BLLSession.IShopCategoryBLL.GetListBy(h => h.ID > 0, h => h.SortBy).ToList();
             return View();
         }
-        
+
 
         public ActionResult ShopView(long? id)
         {
@@ -257,7 +257,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
         #endregion
 
         #region 店铺分类
-        
+
 
         public ActionResult ShopCategoryView()
         {
@@ -324,15 +324,16 @@ namespace Holidays.Web.Areas.Admin.Controllers
             ShopToDayPrices.ForEach(x =>
             {
                 //查看当前日期是否存在
-                ShopToDayPrice ShopToDayPrice = OperateContext.Current.BLLSession.IShopToDaySetBll.GetListBy(h => h.date == x.date&&h.ShopId==x.ShopId).FirstOrDefault<ShopToDayPrice>();
+                ShopToDayPrice ShopToDayPrice = OperateContext.Current.BLLSession.IShopToDaySetBll.GetListBy(h => h.date == x.date && h.ShopId == x.ShopId).FirstOrDefault<ShopToDayPrice>();
                 int result = 0;
-                if (ShopToDayPrice!=null&&ShopToDayPrice.Id > 0) {
-                     x.Id = ShopToDayPrice.Id;
+                if (ShopToDayPrice != null && ShopToDayPrice.Id > 0)
+                {
+                    x.Id = ShopToDayPrice.Id;
                     result = OperateContext.Current.BLLSession.IShopToDaySetBll.Modify(x);
                 }
                 else
                 {
-                    result=OperateContext.Current.BLLSession.IShopToDaySetBll.Add(x);
+                    result = OperateContext.Current.BLLSession.IShopToDaySetBll.Add(x);
                 }
                 if (result != 1)
                 {
@@ -341,7 +342,7 @@ namespace Holidays.Web.Areas.Admin.Controllers
                 }
 
             });
-            if (statu!=1)
+            if (statu != 1)
             {
                 status = "ok";
                 msg = "保存成功！";
@@ -355,6 +356,27 @@ namespace Holidays.Web.Areas.Admin.Controllers
             //List<TodayPrice> a = OperateContext.Current.CustomSql<TodayPrice>();
             return OperateContext.Current.RedirectAjax("ok", null, shopToDayPricelist, null);
         }
-            
+
+        public ActionResult DeleteImage(string url, int ShopId)
+        {
+            ShopInfo shopModel = OperateContext.Current.BLLSession.IShopInfoBLL.GetListBy(h => h.ID == ShopId)
+                .FirstOrDefault();
+            if (shopModel == null)
+            {
+                return OperateContext.Current.RedirectAjax("fail", "异常", null, null);
+            }
+
+            var urls = "";
+            foreach (var img in shopModel.imageIntroduce.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (img != url)
+                {
+                    urls += img+",";
+                }
+            }
+            shopModel.imageIntroduce = urls.TrimEnd(',');
+            var result = OperateContext.Current.BLLSession.IShopInfoBLL.Modify(shopModel);
+            return OperateContext.Current.RedirectAjax("ok", urls, null, null);
+        }
     }
 }

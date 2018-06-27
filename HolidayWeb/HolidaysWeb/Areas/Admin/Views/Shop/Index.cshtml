@@ -17,411 +17,417 @@
 }
 
 
-    <div ng-app="shopApp" ng-controller="ShopListController" ng-init="initShopList(1)" class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel"> 
-            <div class="x_title">
-                <h2>店铺管理</h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <button ng-click="openAddShopModal()" class="btn btn-danger">添加店铺</button>
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-            <div class="row">
-                <form class="form-horizontal form-label-left">
-                    <div class="col-md-3"><input name="shopName" type="text" class="form-control" placeholder="店铺名称,景区名称,房东" /></div>
-                    <div class="col-md-3"><button type="button" ng-click="initShopList(1)" class="btn btn-default">查询</button></div>
-                </form>
-            </div>
-            <div class="x_content">
-                <table id="datatable" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>店铺名称</th>
-                            <th>风格</th>
-                            <th>景点名称</th>
-                            <th>地址</th>
-                            <th>起订价格</th>
-                            <th>评分</th>
-                            <th>房东</th>
-                            <th>发布时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="shop in shopList">
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ shop.ShopName }}</td>
-                            <td>{{ shop.ShopTypeName }}</td>
-                            <td>{{ shop.SpotName }}</td>
-                            <td>{{ shop.Locations }}</td>
-                            <td>{{ shop.StartPrice }}</td>
-                            <td>{{ shop.Scores }}</td>
-                            <td>{{ shop.UserName }}</td>
-                            <td>{{ shop.CreateOn }}</td>
-                            <td>
-                                <a href="javascript:;" ng-click="openViewShopModal(shop)" title="查看" class="fa fa-eye btn-xs"></a>
-                                <a href="javascript:;" ng-click="openEditShopModal(shop)" title="编辑" class="fa fa-edit btn-xs"></a>
-                                <a href="javascript:;" ng-click="del(shop.ID)" title="删除" class="fa fa-trash btn-xs"></a>
-                                <a href="javascript:;" ng-hide="{{shop.State == 0}}" ng-click="down(shop.ID)" title="下架" class="fa fa-arrow-circle-o-down btn-xs"></a>
-                                <a href="javascript:;" ng-hide="{{shop.State == 1 || shop.State == -1}}" ng-click="up(shop.ID)" title="上架" class="fa fa-arrow-circle-o-up btn-xs"></a>
-                            </td>
-                        </tr>
-                        <tr ng-if="shopList.length == 0">
-                            <td colspan="6" align="center">暂无数据</td>
-                        </tr>
+<div ng-app="shopApp" ng-controller="ShopListController" ng-init="initShopList(1)" class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>店铺管理</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <button ng-click="openAddShopModal()" class="btn btn-danger">添加店铺</button>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="row">
+            <form class="form-horizontal form-label-left">
+                <div class="col-md-3"><input name="shopName" type="text" class="form-control" placeholder="店铺名称,景区名称,房东" /></div>
+                <div class="col-md-3"><button type="button" ng-click="initShopList(1)" class="btn btn-default">查询</button></div>
+            </form>
+        </div>
+        <div class="x_content">
+            <table id="datatable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>店铺名称</th>
+                        <th>风格</th>
+                        <th>景点名称</th>
+                        <th>地址</th>
+                        <th>起订价格</th>
+                        <th>评分</th>
+                        <th>房东</th>
+                        <th>发布时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="shop in shopList">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ shop.ShopName }}</td>
+                        <td>{{ shop.ShopTypeName }}</td>
+                        <td>{{ shop.SpotName }}</td>
+                        <td>{{ shop.Locations }}</td>
+                        <td>{{ shop.StartPrice }}</td>
+                        <td>{{ shop.Scores }}</td>
+                        <td>{{ shop.UserName }}</td>
+                        <td>{{ shop.CreateOn }}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="openViewShopModal(shop)" title="查看" class="fa fa-eye btn-xs"></a>
+                            <a href="javascript:;" ng-click="openEditShopModal(shop)" title="编辑" class="fa fa-edit btn-xs"></a>
+                            <a href="javascript:;" ng-click="del(shop.ID)" title="删除" class="fa fa-trash btn-xs"></a>
+                            <a href="javascript:;" ng-hide="{{shop.State == 0}}" ng-click="down(shop.ID)" title="下架" class="fa fa-arrow-circle-o-down btn-xs"></a>
+                            <a href="javascript:;" ng-hide="{{shop.State == 1 || shop.State == -1}}" ng-click="up(shop.ID)" title="上架" class="fa fa-arrow-circle-o-up btn-xs"></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="shopList.length == 0">
+                        <td colspan="6" align="center">暂无数据</td>
+                    </tr>
 
-                    </tbody>
-                </table>
-            </div>
-            <div ng-hide="PageModel.TotalPage == 0" class="row">
-                <div class="col-md-12 col-sm-12">
-                    <div>
-                        <ul class="pagination">
-                            <li class="paginate_button previous"><a ng-click="initShopList(1)" href="javascript:;">首页</a></li>
-                            <li class="paginate_button"><a ng-click="initShopList(pageModel.PreviousPage)" href="javascript:;">上一页</a></li>
+                </tbody>
+            </table>
+        </div>
+        <div ng-hide="PageModel.TotalPage == 0" class="row">
+            <div class="col-md-12 col-sm-12">
+                <div>
+                    <ul class="pagination">
+                        <li class="paginate_button previous"><a ng-click="initShopList(1)" href="javascript:;">首页</a></li>
+                        <li class="paginate_button"><a ng-click="initShopList(pageModel.PreviousPage)" href="javascript:;">上一页</a></li>
 
-                            <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage == pageBar]" ng-repeat="pageBar in PageModel.PageBar">
-                                <a ng-click="initShopList(pageBar)" href="javascript:;">{{ pageBar }}</a>
-                            </li>
-                            <li class="paginate_button"><a href="javascript:;" ng-click="initShopList(PageModel.NextPage)">下一页</a></li>
-                            <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initShopList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
-                        </ul>
-                    </div>
+                        <li class="paginate_button" ng-class="{true: 'active'}[PageModel.CurrentPage == pageBar]" ng-repeat="pageBar in PageModel.PageBar">
+                            <a ng-click="initShopList(pageBar)" href="javascript:;">{{ pageBar }}</a>
+                        </li>
+                        <li class="paginate_button"><a href="javascript:;" ng-click="initShopList(PageModel.NextPage)">下一页</a></li>
+                        <li class="paginate_button next" id="datatable-checkbox_next"><a ng-click="initShopList(PageModel.TotalPage)" href="javascript:;">尾页</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!--编辑店铺信息窗口-->
-        <div id="editShopModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">x</span>
-                        </button>
-                        <h4 class="modal-title">编辑店铺信息</h4>
+    <!--编辑店铺信息窗口-->
+    <div id="editShopModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <h4 class="modal-title">编辑店铺信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form1" class="form-horizontal form-label-left" novalidate>
+                        <input name="ID" type="hidden" value="{{  Shop.ID }}" />
+                        <input name="IsCheck" type="hidden" value="{{  Shop.IsCheck }}" />
+                        <input name="State" type="hidden" value="{{  Shop.State }}" />
+                        <input name="IsDel" type="hidden" value="{{  Shop.IsDel }}" />
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopName">
+                                店铺名称 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Shop.ShopName" name="ShopName" class="form-control col-md-7 col-xs-12" maxlength="100" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopTypeName">
+                                风格<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input name="ShopType" type="hidden" value="{{ Shop.ShopType }}" />
+                                <select class="form-control" ng-model="Shop.ShopType" ng-options="shopCategory.ID as shopCategory.CategoryName for shopCategory in shopCategoryList"></select>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="PhoneNo">
+                                房东电话<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Shop.PhoneNo" name="PhoneNo" class="form-control col-md-7 col-xs-12" maxlength="11" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SpotName">
+                                景点名称<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input name="SpotId" type="hidden" value="{{ Shop.SpotId }}" />
+                                <select class="form-control " ng-model="Shop.SpotId" ng-options="scenicSpot.ID as scenicSpot.ScenicSpotName for scenicSpot in scenicSpotList"></select>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="COORDINATE">
+                                经纬度<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Shop.COORDINATE" name="COORDINATE" placeholder="经度,纬度" class="form-control col-md-7 col-xs-12" type="text" />
+                                <a target="_blank" href="http://lbs.amap.com/console/show/picker" style="text-decoration: underline">获取经纬度</a>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopImgs">
+                                店铺图片 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input name="ShopImgs" value="{{ Shop.ShopImgs }}" class="form-control col-md-7 col-xs-12" type="hidden" />
+                                <img id="ShopImgs" width="130" height="130" src="{{ Shop.ShopImgs }}" alt="店铺图片" />
+                                <br /><br />
+                                <div id="btnUploadImg">选择图片</div>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for=""></label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                请上传分辨率为 130*130 的照片
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopImgs">
+                                店铺介绍图片 <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input id="showImageList" name="imageIntroduce" value="" class="form-control col-md-7 col-xs-12" type="hidden" />
+                                <div id="img_div" style="position: relative;">
+                                    <img class="ShopImgs" src="{{ item }}" alt="店铺图片" ng-repeat="item in ShowImageList" />
+                                    @*<img src="~/Images/cha.png" id="cha_img"  ng-click="onDeleteImage(item,Shop.ID)" />*@
+                                </div>
+                                <br /><br />
+                                <div id="btnUploadImg1">选择图片</div>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for=""></label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                请上传分辨率为 400*230 的照片
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="StartPrice">
+                                起订价格(元)<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Shop.StartPrice" name="StartPrice" maxlength="20" class="form-control col-md-7 col-xs-12" type="text" />
+                            </div>
+                            @*<div style="height:35px;line-height:35px">
+                                    <a href="#" ng-click="openPriceCalendarModal(shop)">价格日历</a>
+                                </div>*@
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Scores">
+                                评分<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Shop.Scores" name="Scores" maxlength="20" class="form-control col-md-7 col-xs-12" type="text" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SortBy">
+                                显示顺序
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input ng-model="Shop.SortBy" name="SortBy" class="form-control col-md-7 col-xs-12" type="number" />
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SortBy">
+                                店铺评价
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <textarea ng-model="Shop.Tags" name="Tags" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for=""></label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                请用“,”分隔
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Locations">
+                                地址<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <textarea ng-model="Shop.Locations" name="Locations" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="About">
+                                房源介绍<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <textarea ng-model="Shop.About" name="About" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Rules">
+                                房客守则<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <textarea ng-model="Shop.Rules" name="Rules" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ChargesNotes">
+                                收费说明<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <textarea ng-model="Shop.ChargesNotes" name="ChargesNotes" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" ng-click="saveShop()" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--查看店铺信息-->
+    <div class="modal fade" id="viewShopInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <h4 class="modal-title">店铺信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">店铺名称</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.ShopName }}</div>
                     </div>
-                    <div class="modal-body">
-                        <form id="form1" class="form-horizontal form-label-left" novalidate>
-                            <input name="ID" type="hidden" value="{{  Shop.ID }}" />
-                            <input name="IsCheck" type="hidden" value="{{  Shop.IsCheck }}" />
-                            <input name="State" type="hidden" value="{{  Shop.State }}" />
-                            <input name="IsDel" type="hidden" value="{{  Shop.IsDel }}" />
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopName">
-                                    店铺名称 <span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input ng-model="Shop.ShopName" name="ShopName" class="form-control col-md-7 col-xs-12" maxlength="100" type="text" />
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopTypeName">
-                                    风格<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input name="ShopType" type="hidden" value="{{ Shop.ShopType }}" />
-                                    <select class="form-control" ng-model="Shop.ShopType" ng-options="shopCategory.ID as shopCategory.CategoryName for shopCategory in shopCategoryList"></select>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="PhoneNo">
-                                    房东电话<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input ng-model="Shop.PhoneNo" name="PhoneNo" class="form-control col-md-7 col-xs-12" maxlength="11" type="text" />
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SpotName">
-                                    景点名称<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input name="SpotId" type="hidden" value="{{ Shop.SpotId }}" />
-                                    <select class="form-control " ng-model="Shop.SpotId" ng-options="scenicSpot.ID as scenicSpot.ScenicSpotName for scenicSpot in scenicSpotList"></select>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="COORDINATE">
-                                    经纬度<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input ng-model="Shop.COORDINATE" name="COORDINATE" placeholder="经度,纬度" class="form-control col-md-7 col-xs-12" type="text" />
-                                    <a target="_blank" href="http://lbs.amap.com/console/show/picker" style="text-decoration: underline">获取经纬度</a>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopImgs">
-                                    店铺图片 <span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input name="ShopImgs" value="{{ Shop.ShopImgs }}" class="form-control col-md-7 col-xs-12" type="hidden" />
-                                    <img id="ShopImgs" width="130" height="130" src="{{ Shop.ShopImgs }}" alt="店铺图片" />
-                                    <br /><br />
-                                    <div id="btnUploadImg">选择图片</div>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for=""></label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    请上传分辨率为 130*130 的照片
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ShopImgs">
-                                    店铺介绍图片 <span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input id="showImageList" name="imageIntroduce" value="" class="form-control col-md-7 col-xs-12" type="hidden" />
-                                    <div id="img_div" style="position: relative;" >
-                                        <img class="ShopImgs" src="{{ item }}" alt="店铺图片" ng-repeat="item in ShowImageList" />
-                                        @*<img src="~/Images/cha.png" id="cha_img"  ng-click="onDeleteImage(item,Shop.ID)" />*@
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">店铺图片</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <img width="130" height="130" src="{{ Shop.ShopImgs }}" alt="商品图片" />
+                        </div>
+                    </div><br />
+
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">店铺介绍图片</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <img class="ShopImgs" src="{{ item }}" alt="店铺图片" ng-repeat="item in ShowImageList" />
+                        </div>
+                    </div><br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">风格</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.ShopTypeName }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">房东</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.UserName }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">景点名称</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.SpotName }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">起订价格</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.StartPrice }} 元</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">评分</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Scores }} 分</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">显示顺序</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.SortBy }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">店铺评价</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Tags }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">地址</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Locations }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">房源介绍</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.About }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">房客守则</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Rules }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">收费说明</label>
+                        <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.ChargesNotes }}</div>
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--价格日历窗口窗口-->
+    <div id="PriceCalendarpModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <h4 class="modal-title">价格日历</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="containers"></div>
+                    <div class="">
+                        <div class="capricorncd-date-detailed-settings" style="display: none;z-index:999999999">
+                            <div class="cddsw-container">
+                                <div class="cddsw-head-wrapper">
+                                    <div class="cddsw-title">
+                                        0000-00-00
                                     </div>
-                                    <br /><br />
-                                    <div id="btnUploadImg1">选择图片</div>
+                                    <a class="cddsw-close"><i></i></a>
                                 </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for=""></label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    请上传分辨率为 400*230 的照片
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="StartPrice">
-                                    起订价格(元)<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input ng-model="Shop.StartPrice" name="StartPrice" maxlength="20" class="form-control col-md-7 col-xs-12" type="text" />
-                                </div>
-                                @*<div style="height:35px;line-height:35px">
-                <a href="#" ng-click="openPriceCalendarModal(shop)">价格日历</a>
-            </div>*@
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Scores">
-                                    评分<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input ng-model="Shop.Scores" name="Scores" maxlength="20" class="form-control col-md-7 col-xs-12" type="text" />
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SortBy">
-                                    显示顺序
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input ng-model="Shop.SortBy" name="SortBy" class="form-control col-md-7 col-xs-12" type="number" />
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SortBy">
-                                    店铺评价
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <textarea ng-model="Shop.Tags" name="Tags" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for=""></label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    请用“,”分隔
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Locations">
-                                    地址<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <textarea ng-model="Shop.Locations" name="Locations" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="About">
-                                    房源介绍<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <textarea ng-model="Shop.About" name="About" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="Rules">
-                                    房客守则<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <textarea ng-model="Shop.Rules" name="Rules" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ChargesNotes">
-                                    收费说明<span class="required">*</span>
-                                </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <textarea ng-model="Shop.ChargesNotes" name="ChargesNotes" class="form-control col-md-7 col-xs-12" rows="3"></textarea>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" ng-click="saveShop()" class="btn btn-primary">保存</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--查看店铺信息-->
-        <div class="modal fade" id="viewShopInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">x</span>
-                        </button>
-                        <h4 class="modal-title">店铺信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">店铺名称</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.ShopName }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">店铺图片</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <img width="130" height="130" src="{{ Shop.ShopImgs }}" alt="商品图片" />
-                            </div>
-                        </div><br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">风格</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.ShopTypeName }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">房东</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.UserName }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">景点名称</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.SpotName }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">起订价格</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.StartPrice }} 元</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">评分</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Scores }} 分</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">显示顺序</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.SortBy }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">店铺评价</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Tags }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">地址</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Locations }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">房源介绍</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.About }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">房客守则</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.Rules }}</div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-4 text-right">收费说明</label>
-                            <div class="col-md-6 col-sm-6 col-xs-6">{{Shop.ChargesNotes }}</div>
-                        </div>
-                        <br />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--价格日历窗口窗口-->
-        <div id="PriceCalendarpModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">x</span>
-                        </button>
-                        <h4 class="modal-title">价格日历</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="containers"></div>
-                        <div class="">
-                            <div class="capricorncd-date-detailed-settings" style="display: none;z-index:999999999">
-                                <div class="cddsw-container">
-                                    <div class="cddsw-head-wrapper">
-                                        <div class="cddsw-title">
-                                            0000-00-00
-                                        </div>
-                                        <a class="cddsw-close"><i></i></a>
-                                    </div>
-                                    <ul class="cddsw-form-wrapper clearfix">
-                                        @*<li> <label>最多购买数</label> <input name="buyNumMax" type="text" /></li>
+                                <ul class="cddsw-form-wrapper clearfix">
+                                    @*<li> <label>最多购买数</label> <input name="buyNumMax" type="text" /></li>
                                         <li> <label>最少购买数</label> <input name="buyNumMin" type="text" /></li>*@
-                                        <li> <label>当天售价</label> <input name="price" type="text" /></li>
-                                        @*<li> <label>景区挂牌价</label> <input name="priceMarket" type="text" /></li>
+                                    <li> <label>当天售价</label> <input name="price" type="text" /></li>
+                                    @*<li> <label>景区挂牌价</label> <input name="priceMarket" type="text" /></li>
                                         <li> <label>分销结算价</label> <input name="priceSettlement" type="text" /></li>
                                         <li> <label>建议零售价</label> <input name="priceRetail" type="text" /></li>
                                         <li> <label>返现</label> <input name="cashback" type="text" /></li>
                                         <li> <label>当天库存</label> <input name="stock" type="text" /></li>*@
-                                    </ul>
-                                    <fieldset class="cddsw-batch-settings clearfix">
-                                        <legend class="bs-title"><b>批量设置</b></legend>
-                                        <div class="bs-content">
-                                            <lable class="bs-lable">
-                                                日期范围
-                                            </lable>
-                                            <div class="bs-options-wrapper">
-                                                <input class="itext" name="startDay" type="text" />
-                                                <span class="white-space">-</span>
-                                                <input class="itext" name="endDay" type="text" />
-                                                <label class="drw-enable"><input name="enableDateRange" type="checkbox" /> 启用</label>
-                                            </div>
+                                </ul>
+                                <fieldset class="cddsw-batch-settings clearfix">
+                                    <legend class="bs-title"><b>批量设置</b></legend>
+                                    <div class="bs-content">
+                                        <lable class="bs-lable">
+                                            日期范围
+                                        </lable>
+                                        <div class="bs-options-wrapper">
+                                            <input class="itext" name="startDay" type="text" />
+                                            <span class="white-space">-</span>
+                                            <input class="itext" name="endDay" type="text" />
+                                            <label class="drw-enable"><input name="enableDateRange" type="checkbox" /> 启用</label>
                                         </div>
-                                        <div class="bs-content bs-week-chekbox">
-                                            <lable class="bs-lable">
-                                                设置星期
-                                            </lable>
-                                            <div class="bs-options-wrapper">
-                                                <label><input name="setWeek" type="checkbox" value="1" /> 周一</label>
-                                                <label><input name="setWeek" type="checkbox" value="2" /> 周二</label>
-                                                <label><input name="setWeek" type="checkbox" value="3" /> 周三</label>
-                                                <label><input name="setWeek" type="checkbox" value="4" /> 周四</label>
-                                                <label><input name="setWeek" type="checkbox" value="5" /> 周五</label>
-                                                <label><input name="setWeek" type="checkbox" value="6" /> 周六</label>
-                                                <label><input name="setWeek" type="checkbox" value="0" /> 周日</label>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <div class="cddsw-foot-wrapper">
-                                        <button class="btn-confirm">启用本设置</button>
-                                        <button class="btn-cancel">取消</button>
                                     </div>
+                                    <div class="bs-content bs-week-chekbox">
+                                        <lable class="bs-lable">
+                                            设置星期
+                                        </lable>
+                                        <div class="bs-options-wrapper">
+                                            <label><input name="setWeek" type="checkbox" value="1" /> 周一</label>
+                                            <label><input name="setWeek" type="checkbox" value="2" /> 周二</label>
+                                            <label><input name="setWeek" type="checkbox" value="3" /> 周三</label>
+                                            <label><input name="setWeek" type="checkbox" value="4" /> 周四</label>
+                                            <label><input name="setWeek" type="checkbox" value="5" /> 周五</label>
+                                            <label><input name="setWeek" type="checkbox" value="6" /> 周六</label>
+                                            <label><input name="setWeek" type="checkbox" value="0" /> 周日</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="cddsw-foot-wrapper">
+                                    <button class="btn-confirm">启用本设置</button>
+                                    <button class="btn-cancel">取消</button>
                                 </div>
                             </div>
                         </div>
@@ -429,470 +435,472 @@
                 </div>
             </div>
         </div>
-     </div>
+    </div>
+</div>
 
 
 
-        @section scripts{
-            <!--日历相关-->
-            <script src="~/Framework/PriceCalendarp/js/mock-data.js"></script>
-            <script src="~/Framework/PriceCalendarp/js/calendar-price-jquery.js"></script>
-            <!--日历相关over-->
-            <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
+@section scripts{
+    <!--日历相关-->
+    <script src="~/Framework/PriceCalendarp/js/mock-data.js"></script>
+    <script src="~/Framework/PriceCalendarp/js/calendar-price-jquery.js"></script>
+    <!--日历相关over-->
+    <script src="~/Framework/webuploader-0.1.5/webuploader.min.js"></script>
 
-            <script type="text/javascript">
-                var shopApp = angular.module('shopApp', []);
-                shopApp.controller('ShopListController', function ShopListController($scope, $http) {
+    <script type="text/javascript">
+        var shopApp = angular.module('shopApp', []);
+        shopApp.controller('ShopListController', function ShopListController($scope, $http) {
 
-                    $("#editShopModal").on("shown.bs.modal", function () {
-                        fnUploadImage("btnUploadImg", function (url) {
-                            $("#ShopImgs").attr("src", url);
-                            $("input[name='ShopImgs']").val(url);
-                        });
-                        fnUploadImage("btnUploadImg1", function (url) {
-                            //$("#ShopImgs").attr("src", url);
-                            //$("input[name='ShopImgs']").val(url);
-                            var tempList = $scope.ShowImageList;
-                            if (tempList.length == 0) {
-                                tempList.push(url);
-                            } else {
-                                tempList.push(url);
-                            }
-                            $scope.ShowImageList = tempList;
-                            if ($(".ShopImgs:last").length == 0) {
-                                $("#img_div").append("<img class='ShopImgs'  width='400' height='230' src='" + url + "' alt='店铺图片' />");
-                            } else {
-                                $(".ShopImgs:last").before("<img class='ShopImgs'  width='400' height='230' src='" + url + "' alt='店铺图片' />");
-                            }
-                            
-                            $("#editShopModal").modal();
-                        });
-                    }).on("hide.bs.modal", fnDestroyUploader);
-
-                    $scope.initShopList = function (page) {
-                        var shopName = $("input[name='shopName']").val();
-                        var data = { page: page, shopName: shopName };
-
-                        $http({
-                            method: 'post',
-                            url: '/Admin/Shop/GetShopList',
-                            data: data
-                        }).then(function successCallback(response) {
-                            var data = response.data.Data;
-                            //格式化时间
-                            for (var i = 0, len = data.length; i < len; i++) {
-                                data[i].CreateOn = jsonDatetimeFormat(data[i].CreateOn);
-                            }
-                            $scope.shopList = data;
-                            $scope.PageModel = response.data;
-                        }, function errorCallback(response) {
-                            layer.alert('系统异常', { icon: 2 });
-                        });
+            $("#editShopModal").on("shown.bs.modal", function () {
+                fnUploadImage("btnUploadImg", function (url) {
+                    $("#ShopImgs").attr("src", url);
+                    $("input[name='ShopImgs']").val(url);
+                });
+                fnUploadImage("btnUploadImg1", function (url) {
+                    //$("#ShopImgs").attr("src", url);
+                    //$("input[name='ShopImgs']").val(url);
+                    var tempList = $scope.ShowImageList;
+                    if (tempList.length == 0) {
+                        tempList.push(url);
+                    } else {
+                        tempList.push(url);
                     }
-                    $scope.onDeleteImage = function(url,shopId) {
-                        $http({
-                            method: 'post',
-                            url: '/Admin/Shop/DeleteImage',
-                            data: { url: url, ShopId: shopId}
-                        }).then(function successCallback(response) {
-                          
-                        }, function errorCallback(response) {
-                            layer.alert('系统异常', { icon: 2 });
-                        });
+                    $scope.ShowImageList = tempList;
+                    if ($(".ShopImgs:last").length == 0) {
+                        $("#img_div").append("<img class='ShopImgs'  width='400' height='230' src='" + url + "' alt='店铺图片' />");
+                    } else {
+                        $(".ShopImgs:last").before("<img class='ShopImgs'  width='400' height='230' src='" + url + "' alt='店铺图片' />");
                     }
-                    $http({
-                        method: 'post',
-                        url: '/Admin/Shop/GetShopCategoryList'
-                    }).then(function successCallback(response) {
-                        $scope.shopCategoryList = response.data.Data;
-                    }, function errorCallback(response) {
-                        layer.alert('系统异常', { icon: 2 });
-                    });
-                    $http({
-                        method: 'post',
-                        url: '/Admin/ScenicSpot/GetScenicSpotDropdownList'
-                    }).then(function successCallback(response) {
-                        $scope.scenicSpotList = response.data.Data;
-                    }, function errorCallback(response) {
-                        layer.alert('系统异常', { icon: 2 });
-                    });
-                    $scope.DecorativeStyleList = [{ DecorativeStyle: "民宿" }, { DecorativeStyle: "农家乐" }, { DecorativeStyle: "宾馆" }];
-                    //更新图片
-                    //$scope.ImgArray = [];
-                    //$scope.fnUpdateImgInput = function () {
-                    //    var imgStr = "";
-                    //    if ($scope.ImgArray) {
-                    //        for (var i = 0, len = $scope.ImgArray.length; i < len; i++) {
-                    //            if (i == $scope.ImgArray.length - 1) {
-                    //                imgStr += $scope.ImgArray[i];
-                    //            } else {
-                    //                imgStr += $scope.ImgArray[i] + ",";
-                    //            }
-                    //        }
-                    //    }
-                    //    $("input[name='ShopImgs']").val(imgStr);
-                    //};
-                    //
-                    $scope.openViewShopModal = function (shop) {
-                        //if (shop.imageIntroduce != undefined) {
-                        //    $scope.ShowImageList = shop.imageIntroduce.split(",");
-                        //} else {
-                        //    $scope.ShowImageList = [];
-                        //}
-                        
-                        $scope.Shop = shop;
-                        $("#viewShopInfoModal").modal();
-                    };
-                    //打开添加店铺信息窗口
-                    $scope.openAddShopModal = function () {
-                        $scope.Shop = null;
-                        $("#editShopModal").modal();
-                    };
-                    //打开价格日历窗口
-                    $scope.openPriceCalendarModal = function (shop) {
-                        //$scope.Shop = shop;
-                        $("#PriceCalendarpModal").modal();
-                        PriceSetShow($scope);
-                    };
-                    $scope.openeveryPriceModal = function (shop) {
-                        //$scope.Shop = shop;
-                        $("#everyPriceModal").modal();
-                    };
 
-                    //打开编辑店铺信息窗口
-                    $scope.openEditShopModal = function (shop) {
-                        if (shop.imageIntroduce != undefined) {
-                            $scope.ShowImageList = shop.imageIntroduce.split(",");
-                        } else {
-                            $scope.ShowImageList = [];
-                        }
-                        $scope.Shop = shop;
-                        $scope.queryShopByID(shop.ID);
-                        $("#editShopModal").modal();
-                    };
-                    //删除店铺
-                    $scope.del = function (id) {
-                        layer.confirm("确定要删除吗？", {
-                            btn: ['确定', '取消'],
-                            btn1: function () {
-                                $http({
-                                    method: 'post',
-                                    url: '/Admin/Shop/DelShopByID',
-                                    data: { id: id }
-                                }).then(function successCallback(response) {
-                                    if (response.data.Status == "ok") {
-                                        layer.alert(response.data.Msg, { icon: 1 }, function () {
-                                            window.location.reload();
-                                        });
-                                    } else {
-                                        layer.alert(response.data.Msg, { icon: 2 });
-                                    }
-                                }, function errorCallback(response) {
-                                    layer.alert('系统异常', { icon: 2 });
-                                });
-                            }
-                        });
-                    };
-                    //上架
-                    $scope.up = function (id) {
-                        layer.confirm("确定要上架？", {
-                            btn: ['确定', '取消'],
-                            btn1: function () {
-                                $scope.updateState(id, 1);
-                            }
-                        });
-                    };
-                    //下架
-                    $scope.down = function (id) {
-                        layer.confirm("确定要下架？", {
-                            btn: ['确定', '取消'],
-                            btn1: function () {
-                                $scope.updateState(id, 0);
-                            }
-                        });
-                    };
-                    $scope.updateState = function (id, state) {
-                        $http({
-                            method: 'POST',
-                            url: '/Admin/Shop/SaveShopState',
-                            data: { id: id, state: state }
-                        }).then(function successCallback(response) {
-                            if (response.data.Status == "ok") {
-                                layer.alert(response.data.Msg, { icon: 1 }, function () {
-                                    window.location.reload();
-                                });
-                            } else {
-                                layer.alert(response.data.Msg, { icon: 2 });
-                            }
-                        }), function errorCallback(response) {
-                            layer.alert("系统异常", { icon: 2 });
-                        }
-                    };
-                    //根据ID查询店铺信息
-                    $scope.queryShopByID = function (id) {
+                    $("#editShopModal").modal();
+                });
+            }).on("hide.bs.modal", fnDestroyUploader);
+
+            $scope.initShopList = function (page) {
+                var shopName = $("input[name='shopName']").val();
+                var data = { page: page, shopName: shopName };
+
+                $http({
+                    method: 'post',
+                    url: '/Admin/Shop/GetShopList',
+                    data: data
+                }).then(function successCallback(response) {
+                    var data = response.data.Data;
+                    //格式化时间
+                    for (var i = 0, len = data.length; i < len; i++) {
+                        data[i].CreateOn = jsonDatetimeFormat(data[i].CreateOn);
+                    }
+                    $scope.shopList = data;
+                    $scope.PageModel = response.data;
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            }
+            $scope.onDeleteImage = function (url, shopId) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/Shop/DeleteImage',
+                    data: { url: url, ShopId: shopId }
+                }).then(function successCallback(response) {
+
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            }
+            $http({
+                method: 'post',
+                url: '/Admin/Shop/GetShopCategoryList'
+            }).then(function successCallback(response) {
+                $scope.shopCategoryList = response.data.Data;
+            }, function errorCallback(response) {
+                layer.alert('系统异常', { icon: 2 });
+            });
+            $http({
+                method: 'post',
+                url: '/Admin/ScenicSpot/GetScenicSpotDropdownList'
+            }).then(function successCallback(response) {
+                $scope.scenicSpotList = response.data.Data;
+            }, function errorCallback(response) {
+                layer.alert('系统异常', { icon: 2 });
+            });
+            $scope.DecorativeStyleList = [{ DecorativeStyle: "民宿" }, { DecorativeStyle: "农家乐" }, { DecorativeStyle: "宾馆" }];
+            //更新图片
+            //$scope.ImgArray = [];
+            //$scope.fnUpdateImgInput = function () {
+            //    var imgStr = "";
+            //    if ($scope.ImgArray) {
+            //        for (var i = 0, len = $scope.ImgArray.length; i < len; i++) {
+            //            if (i == $scope.ImgArray.length - 1) {
+            //                imgStr += $scope.ImgArray[i];
+            //            } else {
+            //                imgStr += $scope.ImgArray[i] + ",";
+            //            }
+            //        }
+            //    }
+            //    $("input[name='ShopImgs']").val(imgStr);
+            //};
+            //
+            $scope.openViewShopModal = function (shop) {
+                if (shop.imageintroduce != undefined) {
+                    $scope.showimagelist = shop.imageintroduce.split(",");
+                } else {
+                    $scope.showimagelist = [];
+                }
+
+                $scope.Shop = shop;
+                $("#viewShopInfoModal").modal();
+            };
+            //打开添加店铺信息窗口
+            $scope.openAddShopModal = function () {
+                $scope.ShowImageList = [];
+                $scope.Shop = null;
+                $("#editShopModal").modal();
+            };
+            //打开价格日历窗口
+            $scope.openPriceCalendarModal = function (shop) {
+                //$scope.Shop = shop;
+                $("#PriceCalendarpModal").modal();
+                PriceSetShow($scope);
+            };
+            $scope.openeveryPriceModal = function (shop) {
+                //$scope.Shop = shop;
+                $("#everyPriceModal").modal();
+            };
+
+            //打开编辑店铺信息窗口
+            $scope.openEditShopModal = function (shop) {
+                if (shop.imageIntroduce != undefined) {
+                    $scope.ShowImageList = shop.imageIntroduce.split(",");
+                } else {
+                    $scope.ShowImageList = [];
+                }
+                $scope.Shop = shop;
+                $scope.queryShopByID(shop.ID);
+                $("#editShopModal").modal();
+            };
+            //删除店铺
+            $scope.del = function (id) {
+                layer.confirm("确定要删除吗？", {
+                    btn: ['确定', '取消'],
+                    btn1: function () {
                         $http({
                             method: 'post',
-                            url: '/Admin/Shop/QueryShopByID',
+                            url: '/Admin/Shop/DelShopByID',
                             data: { id: id }
                         }).then(function successCallback(response) {
-                            $scope.Shop = response.data.Data;
-                            // $scope.ImgArray = $scope.Shop.ShopImgs.split(',');
-                            // $scope.fnUpdateImgInput();
-                        }, function errorCallback(response) {
-                            layer.alert('系统异常', { icon: 2 });
-                        });
-                    };
-                    //保存店铺
-                    $scope.saveShop = function () {
-                        var loadIndex = layer.load();
-                        var msg = "";
-                        for (var i = 0; i < $scope.ShowImageList.length; i++) {
-                            if (i == 0) {
-                                msg = $scope.ShowImageList[i];
-                            } else {
-                                msg += ","+$scope.ShowImageList[i];
-                            }
-                        }
-                        $("#showImageList").val(msg);
-                        var data = $("#form1").serialize();
-                        $.post('/Admin/Shop/SaveShop', data, function (result) {
-                            layer.close(loadIndex);
-                            if (result.Status == "ok") {
-                                layer.alert(result.Msg, { icon: 1 }, function () {
-                                    window.location.reload();
-                                });
-                            } else {
-                                layer.alert(result.Msg, { icon: 2 });
-                            }
-                        });
-                    };
-                    //保存价格日历
-                    $scope.savePriceAuto = function (data) {
-                        var jsonSdata = JSON.stringify(data)
-                        $http({
-                            method: 'POST',
-                            url: '/Admin/Shop/SavePriceAuto',
-                            data: { PriceAutos: jsonSdata }
-                        }).then(function successCallback(response) {
                             if (response.data.Status == "ok") {
                                 layer.alert(response.data.Msg, { icon: 1 }, function () {
-                                    //window.location.reload();
+                                    window.location.reload();
                                 });
                             } else {
                                 layer.alert(response.data.Msg, { icon: 2 });
                             }
-                        }), function errorCallback(response) {
-                            layer.alert("系统异常", { icon: 2 });
-                        }
-                       
-                    }
-                    //根据店铺id查询价格日历信息
-                    $scope.getPriceAutoByShopID = function ($scope) {
-                        $http({
-                            method: 'post',
-                            url: '/Admin/Shop/GetPriceAutoByShopID',
-                            data: { ShopId: $scope.ShopId }
-                        }).then(function successCallback(response) {
-                           var MOCK_DATA=response.data.Data;
-                           Calebuild($scope, MOCK_DATA);
-                            // $scope.ImgArray = $scope.Shop.ShopImgs.split(',');
-                            // $scope.fnUpdateImgInput();
                         }, function errorCallback(response) {
                             layer.alert('系统异常', { icon: 2 });
                         });
                     }
-
-                    //删除图片
-                    //$scope.delImg = function (index) {
-                    //    $scope.ImgArray.splice(index, 1);
-                    //    $scope.fnUpdateImgInput();
-                    //};
-                    //$scope.saveShopImg = function () {
-                    //    var loadIndex = layer.load();
-                    //    var data = $("#form1").serialize();
-                    //    $.post('/Admin/Shop/SetShopImg', data, function (result) {
-                    //        layer.close(loadIndex);
-                    //        if (result.Status == "ok") {
-                    //            layer.alert(result.Msg, { icon: 1 }, function () {
-                    //                window.location.reload();
-                    //            });
-                    //        } else {
-                    //            layer.alert(result.Msg, { icon: 2 });
-                    //        }
-                    //    });
-                    //};
-
-
                 });
-
-
-                //价格日历相关代码
-                
-                function PriceSetShow($scope) {
-                    // 生成模拟数据(请求数据)
-                    $scope.getPriceAutoByShopID($scope); //createMockData()
+            };
+            //上架
+            $scope.up = function (id) {
+                layer.confirm("确定要上架？", {
+                    btn: ['确定', '取消'],
+                    btn1: function () {
+                        $scope.updateState(id, 1);
+                    }
+                });
+            };
+            //下架
+            $scope.down = function (id) {
+                layer.confirm("确定要下架？", {
+                    btn: ['确定', '取消'],
+                    btn1: function () {
+                        $scope.updateState(id, 0);
+                    }
+                });
+            };
+            $scope.updateState = function (id, state) {
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Shop/SaveShopState',
+                    data: { id: id, state: state }
+                }).then(function successCallback(response) {
+                    if (response.data.Status == "ok") {
+                        layer.alert(response.data.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(response.data.Msg, { icon: 2 });
+                    }
+                }), function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
                 }
-                function Calebuild($scope, MOCK_DATA) {
-                    var zxCalendar = $.CalendarPrice({
-                        el: '.containers',
-                        // startDate: '2017-08-02',
-                        endDate: '2018-12-20',
-                        data: MOCK_DATA,
-                        newData: [],
-                        ShopId: $scope.Shop.ID,
-                        // 配置需要设置的字段名称
-                        config: [
-                            //{
-                            //    key: 'buyNumMax',
-                            //    name: '最多购买数'
-                            //},
-                            //{
-                            //    key: 'buyNumMin',
-                            //    name: '最少购买数'
-                            //},
-                            {
-                                key: 'price',
-                                name: '今日售价'
-                            },
-                            //{
-                            //    key: 'priceMarket',
-                            //    name: '景区挂牌价'
-                            //},
-                            //{
-                            //    key: 'priceSettlement',
-                            //    name: '分销结算价'
-                            //},
-                            //{
-                            //    key: 'priceRetail',
-                            //    name: '建议零售价'
-                            //},
-                            //{
-                            //    key: 'cashback',
-                            //    name: '返现'
-                            //},
-                            //{
-                            //    key: 'stock',
-                            //    name: '当天库存'
-                            //}
-                        ],
-                        // 配置在日历中要显示的字段
-                        show: [
-                            {
-                                key: 'price',
-                                name: '分:￥'
-                            },
-                            //{
-                            //    key: 'priceSettlement',
-                            //    name: '采:￥'
-                            //},
-                            //{
-                            //    key: 'stock',
-                            //    name: '库:'
-                            //}
-                        ],
-                        callback: function (data) {
-                            $scope.savePriceAuto(data);
-                            //log('callback ....');
-                            //log(data);
-                        },
-                        updateDate: function (data) {
-                        },
-                        cancel: function () {
-                            log('取消设置 ....');
-                            // 取消设置
-                            // 这里可以触发关闭设置窗口
-                            // ...
-                        },
-                        monthChange: function (month) {
-                            log('monthChange: ')
-                            log(month)
-                            //        var newData = createMockData()
-                            //        zxCalendar.update(newData)
-                        },
-                        reset: function () {
-                            log('数据重置成功！');
-                        },
-                        everyday: function (data) {
-                            $scope.openeveryPriceModal();
-                            //var settingWindow = $(".capricorncd-date-detailed-settings");
-
-                            //// 初始化input[value]
-                            //settingWindow.find('.cddsw-form-wrapper [type="text"]').val('');
-                            //settingWindow.find('[name="enableDateRange"]').prop('checked', false);
-                            //settingWindow.find('[name="setWeek"]').prop('checked', false);
-
-                            //// 用户传入字段
-                            //$.each(data, function (key, val) {
-                            //    settingWindow.find('[name="' + key + '"]').val(val);
-                            //});
-
-                            //// 栏目标题
-                            //settingWindow.find('.cddsw-title').html(data["thisDate"]);
-                            //settingWindow.find('[name="startDay"], [name="endDay"]').val(data["thisDate"]);
-
-                            //settingWindow.show();
-                        },
-                        error: function (err) {
-                            console.error(err.msg);
-                            alert(err.msg);
-                        },
-                        // 自定义颜色
-                        style: {
-                            // 头部背景色
-                            headerBgColor: 'black',
-                            // 头部文字颜色
-                            headerTextColor: '#fff',
-                            // 周一至周日背景色，及文字颜色
-                            weekBgColor: 'black',
-                            weekTextColor: '#fff',
-                            // 周末背景色，及文字颜色
-                            weekendBgColor: '#098cc2',
-                            weekendTextColor: '#fff',
-                            // 有效日期颜色
-                            validDateTextColor: '#333',
-                            validDateBgColor: '#fff',
-                            validDateBorderColor: '#eee',
-                            // Hover
-                            validDateHoverBgColor: '#098cc2',
-                            validDateHoverTextColor: '#fff',
-                            // 无效日期颜色
-                            invalidDateTextColor: '#ccc',
-                            invalidDateBgColor: '#fff',
-                            invalidDateBorderColor: '#eee',
-                            // 底部背景颜色
-                            footerBgColor: 'black',
-                            // 重置按钮颜色
-                            resetBtnBgColor: '#77c351',
-                            resetBtnTextColor: '#fff',
-                            resetBtnHoverBgColor: '#55b526',
-                            resetBtnHoverTextColor: '#fff',
-                            // 确定按钮
-                            confirmBtnBgColor: '#098cc2',
-                            confirmBtnTextColor: '#fff',
-                            confirmBtnHoverBgColor: '#00649a',
-                            confirmBtnHoverTextColor: '#fff',
-                            // 取消按钮
-                            cancelBtnBgColor: '#fff',
-                            cancelBtnBorderColor: '#bbb',
-                            cancelBtnTextColor: '#999',
-                            cancelBtnHoverBgColor: '#fff',
-                            cancelBtnHoverBorderColor: '#bbb',
-                            cancelBtnHoverTextColor: '#666'
-                        }
-                        // 点击有效的某一触发的回调函数
-                        // 注意：配置了此参数，设置窗口无效，即不能针对日期做参数设置
-                        // 返回每天的数据
-                        //        everyday: function (dayData) {
-                        //            console.log('点击某日，返回当天的数据');
-                        //            console.log(dayData);
-                        //        },
-                        // 隐藏底部按钮（重置、确定、取消），前台使用该插件时，则需要隐藏底部按钮
-                        //        hideFooterButton: true
-                    });
+            };
+            //根据ID查询店铺信息
+            $scope.queryShopByID = function (id) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/Shop/QueryShopByID',
+                    data: { id: id }
+                }).then(function successCallback(response) {
+                    $scope.Shop = response.data.Data;
+                    // $scope.ImgArray = $scope.Shop.ShopImgs.split(',');
+                    // $scope.fnUpdateImgInput();
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            };
+            //保存店铺
+            $scope.saveShop = function () {
+                var loadIndex = layer.load();
+                var msg = "";
+                for (var i = 0; i < $scope.ShowImageList.length; i++) {
+                    if (i == 0) {
+                        msg = $scope.ShowImageList[i];
+                    } else {
+                        msg += "," + $scope.ShowImageList[i];
+                    }
                 }
-                log(zxCalendar)
-                function log(s) {
-                    console.log(s)
+                $("#showImageList").val(msg);
+                var data = $("#form1").serialize();
+                $.post('/Admin/Shop/SaveShop', data, function (result) {
+                    layer.close(loadIndex);
+                    if (result.Status == "ok") {
+                        layer.alert(result.Msg, { icon: 1 }, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.alert(result.Msg, { icon: 2 });
+                    }
+                });
+            };
+            //保存价格日历
+            $scope.savePriceAuto = function (data) {
+                var jsonSdata = JSON.stringify(data)
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Shop/SavePriceAuto',
+                    data: { PriceAutos: jsonSdata }
+                }).then(function successCallback(response) {
+                    if (response.data.Status == "ok") {
+                        layer.alert(response.data.Msg, { icon: 1 }, function () {
+                            //window.location.reload();
+                        });
+                    } else {
+                        layer.alert(response.data.Msg, { icon: 2 });
+                    }
+                }), function errorCallback(response) {
+                    layer.alert("系统异常", { icon: 2 });
                 }
-            </script>
+
+            }
+            //根据店铺id查询价格日历信息
+            $scope.getPriceAutoByShopID = function ($scope) {
+                $http({
+                    method: 'post',
+                    url: '/Admin/Shop/GetPriceAutoByShopID',
+                    data: { ShopId: $scope.ShopId }
+                }).then(function successCallback(response) {
+                    var MOCK_DATA = response.data.Data;
+                    Calebuild($scope, MOCK_DATA);
+                    // $scope.ImgArray = $scope.Shop.ShopImgs.split(',');
+                    // $scope.fnUpdateImgInput();
+                }, function errorCallback(response) {
+                    layer.alert('系统异常', { icon: 2 });
+                });
+            }
+
+            //删除图片
+            //$scope.delImg = function (index) {
+            //    $scope.ImgArray.splice(index, 1);
+            //    $scope.fnUpdateImgInput();
+            //};
+            //$scope.saveShopImg = function () {
+            //    var loadIndex = layer.load();
+            //    var data = $("#form1").serialize();
+            //    $.post('/Admin/Shop/SetShopImg', data, function (result) {
+            //        layer.close(loadIndex);
+            //        if (result.Status == "ok") {
+            //            layer.alert(result.Msg, { icon: 1 }, function () {
+            //                window.location.reload();
+            //            });
+            //        } else {
+            //            layer.alert(result.Msg, { icon: 2 });
+            //        }
+            //    });
+            //};
+
+
+        });
+
+
+        //价格日历相关代码
+
+        function PriceSetShow($scope) {
+            // 生成模拟数据(请求数据)
+            $scope.getPriceAutoByShopID($scope); //createMockData()
         }
+        function Calebuild($scope, MOCK_DATA) {
+            var zxCalendar = $.CalendarPrice({
+                el: '.containers',
+                // startDate: '2017-08-02',
+                endDate: '2018-12-20',
+                data: MOCK_DATA,
+                newData: [],
+                ShopId: $scope.Shop.ID,
+                // 配置需要设置的字段名称
+                config: [
+                    //{
+                    //    key: 'buyNumMax',
+                    //    name: '最多购买数'
+                    //},
+                    //{
+                    //    key: 'buyNumMin',
+                    //    name: '最少购买数'
+                    //},
+                    {
+                        key: 'price',
+                        name: '今日售价'
+                    },
+                    //{
+                    //    key: 'priceMarket',
+                    //    name: '景区挂牌价'
+                    //},
+                    //{
+                    //    key: 'priceSettlement',
+                    //    name: '分销结算价'
+                    //},
+                    //{
+                    //    key: 'priceRetail',
+                    //    name: '建议零售价'
+                    //},
+                    //{
+                    //    key: 'cashback',
+                    //    name: '返现'
+                    //},
+                    //{
+                    //    key: 'stock',
+                    //    name: '当天库存'
+                    //}
+                ],
+                // 配置在日历中要显示的字段
+                show: [
+                    {
+                        key: 'price',
+                        name: '分:￥'
+                    },
+                    //{
+                    //    key: 'priceSettlement',
+                    //    name: '采:￥'
+                    //},
+                    //{
+                    //    key: 'stock',
+                    //    name: '库:'
+                    //}
+                ],
+                callback: function (data) {
+                    $scope.savePriceAuto(data);
+                    //log('callback ....');
+                    //log(data);
+                },
+                updateDate: function (data) {
+                },
+                cancel: function () {
+                    log('取消设置 ....');
+                    // 取消设置
+                    // 这里可以触发关闭设置窗口
+                    // ...
+                },
+                monthChange: function (month) {
+                    log('monthChange: ')
+                    log(month)
+                    //        var newData = createMockData()
+                    //        zxCalendar.update(newData)
+                },
+                reset: function () {
+                    log('数据重置成功！');
+                },
+                everyday: function (data) {
+                    $scope.openeveryPriceModal();
+                    //var settingWindow = $(".capricorncd-date-detailed-settings");
+
+                    //// 初始化input[value]
+                    //settingWindow.find('.cddsw-form-wrapper [type="text"]').val('');
+                    //settingWindow.find('[name="enableDateRange"]').prop('checked', false);
+                    //settingWindow.find('[name="setWeek"]').prop('checked', false);
+
+                    //// 用户传入字段
+                    //$.each(data, function (key, val) {
+                    //    settingWindow.find('[name="' + key + '"]').val(val);
+                    //});
+
+                    //// 栏目标题
+                    //settingWindow.find('.cddsw-title').html(data["thisDate"]);
+                    //settingWindow.find('[name="startDay"], [name="endDay"]').val(data["thisDate"]);
+
+                    //settingWindow.show();
+                },
+                error: function (err) {
+                    console.error(err.msg);
+                    alert(err.msg);
+                },
+                // 自定义颜色
+                style: {
+                    // 头部背景色
+                    headerBgColor: 'black',
+                    // 头部文字颜色
+                    headerTextColor: '#fff',
+                    // 周一至周日背景色，及文字颜色
+                    weekBgColor: 'black',
+                    weekTextColor: '#fff',
+                    // 周末背景色，及文字颜色
+                    weekendBgColor: '#098cc2',
+                    weekendTextColor: '#fff',
+                    // 有效日期颜色
+                    validDateTextColor: '#333',
+                    validDateBgColor: '#fff',
+                    validDateBorderColor: '#eee',
+                    // Hover
+                    validDateHoverBgColor: '#098cc2',
+                    validDateHoverTextColor: '#fff',
+                    // 无效日期颜色
+                    invalidDateTextColor: '#ccc',
+                    invalidDateBgColor: '#fff',
+                    invalidDateBorderColor: '#eee',
+                    // 底部背景颜色
+                    footerBgColor: 'black',
+                    // 重置按钮颜色
+                    resetBtnBgColor: '#77c351',
+                    resetBtnTextColor: '#fff',
+                    resetBtnHoverBgColor: '#55b526',
+                    resetBtnHoverTextColor: '#fff',
+                    // 确定按钮
+                    confirmBtnBgColor: '#098cc2',
+                    confirmBtnTextColor: '#fff',
+                    confirmBtnHoverBgColor: '#00649a',
+                    confirmBtnHoverTextColor: '#fff',
+                    // 取消按钮
+                    cancelBtnBgColor: '#fff',
+                    cancelBtnBorderColor: '#bbb',
+                    cancelBtnTextColor: '#999',
+                    cancelBtnHoverBgColor: '#fff',
+                    cancelBtnHoverBorderColor: '#bbb',
+                    cancelBtnHoverTextColor: '#666'
+                }
+                // 点击有效的某一触发的回调函数
+                // 注意：配置了此参数，设置窗口无效，即不能针对日期做参数设置
+                // 返回每天的数据
+                //        everyday: function (dayData) {
+                //            console.log('点击某日，返回当天的数据');
+                //            console.log(dayData);
+                //        },
+                // 隐藏底部按钮（重置、确定、取消），前台使用该插件时，则需要隐藏底部按钮
+                //        hideFooterButton: true
+            });
+        }
+        log(zxCalendar)
+        function log(s) {
+            console.log(s)
+        }
+    </script>
+}
